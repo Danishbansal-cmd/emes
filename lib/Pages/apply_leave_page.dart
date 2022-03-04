@@ -14,7 +14,7 @@ class ApplyLeavePage extends StatelessWidget {
       drawer: MyDrawer(),
       body: SafeArea(
         child: Container(
-          child: Text("Leave page bro"),
+          child: Text("Leave page bro gsdg"),
         ),
       ),
     );
