@@ -1,3 +1,6 @@
+import 'package:emes/Pages/Home_pages/previous_screen.dart';
+import 'package:emes/Pages/Home_pages/today_screen.dart';
+import 'package:emes/Pages/Home_pages/next_screen.dart';
 import 'package:emes/Themes/themes.dart';
 import 'package:emes/Widgets/drawer.dart';
 import 'package:flutter/material.dart';
@@ -8,31 +11,41 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          Consumer<ThemeProvider>(
-            builder: (context, appLevelThemeProvider, _) {
-              return Switch.adaptive(
-                value: appLevelThemeProvider.themeMode == ThemeMode.dark,
-                onChanged: (value) {
-                  final provider =
-                      Provider.of<ThemeProvider>(context, listen: false);
-                  provider.toggleTheme(value);
+    return DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            actions: [
+              Consumer<ThemeProvider>(
+                builder: (context, appLevelThemeProvider, _) {
+                  return Switch.adaptive(
+                    value: appLevelThemeProvider.themeMode == ThemeMode.dark,
+                    onChanged: (value) {
+                      final provider =
+                          Provider.of<ThemeProvider>(context, listen: false);
+                      provider.toggleTheme(value);
+                    },
+                  );
                 },
-              );
-            },
+              ),
+            ],
+            bottom: const TabBar(tabs: [
+              Tab(
+                text: 'PREVIOUS',
+              ),
+              Tab(
+                text: 'TODAY',
+              ),
+              Tab(
+                text: 'NEXT',
+              ),
+            ]),
           ),
-        ],
-      ),
-      drawer: const MyDrawer(),
-      body: SafeArea(
-        child: Container(
-          child: const Center(
-            child: Text("Nothing to show now"),
+          drawer: const MyDrawer(),
+          body: const TabBarView(
+            children: [FirstScreen(), SecondScreen(), ThirdScreen()],
           ),
         ),
-      ),
-    );
+      );
   }
 }

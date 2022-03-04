@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             routes: {
-              "/": (context) => HomePage(),
+              "/": (context) => ProfilePage(),
               MyRoutes.homePageRoute: (context) => HomePage(),
               MyRoutes.profilePageRoute: (context) => ProfilePage(),
               MyRoutes.applyLeavePageRoute: (context) => ApplyLeavePage(),
