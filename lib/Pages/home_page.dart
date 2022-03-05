@@ -1,6 +1,6 @@
-import 'package:emes/Pages/Home_pages/previous_screen.dart';
-import 'package:emes/Pages/Home_pages/today_screen.dart';
-import 'package:emes/Pages/Home_pages/next_screen.dart';
+import 'package:emes/Pages/HomePages/previous_screen.dart';
+import 'package:emes/Pages/HomePages/today_screen.dart';
+import 'package:emes/Pages/HomePages/next_screen.dart';
 import 'package:emes/Themes/themes.dart';
 import 'package:emes/Widgets/drawer.dart';
 import 'package:flutter/material.dart';
