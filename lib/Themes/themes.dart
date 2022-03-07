@@ -15,6 +15,7 @@ class ThemeProvider extends ChangeNotifier {
 
 class MyTheme {
   static ThemeData lightTheme(BuildContext context) => ThemeData(
+    primaryColor: Colors.blue,
         textTheme: const TextTheme(
           headline1: TextStyle(
             fontSize: 18,
@@ -51,10 +52,13 @@ class MyTheme {
             fontWeight: FontWeight.bold,
           ),
         ),
-        colorScheme: ColorScheme.light(),
+        colorScheme:const ColorScheme.light(
+          primary: Colors.black
+        ),
       );
 
   static ThemeData darkTheme(BuildContext context) => ThemeData(
+    primaryColor: Colors.blue,
         textTheme: const TextTheme(
           headline1: TextStyle(
             fontSize: 20,
@@ -73,7 +77,9 @@ class MyTheme {
             fontSize: 16,
           ),
         ),
-        colorScheme: const ColorScheme.dark(),
+        colorScheme: const ColorScheme.dark(
+          primary: Colors.white,
+        ),
       );
 
   static Color firstColor = Color(0xff414141);

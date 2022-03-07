@@ -11,6 +11,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _colorScheme = Theme.of(context).colorScheme;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -30,14 +31,15 @@ class HomePage extends StatelessWidget {
               },
             ),
           ],
-          bottom: const TabBar(
-            labelColor: Colors.black,
-            labelStyle: TextStyle(
+          bottom: TabBar(
+            labelColor: _colorScheme.primary,
+            overlayColor: MaterialStateProperty.all(Colors.blue),
+            labelStyle: const TextStyle(
               fontWeight: FontWeight.bold,
               letterSpacing: 0.8,
-              fontSize: 16,
+              fontSize: 15,
             ),
-            tabs: [
+            tabs: const [
               Tab(
                 text: 'PREVIOUS',
               ),

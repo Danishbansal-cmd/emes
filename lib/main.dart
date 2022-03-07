@@ -1,7 +1,9 @@
 import 'package:emes/Pages/apply_leave_page.dart';
 import 'package:emes/Pages/home_page.dart';
 import 'package:emes/Pages/inbox_page.dart';
+import 'package:emes/Pages/login_page.dart';
 import 'package:emes/Pages/profile_page.dart';
+import 'package:emes/Pages/signup_page.dart';
 import 'package:emes/Providers/apply_leave_form_provider.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Themes/themes.dart';
@@ -46,6 +48,8 @@ class MyApp extends StatelessWidget {
               MyRoutes.profilePageRoute: (context) => ProfilePage(),
               MyRoutes.applyLeavePageRoute: (context) => ApplyLeavePage(),
               MyRoutes.inboxPageRoute: (context) => InboxPage(),
+              MyRoutes.loginPageRoute:(context) => LoginPage(),
+              MyRoutes.signupPageRoute:(context) => SignupPage(),
             },
           );
         },

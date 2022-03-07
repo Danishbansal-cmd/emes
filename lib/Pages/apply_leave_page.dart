@@ -28,7 +28,7 @@ class ApplyLeavePage extends StatelessWidget {
               applyLeaveFormProvider.setToDateErrorText("");
               applyLeaveFormProvider.setReasonErrorText("");
               showDialog(
-                barrierDismissible: false,
+                  barrierDismissible: false,
                   context: context,
                   builder: (BuildContext context) {
                     return Dialog(
@@ -250,7 +250,23 @@ class ApplyLeavePage extends StatelessWidget {
       drawer: MyDrawer(),
       body: SafeArea(
         child: Container(
-          child: Text("Leave page bro gsdg"),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          height: MediaQuery.of(context).size.height,
+          child: ListView.separated(
+            itemBuilder: (context, index) => Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: Colors.black, width: 2),
+              ),
+              height: 50,
+              width: double.infinity,
+              child:const Center(child: Text("hello")),
+            ),
+            itemCount: 50,
+            separatorBuilder: (context, index) => const SizedBox(
+              height: 15,
+            ),
+          ),
         ),
       ),
     );
