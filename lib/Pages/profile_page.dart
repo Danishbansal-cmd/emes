@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: const Text("My Profile"),
+          // title: const Text("My Profile"),
           bottom: const TabBar(
             tabs: [
               Tab(

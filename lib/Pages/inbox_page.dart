@@ -9,7 +9,7 @@ class InboxPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         // elevation: 0,
-        title:const Text("Messages"),
+        // title:const Text("Messages"),
       ),
       drawer: MyDrawer(),
       body: SafeArea(

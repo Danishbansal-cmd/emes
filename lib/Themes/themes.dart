@@ -17,14 +17,18 @@ class MyTheme {
   static ThemeData lightTheme(BuildContext context) => ThemeData(
         textTheme: const TextTheme(
           headline1: TextStyle(
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.orange,
+            color: Colors.black,
           ),
+          //for error text
           headline6: TextStyle(
-            color: Colors.grey,
-            fontSize: 16,
+            color: Colors.red,
+            fontWeight: FontWeight.normal,
+            fontSize: 14,
           ),
+
+          //for the drawer items
           headline2: TextStyle(
             fontWeight: FontWeight.bold,
             color: Color(0xff414141),
@@ -32,11 +36,6 @@ class MyTheme {
           ),
         ),
         colorScheme: ColorScheme.light(
-            // primary: Colors.deepPurple,
-            // background: Colors.white,
-            // primaryVariant: Vx.gray200,
-            // secondary: Colors.black,
-            // secondaryVariant: Colors.black.withOpacity(0.6),
             ),
       );
 
@@ -47,9 +46,11 @@ class MyTheme {
             fontWeight: FontWeight.bold,
             color: Colors.orange,
           ),
+          //for error text
           headline6: TextStyle(
-            color: Colors.grey,
-            fontSize: 16,
+            color: Colors.red,
+            fontWeight: FontWeight.normal,
+            fontSize: 14,
           ),
           headline2: TextStyle(
             fontWeight: FontWeight.bold,
@@ -58,11 +59,6 @@ class MyTheme {
           ),
         ),
         colorScheme: const ColorScheme.dark(
-            // primary: Color(0xFF303030),
-            // background: Color(0xFF303030),
-            // primaryVariant: Color(0xFF606060),
-            // secondary: Colors.white,
-            // secondaryVariant: Colors.black
             ),
       );
 

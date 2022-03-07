@@ -2,6 +2,7 @@ import 'package:emes/Pages/apply_leave_page.dart';
 import 'package:emes/Pages/home_page.dart';
 import 'package:emes/Pages/inbox_page.dart';
 import 'package:emes/Pages/profile_page.dart';
+import 'package:emes/Providers/apply_leave_form_provider.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Themes/themes.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ThemeProvider>(
           create: (_) => ThemeProvider(),
         ),
-        // ChangeNotifierProvider(create: (_) =>)
+        ChangeNotifierProvider<ApplyLeaveFormProvider>(
+          create: (_) => ApplyLeaveFormProvider(),
+        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, appLevelThemeProvider, _) {
@@ -38,7 +41,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             routes: {
-              "/": (context) => ProfilePage(),
+              "/": (context) => ApplyLeavePage(),
               MyRoutes.homePageRoute: (context) => HomePage(),
               MyRoutes.profilePageRoute: (context) => ProfilePage(),
               MyRoutes.applyLeavePageRoute: (context) => ApplyLeavePage(),
