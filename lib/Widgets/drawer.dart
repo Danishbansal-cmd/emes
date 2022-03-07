@@ -20,7 +20,7 @@ class MyDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               child: UserAccountsDrawerHeader(
                 margin: EdgeInsets.zero,
-                accountName:  Text("Nsothing"),
+                accountName: Text("Nsothing"),
                 accountEmail: Text("Nothing@nothingmail.com"),
                 currentAccountPicture: CircleAvatar(
                   backgroundImage: NetworkImage(imageUrl),
@@ -28,53 +28,102 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: (){
-                Navigator.pushNamed(context,MyRoutes.homePageRoute);
+              onTap: () {
+                Navigator.pushNamed(context, MyRoutes.homePageRoute);
               },
               child: ListTile(
                 leading: Icon(Icons.calendar_month_outlined),
-                title: Text("Roster",style: _textTheme.headline2,
+                title: Text(
+                  "Roster",
+                  style: _textTheme.headline2,
                 ),
                 // subtitle: Text("Subtitle Please"),
               ),
             ),
             InkWell(
-              onTap: (){
+              onTap: () {
                 Navigator.pushNamed(context, MyRoutes.profilePageRoute);
               },
               child: ListTile(
                 leading: const Icon(Icons.threed_rotation),
-                title: Text("Profile",style: _textTheme.headline2,),
+                title: Text(
+                  "Profile",
+                  style: _textTheme.headline2,
+                ),
                 // subtitle: const Text("Subtitle Please"),
               ),
             ),
             InkWell(
-              onTap: (){
+              onTap: () {
                 Navigator.pushNamed(context, MyRoutes.applyLeavePageRoute);
               },
               child: ListTile(
-                leading:const Icon(Icons.add_circle,),
-                title: Text("Apply Leave",style: _textTheme.headline2,),
+                leading: const Icon(
+                  Icons.add_circle,
+                ),
+                title: Text(
+                  "Apply Leave",
+                  style: _textTheme.headline2,
+                ),
                 // subtitle:const Text("Subtitle Please"),
               ),
             ),
             InkWell(
-              onTap: (){
+              onTap: () {
                 Navigator.pushNamed(context, MyRoutes.inboxPageRoute);
               },
               child: ListTile(
-                leading:const  Icon(Icons.forum),
-                title: Text("Inbox",style: _textTheme.headline2,),
+                leading: const Icon(Icons.forum),
+                title: Text(
+                  "Inbox",
+                  style: _textTheme.headline2,
+                ),
                 // subtitle:const  Text("Subtitle Please"),
               ),
             ),
             InkWell(
-              onTap: (){
-                logout(context);
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Dialog(
+                      backgroundColor: Colors.transparent,
+                      child: Stack(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                              
+                            ),
+                            height: 300,
+                            child: Column(
+                              children: [
+                                Text("Confirm!"),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                    "Are you sure want to logout of this app?"),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                );
               },
               child: ListTile(
-                leading:const Icon(Icons.logout),
-                title: Text("Logout",style: _textTheme.headline2,),
+                leading: const Icon(Icons.logout),
+                title: Text(
+                  "Logout",
+                  style: _textTheme.headline2,
+                ),
                 // subtitle:const Text("Subtitle Please"),
               ),
             )
@@ -84,7 +133,5 @@ class MyDrawer extends StatelessWidget {
     );
   }
 
-  Future<void> logout(BuildContext context) async{
-
-  }
+  Future<void> logout(BuildContext context) async {}
 }

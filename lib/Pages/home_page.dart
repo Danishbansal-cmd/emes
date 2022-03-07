@@ -12,24 +12,32 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-            actions: [
-              Consumer<ThemeProvider>(
-                builder: (context, appLevelThemeProvider, _) {
-                  return Switch.adaptive(
-                    value: appLevelThemeProvider.themeMode == ThemeMode.dark,
-                    onChanged: (value) {
-                      final provider =
-                          Provider.of<ThemeProvider>(context, listen: false);
-                      provider.toggleTheme(value);
-                    },
-                  );
-                },
-              ),
-            ],
-            bottom: const TabBar(tabs: [
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Nu Force Security Group"),
+          actions: [
+            Consumer<ThemeProvider>(
+              builder: (context, appLevelThemeProvider, _) {
+                return Switch.adaptive(
+                  value: appLevelThemeProvider.themeMode == ThemeMode.dark,
+                  onChanged: (value) {
+                    final provider =
+                        Provider.of<ThemeProvider>(context, listen: false);
+                    provider.toggleTheme(value);
+                  },
+                );
+              },
+            ),
+          ],
+          bottom: const TabBar(
+            labelColor: Colors.black,
+            labelStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              letterSpacing: 0.8,
+              fontSize: 16,
+            ),
+            tabs: [
               Tab(
                 text: 'PREVIOUS',
               ),
@@ -39,13 +47,14 @@ class HomePage extends StatelessWidget {
               Tab(
                 text: 'NEXT',
               ),
-            ]),
-          ),
-          drawer: const MyDrawer(),
-          body: const TabBarView(
-            children: [FirstScreen(), SecondScreen(), ThirdScreen()],
+            ],
           ),
         ),
-      );
+        drawer: const MyDrawer(),
+        body: const TabBarView(
+          children: [FirstScreen(), SecondScreen(), ThirdScreen()],
+        ),
+      ),
+    );
   }
 }

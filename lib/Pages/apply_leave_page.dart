@@ -20,7 +20,7 @@ class ApplyLeavePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         // elevation: 0,
-        // title: const Text("My Leave"),
+        title: const Text("My Leave"),
         actions: [
           InkWell(
             onTap: () {

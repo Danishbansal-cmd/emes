@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class ThemeProvider extends ChangeNotifier{
+class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.light;
 
   get themeMode {
     return _themeMode;
   }
 
-  void toggleTheme(bool isOn){
-    _themeMode = isOn ? ThemeMode.dark :  ThemeMode.light;
+  void toggleTheme(bool isOn) {
+    _themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 }
@@ -35,8 +35,23 @@ class MyTheme {
             fontSize: 16,
           ),
         ),
-        colorScheme: ColorScheme.light(
-            ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          titleTextStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            letterSpacing: 1,
+            fontWeight: FontWeight.bold,
+          ),
+          toolbarTextStyle: TextStyle(
+            color: Colors.black,
+            // fontSize: 18,
+            // letterSpacing: 1,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        colorScheme: ColorScheme.light(),
       );
 
   static ThemeData darkTheme(BuildContext context) => ThemeData(
@@ -58,8 +73,7 @@ class MyTheme {
             fontSize: 16,
           ),
         ),
-        colorScheme: const ColorScheme.dark(
-            ),
+        colorScheme: const ColorScheme.dark(),
       );
 
   static Color firstColor = Color(0xff414141);
