@@ -1,4 +1,3 @@
-import 'package:emes/Pages/api_testing_page.dart';
 import 'package:emes/Pages/apply_leave_page.dart';
 import 'package:emes/Pages/home_page.dart';
 import 'package:emes/Pages/inbox_page.dart';
@@ -47,14 +46,13 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             routes: {
-              "/": (context) => LoginPage(),
+              "/": (context) => ApplyLeavePage(),
               MyRoutes.homePageRoute: (context) => HomePage(),
               MyRoutes.profilePageRoute: (context) => ProfilePage(),
               MyRoutes.applyLeavePageRoute: (context) => ApplyLeavePage(),
               MyRoutes.inboxPageRoute: (context) => InboxPage(),
               MyRoutes.loginPageRoute:(context) => LoginPage(),
               MyRoutes.signupPageRoute:(context) => SignupPage(),
-              MyRoutes.testingApiRoute:(context) => TestingApi(),
             },
           );
         },
