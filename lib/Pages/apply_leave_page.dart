@@ -280,7 +280,13 @@ class ApplyLeavePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("some date"),
+                  Container(
+                    // color: Colors.red,
+                    height: 50,
+                    child: Row(children: [
+                      
+                    ],),
+                  ),
                   Row(
                     children: [
                       Container(
@@ -306,27 +312,32 @@ class ApplyLeavePage extends StatelessWidget {
                         onTap: () {
                           // arrowOpenButton = true;
                           // testingIndex = index;
+
+                          openLeaveBarProvider.setBoolValueToggle(index);
                           openLeaveBarProvider.setTestingIndex(index);
-                          openLeaveBarProvider.setBoolValueToggle();
+                          print(
+                              " i am bool value ${openLeaveBarProvider.boolValue}");
                         },
                         child: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Consumer<OpenLeaveBarProvider>(
-                              builder:
-                                  (context, appLevelOpenLeaveBarProvider, _) {
-                                return (openLeaveBarProvider.boolValue &&
-                      openLeaveBarProvider.intTestingIndex == index)
-                                    ? const Icon(
-                                        Icons.keyboard_arrow_down_rounded,
-                                        size: 24,
-                                      )
-                                    : const Icon(
-                                        Icons.arrow_forward_ios_rounded,
-                                        size: 16,
-                                      );
-                              },
-                            ),),
+                          width: 50,
+                          height: 50,
+                          child: Consumer<OpenLeaveBarProvider>(
+                            builder:
+                                (context, appLevelOpenLeaveBarProvider, _) {
+                              return (openLeaveBarProvider.boolValue &&
+                                      openLeaveBarProvider.intTestingIndex ==
+                                          index)
+                                  ? const Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      size: 24,
+                                    )
+                                  : const Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      size: 16,
+                                    );
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   )
@@ -372,7 +383,7 @@ class ApplyLeavePage extends StatelessWidget {
 
 class OpenLeaveBarProvider extends ChangeNotifier {
   bool _value = false;
-  late int _testingIndex;
+  late int _testingIndex = 0;
 
   get boolValue {
     return _value;
@@ -382,8 +393,19 @@ class OpenLeaveBarProvider extends ChangeNotifier {
     return _testingIndex;
   }
 
-  setBoolValueToggle() {
-    _value = !_value;
+  setBoolValueToggle(int value) {
+    if (_testingIndex == value && _value == true) {
+      _value = false;
+      print("does i work or not");
+    } else if (_testingIndex == value && _value == false) {
+      _value = true;
+    }
+    // _value = true;
+
+    if (_testingIndex != value && _value == false) {
+      _value = true;
+      print("does i work or not second second second");
+    }
     notifyListeners();
   }
 
