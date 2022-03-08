@@ -114,12 +114,12 @@ class ApplyLeavePage extends StatelessWidget {
                                     Container(
                                       height: 40,
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
+                                          horizontal: 10,),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(5),
                                           border: Border.all(
-                                              color: Colors.grey, width: 2)),
+                                              color: Colors.grey, width: 2,),),
                                       child: Center(
                                         child: TextField(
                                           controller: fromDateController,
@@ -281,11 +281,9 @@ class ApplyLeavePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    // color: Colors.red,
+                    color: Colors.red,
                     height: 50,
-                    child: Row(children: [
-                      
-                    ],),
+                    child: Center(child: Text("some text"),),
                   ),
                   Row(
                     children: [
