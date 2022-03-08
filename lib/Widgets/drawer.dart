@@ -1,9 +1,32 @@
+import 'dart:convert';
+
 import 'package:emes/Routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
+
+  getData() async {
+    Map data = {
+      "email":"alanseeliger@hotmail.com",
+      "password":"111",
+      "companyID":"1111"
+    };
+    var response = await http.post(Uri.parse('http://trusecurity.emesau.com/dev/api/login'),body: data);
+    var jsonData = jsonDecode(response.body);
+    print("$jsonData");
+    if(jsonData['status'] == 200){
+      return jsonData['data'];
+    }
+    else{
+      print("samaj ni aya pata ni ki hogya");
+    }
+    // print("response ${response.body}");
+    // print("jsondata $jsonData");
+    
+  }
 
   @override
   Widget build(BuildContext context) {

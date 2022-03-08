@@ -5,4 +5,5 @@ class MyRoutes{
   static String inboxPageRoute = "/inboxPage";
   static String loginPageRoute = "/loginPage";
   static String signupPageRoute = "/signupPage";
+  static String testingApiRoute = "/testingApi";
 }
