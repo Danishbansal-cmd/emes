@@ -44,7 +44,8 @@ class MyDrawer extends StatelessWidget {
             InkWell(
               onTap: () {
                 // Navigator.pushNamed(context, MyRoutes.profilePageRoute);
-                Navigator.pushReplacementNamed(context, MyRoutes.profilePageRoute);
+                Navigator.pushReplacementNamed(
+                    context, MyRoutes.profilePageRoute);
               },
               child: ListTile(
                 leading: const Icon(Icons.threed_rotation),
@@ -58,7 +59,8 @@ class MyDrawer extends StatelessWidget {
             InkWell(
               onTap: () {
                 // Navigator.pushNamed(context, MyRoutes.applyLeavePageRoute);
-                Navigator.pushReplacementNamed(context, MyRoutes.applyLeavePageRoute);
+                Navigator.pushReplacementNamed(
+                    context, MyRoutes.applyLeavePageRoute);
               },
               child: ListTile(
                 leading: const Icon(
@@ -74,7 +76,8 @@ class MyDrawer extends StatelessWidget {
             InkWell(
               onTap: () {
                 // Navigator.pushNamed(context, MyRoutes.inboxPageRoute);
-                Navigator.pushReplacementNamed(context, MyRoutes.inboxPageRoute);
+                Navigator.pushReplacementNamed(
+                    context, MyRoutes.inboxPageRoute);
               },
               child: ListTile(
                 leading: const Icon(Icons.forum),
@@ -97,14 +100,15 @@ class MyDrawer extends StatelessWidget {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 20).copyWith(bottom: 5),
+                                    horizontal: 25, vertical: 20)
+                                .copyWith(bottom: 5),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(5),
                             ),
                             height: 160,
                             // width: double.infinity,
-                            margin:const EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -118,7 +122,8 @@ class MyDrawer extends StatelessWidget {
                                 const Text(
                                   "Are you sure want to logout of this app?",
                                   style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Color(0xff525558),
+                                    fontWeight: FontWeight.w500,
                                     fontSize: 18,
                                   ),
                                 ),
@@ -129,6 +134,7 @@ class MyDrawer extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Material(
+                                      color: Colors.white,
                                       child: InkWell(
                                         borderRadius: BorderRadius.circular(5),
                                         splashColor: Colors.blue,
@@ -142,15 +148,19 @@ class MyDrawer extends StatelessWidget {
                                             child: Text(
                                               "Cancel",
                                               style: TextStyle(
-                                                  color: Colors.blue,
-                                                  fontWeight: FontWeight.bold),
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 5,),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
                                     Material(
+                                      color: Colors.white,
                                       child: InkWell(
                                         onTap: () {},
                                         borderRadius: BorderRadius.circular(5),
@@ -162,8 +172,9 @@ class MyDrawer extends StatelessWidget {
                                             child: Text(
                                               "Logout",
                                               style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontWeight: FontWeight.bold),
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
                                         ),

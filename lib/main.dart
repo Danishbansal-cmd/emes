@@ -32,6 +32,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ApplyLeaveFormProvider>(
           create: (_) => ApplyLeaveFormProvider(),
         ),
+        ChangeNotifierProvider<OpenLeaveBarProvider>(
+          create: (_) => OpenLeaveBarProvider(),
+        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, appLevelThemeProvider, _) {
@@ -43,7 +46,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             routes: {
-              "/": (context) => ApplyLeavePage(),
+              "/": (context) => ProfilePage(),
               MyRoutes.homePageRoute: (context) => HomePage(),
               MyRoutes.profilePageRoute: (context) => ProfilePage(),
               MyRoutes.applyLeavePageRoute: (context) => ApplyLeavePage(),

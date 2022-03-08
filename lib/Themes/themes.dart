@@ -17,16 +17,17 @@ class MyTheme {
   static ThemeData lightTheme(BuildContext context) => ThemeData(
     primaryColor: Colors.blue,
         textTheme: const TextTheme(
+          //for status of leavepage
           headline1: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
             color: Colors.black,
           ),
           //for error text
           headline6: TextStyle(
             color: Colors.red,
             fontWeight: FontWeight.normal,
-            fontSize: 14,
+            fontSize: 12,
           ),
 
           //for the drawer items
@@ -60,16 +61,17 @@ class MyTheme {
   static ThemeData darkTheme(BuildContext context) => ThemeData(
     primaryColor: Colors.blue,
         textTheme: const TextTheme(
+          //for status of leavepage
           headline1: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.orange,
+            fontSize: 16,
+            // fontWeight: FontWeight.w400,
+            color: Colors.black,
           ),
           //for error text
           headline6: TextStyle(
             color: Colors.red,
             fontWeight: FontWeight.normal,
-            fontSize: 14,
+            fontSize: 12,
           ),
           headline2: TextStyle(
             fontWeight: FontWeight.bold,

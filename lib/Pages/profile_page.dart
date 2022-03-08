@@ -16,21 +16,16 @@ class ProfilePage extends StatelessWidget {
           // elevation: 0,
           title: const Text("My Profile"),
           bottom: TabBar(
-            // labelPadding: EdgeInsets.all(0),
-            // pinn
-
-            // padding: EdgeInsets.symmetric(horizontal: 20),
             dragStartBehavior: DragStartBehavior.down,
-            labelPadding:const EdgeInsets.symmetric(horizontal: 10.0),
-            isScrollable: true,
+            labelPadding: const EdgeInsets.symmetric(horizontal: 0.0),
             overlayColor: MaterialStateProperty.all(Colors.blue),
             labelColor: Colors.black,
-            labelStyle:const TextStyle(
+            labelStyle: const TextStyle(
               fontWeight: FontWeight.bold,
               letterSpacing: 0.8,
               fontSize: 16,
             ),
-            tabs:const [
+            tabs: const [
               Tab(
                 text: 'PROFILE',
               ),
