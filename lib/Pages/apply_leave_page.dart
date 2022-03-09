@@ -13,8 +13,8 @@ class ApplyLeavePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _textTheme = Theme.of(context).textTheme;
-    final applyLeaveFormProvider = Provider.of<ApplyLeaveFormProvider>(context);
-    final openLeaveBarProvider = Provider.of<OpenLeaveBarProvider>(context);
+    // final applyLeaveFormProvider = Provider.of<ApplyLeaveFormProvider>(context);
+    // final openLeaveBarProvider = Provider.of<OpenLeaveBarProvider>(context);
     // bool arrowOpenButton = false;
     // int testingIndex;
     print(
@@ -27,9 +27,9 @@ class ApplyLeavePage extends StatelessWidget {
         actions: [
           InkWell(
             onTap: () {
-              applyLeaveFormProvider.setFromDateErrorText("");
-              applyLeaveFormProvider.setToDateErrorText("");
-              applyLeaveFormProvider.setReasonErrorText("");
+              // applyLeaveFormProvider.setFromDateErrorText("");
+              // applyLeaveFormProvider.setToDateErrorText("");
+              // applyLeaveFormProvider.setReasonErrorText("");
               showDialog(
                   barrierDismissible: false,
                   context: context,
@@ -37,8 +37,6 @@ class ApplyLeavePage extends StatelessWidget {
                     return Dialog(
                       backgroundColor: Colors.transparent,
                       child: Stack(
-                        // overflow: Overflow.visible,
-                        // alignment: Alignment.center,
                         children: [
                           NotificationListener<OverscrollIndicatorNotification>(
                             onNotification:
@@ -48,7 +46,7 @@ class ApplyLeavePage extends StatelessWidget {
                             },
                             child: SingleChildScrollView(
                               child: Container(
-                                width: double.infinity,
+                                // width: MediaQuery.of(context).size.width,
                                 height: 420,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
@@ -90,8 +88,8 @@ class ApplyLeavePage extends StatelessWidget {
                                                     BorderRadius.circular(30),
                                                 // color: Colors.amber,
                                               ),
-                                              width: 50,
-                                              height: 50,
+                                              width: 35,
+                                              height: 35,
                                               child: const Icon(
                                                 Icons.close_rounded,
                                                 color: Colors.black,
@@ -114,12 +112,15 @@ class ApplyLeavePage extends StatelessWidget {
                                     Container(
                                       height: 40,
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,),
+                                        horizontal: 10,
+                                      ),
                                       decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                              color: Colors.grey, width: 2,),),
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 2,
+                                        ),
+                                      ),
                                       child: Center(
                                         child: TextField(
                                           controller: fromDateController,
@@ -219,29 +220,68 @@ class ApplyLeavePage extends StatelessWidget {
                                     ),
                                     //
                                     // Apply Leave Button
-                                    Material(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: InkWell(
-                                        // splashColor: Colors.white,
-                                        onTap: () {
-                                          validateApplyLeave(context);
-                                        },
-                                        child: Container(
-                                          width: double.infinity,
-                                          height: 35,
-                                          child: const Center(
-                                            child: Text(
-                                              "Apply Leave",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                letterSpacing: 1,
+                                    Consumer<ApplyLeaveFormProvider>(
+                                      builder: (context, applyLeaveFormProvider,
+                                          child) {
+                                        return Material(
+                                          color: Colors.blue,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          child: InkWell(
+                                            // splashColor: Colors.white,
+                                            onTap: () {
+                                              // validateApplyLeave(context);
+                                              RegExp calenderDate = RegExp(
+                                                  r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
+                                              //conditions for fromDateController
+                                              if (fromDateController
+                                                  .text.isEmpty) {
+                                                applyLeaveFormProvider
+                                                    .setFromDateErrorText(
+                                                        "*You must select a value.");
+                                              } else if (!calenderDate.hasMatch(
+                                                  fromDateController.text)) {
+                                                applyLeaveFormProvider
+                                                    .setFromDateErrorText(
+                                                        "*Selected Date should be after current date.");
+                                              }
+                                              //conditions for toDateController
+                                              if (toDateController
+                                                  .text.isEmpty) {
+                                                applyLeaveFormProvider
+                                                    .setToDateErrorText(
+                                                        "*You must select a value.");
+                                              } else if (!calenderDate.hasMatch(
+                                                  toDateController.text)) {
+                                                applyLeaveFormProvider
+                                                    .setToDateErrorText(
+                                                        "*Selected Date should be before date 06/06/2022.");
+                                              }
+                                              //conditions for reasonController
+                                              if (reasonController
+                                                  .text.isEmpty) {
+                                                applyLeaveFormProvider
+                                                    .setReasonErrorText(
+                                                        "*You must select a value.");
+                                              }
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              height: 35,
+                                              child: const Center(
+                                                child: Text(
+                                                  "Apply Leave",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    letterSpacing: 1,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ),
+                                        );
+                                      },
                                     )
                                   ],
                                 ),
@@ -266,81 +306,84 @@ class ApplyLeavePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height,
           child: ListView.separated(
-            itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Colors.black, width: 2),
-              ),
-              height: (openLeaveBarProvider.boolValue &&
-                      openLeaveBarProvider.intTestingIndex == index)
-                  ? 100
-                  : 50,
-              width: double.infinity,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    color: Colors.red,
-                    height: 50,
-                    child: Center(child: Text("some text"),),
+            itemBuilder: (context, index) => Consumer<OpenLeaveBarProvider>(
+              builder: (context, openLeaveBarProvider, _) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: Colors.black, width: 2),
                   ),
-                  Row(
+                  height: (openLeaveBarProvider.boolValue &&
+                          openLeaveBarProvider.intTestingIndex == index)
+                      ? 100
+                      : 50,
+                  width: double.infinity,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        height: 30,
+                        color: Colors.red,
+                        height: 50,
                         child: Center(
-                          child: Text(
-                            "Display Status",
-                            style: _textTheme.headline1,
+                          child: Text("some text"),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            height: 30,
+                            child: Center(
+                              child: Text(
+                                "Display Status",
+                                style: _textTheme.headline1,
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
                           ),
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.amber,
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      InkWell(
-                        borderRadius: BorderRadius.circular(50),
-                        splashColor: Colors.blue,
-                        onTap: () {
-                          // arrowOpenButton = true;
-                          // testingIndex = index;
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          InkWell(
+                                borderRadius: BorderRadius.circular(50),
+                                splashColor: Colors.blue,
+                                onTap: () {
+                                  // arrowOpenButton = true;
+                                  // testingIndex = index;
 
-                          openLeaveBarProvider.setBoolValueToggle(index);
-                          openLeaveBarProvider.setTestingIndex(index);
-                          print(
-                              " i am bool value ${openLeaveBarProvider.boolValue}");
-                        },
-                        child: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Consumer<OpenLeaveBarProvider>(
-                            builder:
-                                (context, appLevelOpenLeaveBarProvider, _) {
-                              return (openLeaveBarProvider.boolValue &&
-                                      openLeaveBarProvider.intTestingIndex ==
-                                          index)
-                                  ? const Icon(
-                                      Icons.keyboard_arrow_down_rounded,
-                                      size: 24,
-                                    )
-                                  : const Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      size: 16,
-                                    );
-                            },
-                          ),
-                        ),
-                      ),
+                                  openLeaveBarProvider
+                                      .setBoolValueToggle(index);
+                                  openLeaveBarProvider.setTestingIndex(index);
+                                  print(
+                                      " i am bool value ${openLeaveBarProvider.boolValue}");
+                                },
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: (openLeaveBarProvider.boolValue &&
+                                          openLeaveBarProvider
+                                                  .intTestingIndex ==
+                                              index)
+                                      ? const Icon(
+                                          Icons.keyboard_arrow_down_rounded,
+                                          size: 24,
+                                        )
+                                      : const Icon(
+                                          Icons.arrow_forward_ios_rounded,
+                                          size: 16,
+                                        ),
+                                ),
+                              ),
+                        ],
+                      )
                     ],
-                  )
-                ],
-              ),
+                  ),
+                );
+              },
             ),
             itemCount: 50,
             separatorBuilder: (context, index) => const SizedBox(
@@ -353,29 +396,29 @@ class ApplyLeavePage extends StatelessWidget {
   }
 
   void validateApplyLeave(BuildContext context) {
-    final applyLeaveFormProvider =
-        Provider.of<ApplyLeaveFormProvider>(context, listen: false);
+    // final applyLeaveFormProvider =
+    //     Provider.of<ApplyLeaveFormProvider>(context, listen: false);
     //regex for date
-    RegExp calenderDate = RegExp(
-        r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
-    //conditions for fromDateController
-    if (fromDateController.text.isEmpty) {
-      applyLeaveFormProvider.setFromDateErrorText("*You must select a value.");
-    } else if (!calenderDate.hasMatch(fromDateController.text)) {
-      applyLeaveFormProvider
-          .setFromDateErrorText("*Selected Date should be after current date.");
-    }
-    //conditions for toDateController
-    if (toDateController.text.isEmpty) {
-      applyLeaveFormProvider.setToDateErrorText("*You must select a value.");
-    } else if (!calenderDate.hasMatch(toDateController.text)) {
-      applyLeaveFormProvider.setToDateErrorText(
-          "*Selected Date should be before date 06/06/2022.");
-    }
-    //conditions for reasonController
-    if (reasonController.text.isEmpty) {
-      applyLeaveFormProvider.setReasonErrorText("*You must select a value.");
-    }
+    // RegExp calenderDate = RegExp(
+    //     r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
+    // //conditions for fromDateController
+    // if (fromDateController.text.isEmpty) {
+    //   applyLeaveFormProvider.setFromDateErrorText("*You must select a value.");
+    // } else if (!calenderDate.hasMatch(fromDateController.text)) {
+    //   applyLeaveFormProvider
+    //       .setFromDateErrorText("*Selected Date should be after current date.");
+    // }
+    // //conditions for toDateController
+    // if (toDateController.text.isEmpty) {
+    //   applyLeaveFormProvider.setToDateErrorText("*You must select a value.");
+    // } else if (!calenderDate.hasMatch(toDateController.text)) {
+    //   applyLeaveFormProvider.setToDateErrorText(
+    //       "*Selected Date should be before date 06/06/2022.");
+    // }
+    // //conditions for reasonController
+    // if (reasonController.text.isEmpty) {
+    //   applyLeaveFormProvider.setReasonErrorText("*You must select a value.");
+    // }
   }
 }
 

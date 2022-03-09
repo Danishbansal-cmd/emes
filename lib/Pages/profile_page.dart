@@ -36,7 +36,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
         drawer: const MyDrawer(),
-        body: const SafeArea(
+        body: SafeArea(
           child: TabBarView(
             physics: NeverScrollableScrollPhysics(),
             children: [ProfileScreen(), LicenseQualificationScreen()],

@@ -19,7 +19,7 @@ class MyTheme {
         textTheme: const TextTheme(
           //for status of leavepage
           headline1: TextStyle(
-            fontSize: 16,
+            fontSize: 20,
             fontWeight: FontWeight.w500,
             color: Colors.black,
           ),
