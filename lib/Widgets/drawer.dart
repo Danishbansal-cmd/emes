@@ -1,3 +1,4 @@
+import 'package:emes/Pages/constants.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +8,7 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print("image url\n ${Constants.getData['image']}");
     final _textTheme = Theme.of(context).textTheme;
     final _colorScheme = Theme.of(context).colorScheme;
     const imageUrl =
@@ -16,12 +18,12 @@ class MyDrawer extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
+            DrawerHeader(
               padding: EdgeInsets.zero,
               child: UserAccountsDrawerHeader(
                 margin: EdgeInsets.zero,
-                accountName: Text("Nsothing"),
-                accountEmail: Text("Nothing@nothingmail.com"),
+                accountName: Text("${Constants.getFirstName} ${Constants.getLastName}"),
+                accountEmail: Text(Constants.getEmail),
                 currentAccountPicture: CircleAvatar(
                   backgroundImage: NetworkImage(imageUrl),
                 ),

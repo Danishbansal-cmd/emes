@@ -6,6 +6,7 @@ import 'package:emes/Pages/login_page.dart';
 import 'package:emes/Pages/profile_page.dart';
 import 'package:emes/Pages/signup_page.dart';
 import 'package:emes/Providers/apply_leave_form_provider.dart';
+import 'package:emes/Providers/login_form_provider.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Themes/themes.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<OpenLeaveBarProvider>(
           create: (_) => OpenLeaveBarProvider(),
         ),
+        ChangeNotifierProvider<LoginFormProvider>(
+          create: (_) => LoginFormProvider(),
+        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, appLevelThemeProvider, _) {
@@ -47,7 +51,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             routes: {
-              "/": (context) => FormTestingPage(),
+              "/": (context) => LoginPage(),
               MyRoutes.homePageRoute: (context) => HomePage(),
               MyRoutes.profilePageRoute: (context) => ProfilePage(),
               MyRoutes.applyLeavePageRoute: (context) => ApplyLeavePage(),
