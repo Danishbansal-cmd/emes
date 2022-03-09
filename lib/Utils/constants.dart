@@ -9,8 +9,10 @@ class Constants {
   static late final String _email;
   static late final String _staffID;
   static late final Map _data;
-
-  //getters
+  static final String _shiftUrl = "http://trusecurity.emesau.com/dev/api/getshift";
+  
+  //
+  //setters
   static setFirstName(String value) {
     _firstName = value;
   }
@@ -31,8 +33,11 @@ class Constants {
     _data = value;
   }
 
+
+  
+
   //
-  //setters
+  //getters
   static get getFirstName {
     return _firstName;
   }
@@ -51,6 +56,10 @@ class Constants {
 
   static get getData {
     return _data;
+  }
+
+  static get getShiftUrl {
+    return _shiftUrl;
   }
 
   factory Constants() {

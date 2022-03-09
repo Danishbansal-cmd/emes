@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:emes/Pages/constants.dart';
+import 'package:emes/Utils/constants.dart';
 import 'package:emes/Pages/home_page.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -70,12 +70,12 @@ class LoginFormProvider extends ChangeNotifier {
       Navigator.pushReplacementNamed(
         context,
         MyRoutes.homePageRoute,
-        arguments: HomePageArguments(
-            jsonData['data']['first_name'],
-            jsonData['data']['last_name'],
-            jsonData['data']['email'],
-            jsonData['data']['id'],
-            ),
+        // arguments: HomePageArguments(
+        //     jsonData['data']['first_name'],
+        //     jsonData['data']['last_name'],
+        //     jsonData['data']['email'],
+        //     jsonData['data']['id'],
+        //     ),
       );
     }
     if (jsonData['status'] == 401) {
