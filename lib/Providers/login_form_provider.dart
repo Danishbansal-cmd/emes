@@ -4,6 +4,7 @@ import 'package:emes/Pages/home_page.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginFormProvider extends ChangeNotifier {
   String _usernameError = "";
@@ -59,6 +60,7 @@ class LoginFormProvider extends ChangeNotifier {
         "companyID": value3,
       },
     );
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var jsonData = jsonDecode(response.body);
     if (jsonData['status'] == 200) {
       print("Signed In Successfully.");
@@ -67,6 +69,7 @@ class LoginFormProvider extends ChangeNotifier {
       Constants.setEmail(jsonData['data']['email']);
       Constants.setStaffID(jsonData['data']['id']);
       Constants.setData(jsonData['data']);
+      sharedPreferences.setString("token", jsonData['data']['token']);
       Navigator.pushReplacementNamed(
         context,
         MyRoutes.homePageRoute,

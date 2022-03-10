@@ -9,17 +9,25 @@ import 'package:emes/Providers/apply_leave_form_provider.dart';
 import 'package:emes/Providers/login_form_provider.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Themes/themes.dart';
+import 'package:emes/Utils/decision_tree.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  
 
   // This widget is the root of your application.
   @override
@@ -53,13 +61,14 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             routes: {
               "/": (context) => LoginPage(),
+              MyRoutes.decisonTreeRoute:(context) => DecisionTree(),
               MyRoutes.homePageRoute: (context) => HomePage(),
               MyRoutes.profilePageRoute: (context) => ProfilePage(),
               MyRoutes.applyLeavePageRoute: (context) => ApplyLeavePage(),
               MyRoutes.inboxPageRoute: (context) => InboxPage(),
-              MyRoutes.loginPageRoute:(context) => LoginPage(),
-              MyRoutes.signupPageRoute:(context) => SignupPage(),
-              MyRoutes.formTestingPageRoute:(context) => FormTestingPage(),
+              MyRoutes.loginPageRoute: (context) => LoginPage(),
+              MyRoutes.signupPageRoute: (context) => SignupPage(),
+              MyRoutes.formTestingPageRoute: (context) => FormTestingPage(),
             },
           );
         },

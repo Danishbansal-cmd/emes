@@ -230,9 +230,9 @@ class ApplyLeavePage extends StatelessWidget {
                                           child: InkWell(
                                             // splashColor: Colors.white,
                                             onTap: () {
-                                              // validateApplyLeave(context);
                                               RegExp calenderDate = RegExp(
                                                   r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
+                                              //
                                               //conditions for fromDateController
                                               if (fromDateController
                                                   .text.isEmpty) {
@@ -245,6 +245,7 @@ class ApplyLeavePage extends StatelessWidget {
                                                     .setFromDateErrorText(
                                                         "*Selected Date should be after current date.");
                                               }
+                                              //
                                               //conditions for toDateController
                                               if (toDateController
                                                   .text.isEmpty) {
@@ -257,6 +258,7 @@ class ApplyLeavePage extends StatelessWidget {
                                                     .setToDateErrorText(
                                                         "*Selected Date should be before date 06/06/2022.");
                                               }
+                                              //
                                               //conditions for reasonController
                                               if (reasonController
                                                   .text.isEmpty) {
@@ -352,14 +354,9 @@ class ApplyLeavePage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(50),
                                 splashColor: Colors.blue,
                                 onTap: () {
-                                  // arrowOpenButton = true;
-                                  // testingIndex = index;
-
                                   openLeaveBarProvider
                                       .setBoolValueToggle(index);
                                   openLeaveBarProvider.setTestingIndex(index);
-                                  print(
-                                      " i am bool value ${openLeaveBarProvider.boolValue}");
                                 },
                                 child: SizedBox(
                                   width: 50,

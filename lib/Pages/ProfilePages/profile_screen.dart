@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:emes/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({Key? key}) : super(key: key);
@@ -155,7 +158,7 @@ class ProfileScreen extends StatelessWidget {
                     child: Consumer<ProfilePageFormProvider>(
                       builder: (context, profilePageFormProvider, _) {
                         return TextField(
-                          onChanged: (value){
+                          onChanged: (value) {
                             profilePageFormProvider.setEmailError(value);
                           },
                           controller: emailController,
@@ -170,43 +173,125 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 Consumer<ProfilePageFormProvider>(
-                  builder: (context,
-                      profilePageFormProvider, _) {
+                  builder: (context, profilePageFormProvider, _) {
                     return Text(
-                      profilePageFormProvider
-                          .getEmailError,
+                      profilePageFormProvider.getEmailError,
                       style: _textTheme.headline6,
                     );
                   },
                 ),
-                SizedBox(
-                  height: 25,
+                const SizedBox(
+                  height: 15,
                 ),
-                Material(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(50),
-                  child: InkWell(
-                    // splashColor: Colors.white,
-                    onTap: () {
-                      // validateApplyLeave(context);
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: 35,
-                      child: const Center(
-                        child: Text(
-                          "Update",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 16,
-                            letterSpacing: 1,
+                Consumer<ProfilePageFormProvider>(
+                  builder: (context, profilePageFormProvider, _) {
+                    return Material(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(50),
+                      child: InkWell(
+                        // splashColor: Colors.white,
+                        onTap: () {
+                          profilePageFormProvider
+                              .setFirstNameError(firstNameController.text);
+                          profilePageFormProvider
+                              .setLastNameError(lastNameController.text);
+                          profilePageFormProvider
+                              .setMobileError(mobileController.text);
+                          profilePageFormProvider
+                              .setEmailError(emailController.text);
+
+                          if (firstNameController.text.isNotEmpty &&
+                              lastNameController.text.isNotEmpty &&
+                              profilePageFormProvider.getMobileErrorBool ==
+                                  false &&
+                              profilePageFormProvider.getEmailErrorBool ==
+                                  false) {
+                            showDialog(
+                              barrierDismissible: true,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  elevation: 0,
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 20),
+                                        // .copyWith(top: 0),
+                                        height: 200,
+                                        width: double.infinity,
+                                        child: FutureBuilder(
+                                          future: ProfilePageFormProvider
+                                              .updateProfile(
+                                            firstNameController.text,
+                                            lastNameController.text,
+                                            mobileController.text,
+                                            emailController.text,
+                                          ),
+                                          builder: (context,
+                                              AsyncSnapshot snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.done) {
+                                              if (snapshot.hasError) {
+                                                return SingleChildScrollView(
+                                                  child: Text(
+                                                    '${snapshot.error} occured',
+                                                    style:
+                                                        TextStyle(fontSize: 18),
+                                                  ),
+                                                );
+                                              } else if (snapshot.hasData) {
+                                                final data =
+                                                    snapshot.data as Map;
+                                                return SingleChildScrollView(
+                                                  child: Text(
+                                                    data['status'].toString(),
+                                                  ),
+                                                );
+                                              }
+                                            }
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                            // validatingCredentials();
+                          }
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 35,
+                          child: const Center(
+                            child: Text(
+                              "Update",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 16,
+                                letterSpacing: 1,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                )
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -214,6 +299,9 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
+
+  //validatingCredentials function
+  validatingCredentials() {}
 }
 
 class ProfilePageFormProvider extends ChangeNotifier {
@@ -221,6 +309,8 @@ class ProfilePageFormProvider extends ChangeNotifier {
   String _lastNameError = "";
   String _mobileError = "";
   String _emailError = "";
+  bool _emailErrorBool = false;
+  bool _mobileErrorBool = false;
 
   //
   //setters
@@ -241,6 +331,7 @@ class ProfilePageFormProvider extends ChangeNotifier {
   setEmailError(String value) {
     if (value.isEmpty) {
       _emailError = "*You must enter a value.";
+      _emailErrorBool = true;
     }
     notifyListeners();
   }
@@ -248,6 +339,7 @@ class ProfilePageFormProvider extends ChangeNotifier {
   setMobileError(String value) {
     if (value.isEmpty) {
       _mobileError = "*You must enter a value.";
+      _mobileErrorBool = true;
     }
     notifyListeners();
   }
@@ -268,5 +360,32 @@ class ProfilePageFormProvider extends ChangeNotifier {
 
   get getMobileError {
     return _mobileError;
+  }
+
+  get getMobileErrorBool {
+    return _mobileErrorBool;
+  }
+
+  get getEmailErrorBool {
+    return _emailErrorBool;
+  }
+
+  //Update Profile function
+  static Future<Map<dynamic, dynamic>> updateProfile(
+      String value1, String value2, String value3, String value4) async {
+    var response =
+        await http.post(Uri.parse(Constants.getUpdateProfileUrl), body: {
+      "first_name": value1,
+      "last_name": value2,
+      "mobile": value3,
+      "email": value4,
+      "id": Constants.getStaffID
+    } // need to use Constants.getStaffID in place of "8"
+            );
+    var jsonData = jsonDecode(response.body);
+    // Map<dynamic, dynamic> data = jsonData['data'];
+    // return data;
+    print("jsonData $jsonData");
+    return {"status": jsonData['status'], "data": jsonData['data']};
   }
 }

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  static final Constants _constants = Constants._internal();
-  Constants._internal();
+  // static final Constants _constants = Constants._internal();
+  // Constants._internal();
 
-  static late final String _firstName;
-  static late final String _lastName;
-  static late final String _email;
-  static late final String _staffID;
-  static late final Map _data;
-  static final String _shiftUrl = "http://trusecurity.emesau.com/dev/api/getshift";
-  
+  static late String _firstName;
+  static late String _lastName;
+  static late String _email;
+  static late String _staffID;
+  static late Map _dataLogIN;
+  static const String _shiftUrl =
+      "http://trusecurity.emesau.com/dev/api/getshift";
+  static const String _updateProfileUrl =
+      "http://trusecurity.emesau.com/dev/api/update_profile";
+
   //
   //setters
   static setFirstName(String value) {
@@ -30,11 +33,8 @@ class Constants {
   }
 
   static setData(Map value) {
-    _data = value;
+    _dataLogIN = value;
   }
-
-
-  
 
   //
   //getters
@@ -55,14 +55,18 @@ class Constants {
   }
 
   static get getData {
-    return _data;
+    return _dataLogIN;
   }
 
   static get getShiftUrl {
     return _shiftUrl;
   }
 
-  factory Constants() {
-    return _constants;
+  static get getUpdateProfileUrl {
+    return _updateProfileUrl;
   }
+
+  // factory Constants() {
+  //   return _constants;
+  // }
 }
