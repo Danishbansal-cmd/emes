@@ -60,8 +60,10 @@ class LoginFormProvider extends ChangeNotifier {
         "companyID": value3,
       },
     );
+    
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var jsonData = jsonDecode(response.body);
+    var sharedData = json.encode(jsonData['data']);
     if (jsonData['status'] == 200) {
       print("Signed In Successfully.");
       Constants.setFirstName(jsonData['data']['first_name']);
@@ -70,6 +72,8 @@ class LoginFormProvider extends ChangeNotifier {
       Constants.setStaffID(jsonData['data']['id']);
       Constants.setData(jsonData['data']);
       sharedPreferences.setString("token", jsonData['data']['token']);
+      sharedPreferences.setString("staffID",jsonData['data']['id']);
+      sharedPreferences.setString("data", sharedData);
       Navigator.pushReplacementNamed(
         context,
         MyRoutes.homePageRoute,

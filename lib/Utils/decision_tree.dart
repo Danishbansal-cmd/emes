@@ -22,12 +22,14 @@ class _DecisionTreeState extends State<DecisionTree> {
 
   checkLogInStatus() async {
     sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("token") == null){
+      Navigator.pushNamed(context, MyRoutes.loginPageRoute);
+    }else {
+      Navigator.pushNamed(context, MyRoutes.homePageRoute);
+    }
   }
   @override
   Widget build(BuildContext context) {
-    if(sharedPreferences.getString("token") == null){
-      return LoginPage();
-    }
-    return HomePage();
+    return SizedBox.shrink();
   }
 }

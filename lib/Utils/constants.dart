@@ -7,12 +7,15 @@ class Constants {
   static late String _firstName;
   static late String _lastName;
   static late String _email;
+  static late String _mobile;
   static late String _staffID;
   static late Map _dataLogIN;
   static const String _shiftUrl =
       "http://trusecurity.emesau.com/dev/api/getshift";
   static const String _updateProfileUrl =
       "http://trusecurity.emesau.com/dev/api/update_profile";
+  static const String _loggedINUserInformationUrl =
+      "http://trusecurity.emesau.com/dev/api/get_loggedInUser";
 
   //
   //setters
@@ -34,6 +37,9 @@ class Constants {
 
   static setData(Map value) {
     _dataLogIN = value;
+  }
+  static setMobile(String value){
+    _mobile = value;
   }
 
   //
@@ -58,12 +64,20 @@ class Constants {
     return _dataLogIN;
   }
 
+  static get getMobile{
+    return _mobile;
+  }
+
   static get getShiftUrl {
     return _shiftUrl;
   }
 
   static get getUpdateProfileUrl {
     return _updateProfileUrl;
+  }
+
+  static get getLoggedINUserInformationUrl{
+    return _loggedINUserInformationUrl;
   }
 
   // factory Constants() {

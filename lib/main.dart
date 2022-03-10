@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             routes: {
-              "/": (context) => LoginPage(),
+              "/": (context) => DecisionTree(),
               MyRoutes.decisonTreeRoute:(context) => DecisionTree(),
               MyRoutes.homePageRoute: (context) => HomePage(),
               MyRoutes.profilePageRoute: (context) => ProfilePage(),
