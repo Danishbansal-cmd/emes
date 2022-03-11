@@ -1,3 +1,4 @@
+import 'package:emes/Pages/HomePages/previous_screen.dart';
 import 'package:emes/Pages/apply_leave_page.dart';
 import 'package:emes/Pages/form_testing_page.dart';
 import 'package:emes/Pages/home_page.dart';
@@ -69,6 +70,7 @@ class _MyAppState extends State<MyApp> {
               MyRoutes.loginPageRoute: (context) => LoginPage(),
               MyRoutes.signupPageRoute: (context) => SignupPage(),
               MyRoutes.formTestingPageRoute: (context) => FormTestingPage(),
+              MyRoutes.previousScreenRoute:(context) => FirstScreen(),
             },
           );
         },

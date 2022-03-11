@@ -5,12 +5,53 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(milliseconds: 500), () {
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          Future.delayed(Duration(milliseconds: 300),(){
+            Navigator.of(context).pop(true);
+          },);
+          return Dialog(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            child: Stack(
+              children: [
+                Center(
+                  child: Container(
+                  width: 60,
+                  height: 60,
+                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                  child:const CircularProgressIndicator(),
+                  decoration:const BoxDecoration(color: Colors.white),
+              ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    });
+  }
+
   TextEditingController firstNameController = TextEditingController();
+
   TextEditingController lastNameController = TextEditingController();
+
   TextEditingController emailController = TextEditingController();
+
   TextEditingController mobileController = TextEditingController();
 
   @override
@@ -241,6 +282,9 @@ class ProfileScreen extends StatelessWidget {
                                             if (snapshot.connectionState ==
                                                 ConnectionState.done) {
                                               if (snapshot.hasError) {
+                                                Future.delayed(Duration(milliseconds: 500,),(){
+                                                  Navigator.of(context).pop(true);
+                                                });
                                                 return SingleChildScrollView(
                                                   child: Text(
                                                     '${snapshot.error} occured',
@@ -249,8 +293,16 @@ class ProfileScreen extends StatelessWidget {
                                                   ),
                                                 );
                                               } else if (snapshot.hasData) {
+                                                Future.delayed(Duration(milliseconds: 500,),(){
+                                                  Navigator.of(context).pop(true);
+                                                });
                                                 final data =
                                                     snapshot.data as Map;
+                                                    if(data['status'] == 200){
+                                                      setState(() {
+                                                        
+                                                      });
+                                                    }
                                                 return SingleChildScrollView(
                                                   child: Text(
                                                     data['status'].toString(),

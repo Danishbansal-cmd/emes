@@ -54,13 +54,14 @@ class SecondScreen extends StatelessWidget {
                 return shiftData.isEmpty
                     ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(
+                        children: [
+                          const Icon(
                             Icons.calendar_month_outlined,
                             size: 90,
                             color: Colors.blue,
                           ),
-                          Text("No Shifts Found")
+                          const Text("No Shifts Found"),
+                          Text(snapshot.data['shift_title']),
                         ],
                       )
                     : ListView.builder(
