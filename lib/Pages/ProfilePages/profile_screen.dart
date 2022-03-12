@@ -167,7 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     children: [
                                       Container(
                                         margin: const EdgeInsets.symmetric(
-                                            horizontal: 20),
+                                            horizontal: 30),
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
@@ -176,8 +176,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 15, vertical: 20),
                                         // .copyWith(top: 0),
-                                        height: 100,
-                                        width: double.infinity,
+                                        height: 80,
+                                        // width: double.infinity,
                                         child: FutureBuilder(
                                           future: ProfilePageFormProvider
                                               .updateProfile(
@@ -198,21 +198,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   Navigator.of(context)
                                                       .pop(true);
                                                 });
-                                                return SingleChildScrollView(
+                                                return const SingleChildScrollView(
                                                   child: Text(
-                                                    '${snapshot.error} occured',
+                                                    'Error occured',
                                                     style:
                                                         TextStyle(fontSize: 18),
                                                   ),
                                                 );
                                               } else if (snapshot.hasData) {
-                                                // Future.delayed(
-                                                //     Duration(
-                                                //       milliseconds: 500,
-                                                //     ), () {
-                                                //   Navigator.of(context)
-                                                //       .pop(true);
-                                                // });
+                                                Future.delayed(
+                                                    const Duration(
+                                                      milliseconds: 1000,
+                                                    ), () {
+                                                  Navigator.of(context)
+                                                      .pop(true);
+                                                });
                                                 
                                                 final data =
                                                     snapshot.data as Map;
@@ -222,20 +222,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   Constants.setMobile(mobileController.text);
                                                   Constants.setEmail(emailController.text);
                                                 }
-                                                print(Constants.getMobile);
-                                                return SingleChildScrollView(
-                                                  child: Column(
-                                                    children: [
-                                                      Text(data['status']
-                                                          .toString()),
-                                                      Text(data['data']
-                                                          ['mobile']),
-                                                      Text(data['message']
-                                                          .toString()),
-                                                      Text(data.toString()),
-                                                    ],
-                                                  ),
-                                                );
+                                                // print(Constants.getMobile);
+                                                return const Center(child: Text("User Profile Updated",style: TextStyle(
+                                                  // fontWeight: FontWeight.bold,
+                                                  fontSize: 18
+                                                ),),);
                                                 
                                               }
                                             }

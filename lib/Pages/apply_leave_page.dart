@@ -1,4 +1,3 @@
-import 'package:emes/Providers/apply_leave_form_provider.dart';
 import 'package:emes/Widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -230,42 +229,47 @@ class ApplyLeavePage extends StatelessWidget {
                                           child: InkWell(
                                             // splashColor: Colors.white,
                                             onTap: () {
-                                              RegExp calenderDate = RegExp(
-                                                  r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
-                                              //
-                                              //conditions for fromDateController
-                                              if (fromDateController
-                                                  .text.isEmpty) {
-                                                applyLeaveFormProvider
-                                                    .setFromDateErrorText(
-                                                        "*You must select a value.");
-                                              } else if (!calenderDate.hasMatch(
-                                                  fromDateController.text)) {
-                                                applyLeaveFormProvider
-                                                    .setFromDateErrorText(
-                                                        "*Selected Date should be after current date.");
-                                              }
-                                              //
-                                              //conditions for toDateController
-                                              if (toDateController
-                                                  .text.isEmpty) {
-                                                applyLeaveFormProvider
-                                                    .setToDateErrorText(
-                                                        "*You must select a value.");
-                                              } else if (!calenderDate.hasMatch(
-                                                  toDateController.text)) {
-                                                applyLeaveFormProvider
-                                                    .setToDateErrorText(
-                                                        "*Selected Date should be before date 06/06/2022.");
-                                              }
-                                              //
-                                              //conditions for reasonController
-                                              if (reasonController
-                                                  .text.isEmpty) {
-                                                applyLeaveFormProvider
-                                                    .setReasonErrorText(
-                                                        "*You must select a value.");
-                                              }
+                                              // RegExp calenderDate = RegExp(
+                                              //     r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
+                                              // //
+                                              // //conditions for fromDateController
+                                              // if (fromDateController
+                                              //     .text.isEmpty) {
+                                              //   applyLeaveFormProvider
+                                              //       .setFromDateErrorText(
+                                              //           "*You must select a value.");
+                                              // } else if (!calenderDate.hasMatch(
+                                              //     fromDateController.text)) {
+                                              //   applyLeaveFormProvider
+                                              //       .setFromDateErrorText(
+                                              //           "*Selected Date should be after current date.");
+                                              // }
+                                              // //
+                                              // //conditions for toDateController
+                                              // if (toDateController
+                                              //     .text.isEmpty) {
+                                              //   applyLeaveFormProvider
+                                              //       .setToDateErrorText(
+                                              //           "*You must select a value.");
+                                              // } else if (!calenderDate.hasMatch(
+                                              //     toDateController.text)) {
+                                              //   applyLeaveFormProvider
+                                              //       .setToDateErrorText(
+                                              //           "*Selected Date should be before date 06/06/2022.");
+                                              // }
+                                              // //
+                                              // //conditions for reasonController
+                                              // if (reasonController
+                                              //     .text.isEmpty) {
+                                              //   applyLeaveFormProvider
+                                              //       .setReasonErrorText(
+                                              //           "*You must select a value.");
+                                              // }
+                                              applyLeaveFormProvider.validateApplyLeaveFormData(fromDateController
+                                                  .text, toDateController
+                                                  .text, reasonController
+                                                  .text);
+                                              
                                             },
                                             child: Container(
                                               width: double.infinity,
@@ -351,30 +355,28 @@ class ApplyLeavePage extends StatelessWidget {
                             width: 5,
                           ),
                           InkWell(
-                                borderRadius: BorderRadius.circular(50),
-                                splashColor: Colors.blue,
-                                onTap: () {
-                                  openLeaveBarProvider
-                                      .setBoolValueToggle(index);
-                                  openLeaveBarProvider.setTestingIndex(index);
-                                },
-                                child: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: (openLeaveBarProvider.boolValue &&
-                                          openLeaveBarProvider
-                                                  .intTestingIndex ==
-                                              index)
-                                      ? const Icon(
-                                          Icons.keyboard_arrow_down_rounded,
-                                          size: 24,
-                                        )
-                                      : const Icon(
-                                          Icons.arrow_forward_ios_rounded,
-                                          size: 16,
-                                        ),
-                                ),
-                              ),
+                            borderRadius: BorderRadius.circular(50),
+                            splashColor: Colors.blue,
+                            onTap: () {
+                              openLeaveBarProvider.setBoolValueToggle(index);
+                              openLeaveBarProvider.setTestingIndex(index);
+                            },
+                            child: SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: (openLeaveBarProvider.boolValue &&
+                                      openLeaveBarProvider.intTestingIndex ==
+                                          index)
+                                  ? const Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      size: 24,
+                                    )
+                                  : const Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      size: 16,
+                                    ),
+                            ),
+                          ),
                         ],
                       )
                     ],
@@ -416,6 +418,65 @@ class ApplyLeavePage extends StatelessWidget {
     // if (reasonController.text.isEmpty) {
     //   applyLeaveFormProvider.setReasonErrorText("*You must select a value.");
     // }
+  }
+}
+
+class ApplyLeaveFormProvider extends ChangeNotifier {
+  String _fromDateErrorText = "";
+  String _toDateErrorText = "";
+  String _reasonErrorText = "";
+
+  get getFromDateErrorText {
+    return _fromDateErrorText;
+  }
+
+  get getToDateErrorText {
+    return _toDateErrorText;
+  }
+
+  get getReasonErrorText {
+    return _reasonErrorText;
+  }
+
+  setFromDateErrorText(String value) {
+    RegExp calenderDate = RegExp(
+        r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
+
+    if (value.isEmpty) {
+      _fromDateErrorText = "*You must select a value.";
+    } else if (!calenderDate.hasMatch(value)) {
+      _fromDateErrorText = "*Selected Date should be after current date.";
+    } else {
+      _fromDateErrorText = "";
+    }
+    notifyListeners();
+  }
+
+  setToDateErrorText(String value) {
+    RegExp calenderDate = RegExp(
+        r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
+    if (value.isEmpty) {
+      _toDateErrorText = "*You must select a value.";
+    } else if (!calenderDate.hasMatch(value)) {
+      _toDateErrorText = "*Selected Date should be before date 06/06/2022.";
+    } else {
+      _toDateErrorText = "";
+    }
+    notifyListeners();
+  }
+
+  setReasonErrorText(String value) {
+    if (value.isEmpty) {
+      _reasonErrorText = "*You must select a value.";
+    } else {
+      _reasonErrorText = "";
+    }
+    notifyListeners();
+  }
+  validateApplyLeaveFormData(String value1,String value2,String value3){
+    setFromDateErrorText(value1);
+    setToDateErrorText(value2);
+    setReasonErrorText(value3);
   }
 }
 
