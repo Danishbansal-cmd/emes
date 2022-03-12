@@ -16,34 +16,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 500), () {
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context) {
-          Future.delayed(Duration(milliseconds: 300),(){
-            Navigator.of(context).pop(true);
-          },);
-          return Dialog(
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            child: Stack(
-              children: [
-                Center(
-                  child: Container(
-                  width: 60,
-                  height: 60,
-                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                  child:const CircularProgressIndicator(),
-                  decoration:const BoxDecoration(color: Colors.white),
-              ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    });
+    // Future.delayed(Duration(milliseconds: 500), () {
+    //   showDialog(
+    //     context: context,
+    //     barrierDismissible: true,
+    //     builder: (context) {
+    //       Future.delayed(
+    //         Duration(milliseconds: 300),
+    //         () {
+    //           Navigator.of(context).pop(true);
+    //         },
+    //       );
+    //       return Dialog(
+    //         elevation: 0,
+    //         backgroundColor: Colors.transparent,
+    //         child: Stack(
+    //           children: [
+    //             Center(
+    //               child: Container(
+    //                 width: 60,
+    //                 height: 60,
+    //                 padding: const EdgeInsets.symmetric(
+    //                     horizontal: 10, vertical: 10),
+    //                 child: const CircularProgressIndicator(),
+    //                 decoration: const BoxDecoration(color: Colors.white),
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       );
+    //     },
+    //   );
+    // });
   }
 
   TextEditingController firstNameController = TextEditingController();
@@ -59,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     firstNameController.text = Constants.getFirstName;
     lastNameController.text = Constants.getLastName;
     emailController.text = Constants.getEmail;
-    mobileController.text = Constants.getStaffID;
+    mobileController.text = Constants.getMobile;
     final _textTheme = Theme.of(context).textTheme;
     return NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (OverscrollIndicatorNotification overScroll) {
@@ -76,151 +80,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("First Name"),
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  height: 40,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.black, width: 2),
-                  ),
-                  child: Center(
-                    child: Consumer<ProfilePageFormProvider>(
-                      builder: (context, profilePageFormProvider, child) {
-                        return TextField(
-                          onChanged: (value) {
-                            profilePageFormProvider.setFirstNameError(value);
-                          },
-                          controller: firstNameController,
-                          decoration: const InputDecoration(
-                            // labelText: "hello 1",
-                            hintText: "Your First Name",
-                            border: InputBorder.none,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
+                //
+                //First Name row
                 Consumer<ProfilePageFormProvider>(
                   builder: (context, profilePageFormProvider, _) {
-                    return Text(
-                      profilePageFormProvider.getFirstNameError,
-                      style: _textTheme.headline6,
-                    );
+                    return returnFormRow(
+                        "First Name",
+                        firstNameController,
+                        profilePageFormProvider.setFirstNameError,
+                        profilePageFormProvider.getFirstNameError,
+                        context);
                   },
                 ),
-                const Text("Last Name"),
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  height: 40,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Colors.black, width: 2)),
-                  child: Center(
-                    child: Consumer<ProfilePageFormProvider>(
-                      builder: (context, profilePageFormProvider, _) {
-                        return TextField(
-                          onChanged: (value) {
-                            profilePageFormProvider.setLastNameError(value);
-                          },
-                          controller: lastNameController,
-                          decoration: const InputDecoration(
-                            // labelText: "hello 1",
-                            hintText: "Your Last Name",
-                            border: InputBorder.none,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
+                //
+                //Last Name row
                 Consumer<ProfilePageFormProvider>(
                   builder: (context, profilePageFormProvider, _) {
-                    return Text(
-                      profilePageFormProvider.getLastNameError,
-                      style: _textTheme.headline6,
-                    );
+                    return returnFormRow(
+                        "Last Name",
+                        lastNameController,
+                        profilePageFormProvider.setLastNameError,
+                        profilePageFormProvider.getLastNameError,
+                        context);
                   },
                 ),
-                const Text("Mobile"),
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  height: 40,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Colors.black, width: 2)),
-                  child: Center(
-                    child: Consumer<ProfilePageFormProvider>(
-                      builder: (context, profilePageFormProvider, _) {
-                        return TextField(
-                          onChanged: (value) {
-                            profilePageFormProvider.setMobileError(value);
-                          },
-                          controller: mobileController,
-                          decoration: const InputDecoration(
-                            // labelText: "hello 1",
-                            hintText: "Your Mobile Number",
-                            border: InputBorder.none,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
+                //
+                //Mobile row
                 Consumer<ProfilePageFormProvider>(
                   builder: (context, profilePageFormProvider, _) {
-                    return Text(
-                      profilePageFormProvider.getMobileError,
-                      style: _textTheme.headline6,
-                    );
+                    return returnFormRow(
+                        "Mobile",
+                        mobileController,
+                        profilePageFormProvider.setMobileError,
+                        profilePageFormProvider.getMobileError,
+                        context);
                   },
                 ),
-                const Text("Email"),
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  height: 40,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Colors.black, width: 2)),
-                  child: Center(
-                    child: Consumer<ProfilePageFormProvider>(
-                      builder: (context, profilePageFormProvider, _) {
-                        return TextField(
-                          onChanged: (value) {
-                            profilePageFormProvider.setEmailError(value);
-                          },
-                          controller: emailController,
-                          decoration: InputDecoration(
-                            // labelText: "hello 1",
-                            hintText: "Your Email",
-                            border: InputBorder.none,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
+                //
+                //Email row
                 Consumer<ProfilePageFormProvider>(
                   builder: (context, profilePageFormProvider, _) {
-                    return Text(
-                      profilePageFormProvider.getEmailError,
-                      style: _textTheme.headline6,
-                    );
+                    return returnFormRow(
+                        "Email",
+                        emailController,
+                        profilePageFormProvider.setEmailError,
+                        profilePageFormProvider.getEmailError,
+                        context);
                   },
                 ),
+                //
+                //Update Button
                 const SizedBox(
                   height: 15,
                 ),
@@ -267,7 +176,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 15, vertical: 20),
                                         // .copyWith(top: 0),
-                                        height: 200,
+                                        height: 100,
                                         width: double.infinity,
                                         child: FutureBuilder(
                                           future: ProfilePageFormProvider
@@ -282,8 +191,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             if (snapshot.connectionState ==
                                                 ConnectionState.done) {
                                               if (snapshot.hasError) {
-                                                Future.delayed(Duration(milliseconds: 500,),(){
-                                                  Navigator.of(context).pop(true);
+                                                Future.delayed(
+                                                    Duration(
+                                                      milliseconds: 500,
+                                                    ), () {
+                                                  Navigator.of(context)
+                                                      .pop(true);
                                                 });
                                                 return SingleChildScrollView(
                                                   child: Text(
@@ -293,21 +206,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ),
                                                 );
                                               } else if (snapshot.hasData) {
-                                                Future.delayed(Duration(milliseconds: 500,),(){
-                                                  Navigator.of(context).pop(true);
-                                                });
+                                                // Future.delayed(
+                                                //     Duration(
+                                                //       milliseconds: 500,
+                                                //     ), () {
+                                                //   Navigator.of(context)
+                                                //       .pop(true);
+                                                // });
+                                                
                                                 final data =
                                                     snapshot.data as Map;
-                                                    if(data['status'] == 200){
-                                                      setState(() {
-                                                        
-                                                      });
-                                                    }
+                                                if (data['status'] == 200) {
+                                                  Constants.setFirstName(firstNameController.text);
+                                                  Constants.setLastName(lastNameController.text);
+                                                  Constants.setMobile(mobileController.text);
+                                                  Constants.setEmail(emailController.text);
+                                                }
+                                                print(Constants.getMobile);
                                                 return SingleChildScrollView(
-                                                  child: Text(
-                                                    data['status'].toString(),
+                                                  child: Column(
+                                                    children: [
+                                                      Text(data['status']
+                                                          .toString()),
+                                                      Text(data['data']
+                                                          ['mobile']),
+                                                      Text(data['message']
+                                                          .toString()),
+                                                      Text(data.toString()),
+                                                    ],
                                                   ),
                                                 );
+                                                
                                               }
                                             }
                                             return Center(
@@ -352,8 +281,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  //validatingCredentials function
-  validatingCredentials() {}
+  Widget returnFormRow(String text, TextEditingController controller,
+      Function setfunction, String getfunction, BuildContext context) {
+    final _textTheme = Theme.of(context).textTheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(text),
+        const SizedBox(
+          height: 5,
+        ),
+        Container(
+          height: 40,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+          ).copyWith(right: 0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              color: Colors.black,
+              width: 2,
+            ),
+          ),
+          child: Center(
+            child: TextField(
+              controller: controller,
+              keyboardType: text == "Email"
+                  ? TextInputType.emailAddress
+                  : text == "Mobile"
+                      ? TextInputType.phone
+                      : TextInputType.name,
+              textInputAction:
+                  text == "Email" ? TextInputAction.done : TextInputAction.next,
+              onSubmitted: (value) {
+                text == "Email"
+                    ? FocusScope.of(context).dispose()
+                    : FocusScope.of(context).nextFocus();
+              },
+              onChanged: (value) {
+                setfunction(value);
+              },
+              decoration: InputDecoration(
+                hintText: text,
+                border: InputBorder.none,
+                suffixIcon: IconButton(
+                  padding: const EdgeInsets.only(bottom: 2, right: 0),
+                  onPressed: () {
+                    controller.clear();
+                  },
+                  icon: const Icon(Icons.cancel),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Text(
+          getfunction,
+          style: _textTheme.headline6,
+        ),
+      ],
+    );
+  }
 }
 
 class ProfilePageFormProvider extends ChangeNotifier {
@@ -392,6 +380,9 @@ class ProfilePageFormProvider extends ChangeNotifier {
     if (value.isEmpty) {
       _mobileError = "*You must enter a value.";
       _mobileErrorBool = true;
+    } else {
+      _mobileError = "";
+      _mobileErrorBool = false;
     }
     notifyListeners();
   }
@@ -435,9 +426,6 @@ class ProfilePageFormProvider extends ChangeNotifier {
     } // need to use Constants.getStaffID in place of "8"
             );
     var jsonData = jsonDecode(response.body);
-    // Map<dynamic, dynamic> data = jsonData['data'];
-    // return data;
-    print("jsonData $jsonData");
-    return {"status": jsonData['status'], "data": jsonData['data']};
+    return jsonData;
   }
 }

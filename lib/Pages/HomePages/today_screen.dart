@@ -49,7 +49,8 @@ class SecondScreen extends StatelessWidget {
               } else if (snapshot.hasData) {
                 // Extracting data from snapshot object
                 // final data = snapshot.data as String;
-                final shiftData = snapshot.data['allShifts'] as List;
+                final shiftData = snapshot.data['allShifts'] as Map;
+                final keyList = shiftData.keys.toList();
 
                 return shiftData.isEmpty
                     ? Column(
@@ -64,13 +65,15 @@ class SecondScreen extends StatelessWidget {
                           Text(snapshot.data['shift_title']),
                         ],
                       )
-                    : ListView.builder(
-                        itemCount: shiftData.length,
+                    : 
+                    ListView.builder(
+                        itemCount: keyList.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             leading: const Icon(Icons.ad_units),
                             trailing: const Text("HEY"),
-                            title: Text("List item $index"),
+                            title: Text("List item ${shiftData[keyList[index]][0]['UserAllowShiftID']}"),
+                            
                           );
                         },
                       );

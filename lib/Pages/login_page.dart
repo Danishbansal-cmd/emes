@@ -309,7 +309,7 @@ class LoginPage extends StatelessWidget {
           child: Center(
             child: TextField(
               controller: controller,
-              keyboardType: TextInputType.name,
+              keyboardType:text == "Username" ? TextInputType.emailAddress : TextInputType.name,
               textInputAction: text == "CompanyID"
                   ? TextInputAction.done
                   : TextInputAction.next,

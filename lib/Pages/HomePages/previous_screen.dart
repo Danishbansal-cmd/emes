@@ -40,7 +40,7 @@ class _FirstScreenState extends State<FirstScreen> {
               } else if (snapshot.hasData) {
                 // Extracting data from snapshot object
                 // final data = snapshot.data as String;
-                final shiftData = snapshot.data['allShifts'] as List;
+                final shiftData = snapshot.data['allShifts'] as Map;
 
                 return shiftData.isEmpty
                     ? Column(

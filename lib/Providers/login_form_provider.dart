@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Pages/home_page.dart';
 import 'package:emes/Routes/routes.dart';
+import 'package:emes/Utils/get_logged_in_information.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -77,13 +78,8 @@ class LoginFormProvider extends ChangeNotifier {
       Navigator.pushReplacementNamed(
         context,
         MyRoutes.homePageRoute,
-        // arguments: HomePageArguments(
-        //     jsonData['data']['first_name'],
-        //     jsonData['data']['last_name'],
-        //     jsonData['data']['email'],
-        //     jsonData['data']['id'],
-        //     ),
       );
+      GetLoggedInUserInformation.getData();
     }
     if (jsonData['status'] == 401) {
       print("Wrong Username or Password You entered.");
