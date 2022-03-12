@@ -36,6 +36,11 @@ class MyTheme {
             color: Color(0xff414141),
             fontSize: 16,
           ),
+          //for the shift text
+          headline3: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          )
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,

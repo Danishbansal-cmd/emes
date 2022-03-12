@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -54,7 +55,7 @@ class SecondScreen extends StatelessWidget {
 
                 return shiftData.isEmpty
                     ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Icon(
                             Icons.calendar_month_outlined,
@@ -65,15 +66,89 @@ class SecondScreen extends StatelessWidget {
                           Text(snapshot.data['shift_title']),
                         ],
                       )
-                    : 
-                    ListView.builder(
+                    : ListView.separated(
+                        separatorBuilder: (context, index) {
+                          return SizedBox(
+                            height: 5,
+                          );
+                        },
                         itemCount: keyList.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: const Icon(Icons.ad_units),
-                            trailing: const Text("HEY"),
-                            title: Text("List item ${shiftData[keyList[index]][0]['UserAllowShiftID']}"),
-                            
+                          // return ListTile(
+                          //   tileColor: Colors.amber,
+                          //   leading: const Icon(Icons.ad_units),
+                          //   trailing: Column(children: [
+                          //     RaisedButton(onPressed: (){},child: Text("Accept"),),
+                          //     RaisedButton(onPressed: (){},child: Text("Decline"),),
+                          //   ],),
+                          //   title: Text("List item ${shiftData[keyList[index]][0]['UserAllowShiftID']}"),
+
+                          // );
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: 86,
+                                    margin: const EdgeInsets.symmetric(
+                                      vertical: 6,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    color: Colors.amber,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // const Icon(Icons.ad_units),
+                                        Text(
+                                          "Day:  ${Constants.nameOfDayOfShift(shiftData[keyList[index]][0]['day_of_shift'])}",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                            "Venue Name:  ${shiftData[keyList[index]][0]['client_name']}"),
+                                        Row(
+                                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                                "From:  ${shiftData[keyList[index]][0]['time_on']}"),
+                                            SizedBox(
+                                              width: 30,
+                                            ),
+                                            Text(
+                                                "To:  ${shiftData[keyList[index]][0]['time_off']}"),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Column(
+                                    children: [
+                                      RaisedButton(
+                                        onPressed: () {},
+                                        child: Text("Accept"),
+                                      ),
+                                      RaisedButton(
+                                        onPressed: () {},
+                                        child: Text("Decline"),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           );
                         },
                       );

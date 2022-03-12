@@ -38,7 +38,8 @@ class Constants {
   static setData(Map value) {
     _dataLogIN = value;
   }
-  static setMobile(String value){
+
+  static setMobile(String value) {
     _mobile = value;
   }
 
@@ -64,7 +65,7 @@ class Constants {
     return _dataLogIN;
   }
 
-  static get getMobile{
+  static get getMobile {
     return _mobile;
   }
 
@@ -76,11 +77,33 @@ class Constants {
     return _updateProfileUrl;
   }
 
-  static get getLoggedINUserInformationUrl{
+  static get getLoggedINUserInformationUrl {
     return _loggedINUserInformationUrl;
   }
 
   // factory Constants() {
   //   return _constants;
   // }
+
+  //
+  //Day of Shifts
+
+  static String nameOfDayOfShift(String value) {
+    if(value == "1"){
+      return "Monday";
+    } else if(value == "2"){
+      return "Tuesday";
+    }else if(value == "3"){
+      return "Wednesday";
+    }else if(value == "4"){
+      return "Thursday";
+    }else if(value == "5"){
+      return "Friday";
+    }else if(value == "6"){
+      return "Saturday";
+    }else if(value == "0"){
+      return "Sunday";
+    }
+    return "Error";
+  }
 }
