@@ -30,6 +30,7 @@ class SecondScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _textTheme = Theme.of(context).textTheme;
     return Container(
       // color: Colors.red,
       child: Center(
@@ -52,6 +53,7 @@ class SecondScreen extends StatelessWidget {
                 // final data = snapshot.data as String;
                 final shiftData = snapshot.data['allShifts'] as Map;
                 final keyList = shiftData.keys.toList();
+                print("start_date ${snapshot.data['start_date']}");
 
                 return shiftData.isEmpty
                     ? Column(
@@ -68,86 +70,111 @@ class SecondScreen extends StatelessWidget {
                       )
                     : ListView.separated(
                         separatorBuilder: (context, index) {
-                          return SizedBox(
+                          return const SizedBox(
                             height: 5,
                           );
                         },
                         itemCount: keyList.length,
                         itemBuilder: (context, index) {
-                          // return ListTile(
-                          //   tileColor: Colors.amber,
-                          //   leading: const Icon(Icons.ad_units),
-                          //   trailing: Column(children: [
-                          //     RaisedButton(onPressed: (){},child: Text("Accept"),),
-                          //     RaisedButton(onPressed: (){},child: Text("Decline"),),
-                          //   ],),
-                          //   title: Text("List item ${shiftData[keyList[index]][0]['UserAllowShiftID']}"),
-
-                          // );
+                          var moreShifts = shiftData[keyList[index]].length;
                           return Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 15,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 86,
-                                    margin: const EdgeInsets.symmetric(
-                                      vertical: 6,
-                                    ),
+                            color: Colors.white,
+                            height: (120 * moreShifts + (moreShifts > 1 ? 5 * (moreShifts - 1) : 0 )).toDouble(),
+                            child: NotificationListener<OverscrollIndicatorNotification>(
+                              onNotification: (OverscrollIndicatorNotification overScroll){
+                                overScroll.disallowGlow();
+                                return true;
+                              },
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) {
+                                  return const SizedBox(
+                                    height: 5,
+                                  );
+                                },
+                                itemBuilder: (context, index2) {
+                                  return Container(
+                                    height: 120,
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 10),
-                                    color: Colors.amber,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      horizontal: 15,vertical: 15,
+                                      
+                                    ),
+                                    color: Colors.white,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        // const Icon(Icons.ad_units),
-                                        Text(
-                                          "Day:  ${Constants.nameOfDayOfShift(shiftData[keyList[index]][0]['day_of_shift'])}",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
+                                        SizedBox(
+                                          height: 90,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              // const Icon(Icons.ad_units),
+                                              Text(
+                                                "Day:  ${Constants.nameOfDayOfShift(shiftData[keyList[index]][index2]['day_of_shift'])} (${shiftData[keyList[index]][index2]['work_date']})",
+                                                style: _textTheme.headline3,
+                                              ),
+                                              Text(
+                                                "Venue Name:  ${shiftData[keyList[index]][index2]['client_name']}",
+                                                style: _textTheme.headline3,
+                                              ),
+                                              Row(
+                                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "From:  ${shiftData[keyList[index]][index2]['time_on']}",
+                                                    style: _textTheme.headline3,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 30,
+                                                  ),
+                                                  Text(
+                                                    "To:  ${shiftData[keyList[index]][index2]['time_off']}",
+                                                    style: _textTheme.headline3,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Text(
-                                            "Venue Name:  ${shiftData[keyList[index]][0]['client_name']}"),
-                                        Row(
-                                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                                "From:  ${shiftData[keyList[index]][0]['time_on']}"),
-                                            SizedBox(
-                                              width: 30,
-                                            ),
-                                            Text(
-                                                "To:  ${shiftData[keyList[index]][0]['time_off']}"),
-                                          ],
-                                        ),
+                                        Container(
+                                          height: 90,
+                                          padding: const EdgeInsets.symmetric(vertical: 5),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              InkWell(
+                                                onTap: (){
+                                                  AcceptOrDeclineStatus.acceptShift("${shiftData[keyList[index]][index2]['shift_id']}:${shiftData[keyList[index]][index2]['work_date']}:${shiftData[keyList[index]][index2]['user_id']}",context);
+                                                },
+                                                child: Container(
+                                                  width: 120,
+                                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color: Colors.blue),
+                                                  child: Text(shiftData[keyList[index]][index2]['confirmed_by_staff'] == "1" ? "Accepted" : "Accept",textAlign: TextAlign.center,),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: (){
+                                                  
+                                                },
+                                                child: Container(
+                                                  width: 120,
+                                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color: Colors.blue),
+                                                  child: Text(shiftData[keyList[index]][index2]['confirmed_by_staff'] == "2" ? "Declined" : "Decline",textAlign: TextAlign.center,),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
                                       ],
                                     ),
-                                  ),
-                                ),
-                                Container(
-                                  child: Column(
-                                    children: [
-                                      RaisedButton(
-                                        onPressed: () {},
-                                        child: Text("Accept"),
-                                      ),
-                                      RaisedButton(
-                                        onPressed: () {},
-                                        child: Text("Decline"),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
+                                  );
+                                },
+                                itemCount: moreShifts,
+                              ),
                             ),
                           );
                         },
@@ -156,7 +183,7 @@ class SecondScreen extends StatelessWidget {
             }
 
             // Displaying LoadingSpinner to indicate waiting state
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           },
@@ -165,3 +192,36 @@ class SecondScreen extends StatelessWidget {
     );
   }
 }
+
+class AcceptOrDeclineStatus {
+  static String _acceptUrl = "http://trusecurity.emesau.com/dev/api/confirm_roster";
+
+  static acceptShift(String value,BuildContext context) async {
+    var response =
+        await http.post(Uri.parse(_acceptUrl), body: {"rosterInfo": value});
+    var jsonData = jsonDecode(response.body);
+    if (jsonData['status'] == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Shift Confirmed"),
+        ),
+      );
+    }
+    if (jsonData['status'] == 401) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Could not Accepted"),
+        ),
+      );
+    }
+    // else {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text("Server Error"),
+    //     ),
+    //   );
+    // }
+  }
+}
+
+class shiftListingVariables {}

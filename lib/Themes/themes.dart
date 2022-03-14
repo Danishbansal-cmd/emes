@@ -83,6 +83,11 @@ class MyTheme {
             color: Color(0xff414141),
             fontSize: 16,
           ),
+          //for the shift text
+          headline3: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          )
         ),
         colorScheme: const ColorScheme.dark(
           primary: Colors.white,

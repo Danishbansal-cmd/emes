@@ -22,6 +22,7 @@ class ShiftData {
     ShiftData.setCurrentShift(data2['currentShift']);
     ShiftData.setPreUrl(data2['preUrl']);
     ShiftData.setNextUrl(data2['nextUrl']);
+    print("nexturl ${ShiftData.getNextUrl}");
     // print("jsonData $jsonData");
     return data2;
   }
@@ -37,7 +38,7 @@ class ShiftData {
     Map<dynamic, dynamic> data2 = jsonData['data'];
     ShiftData.setCurrentShift(data2['currentShift']);
     ShiftData.setPreUrl(data2['preUrl']);
-    print("preurl ${ShiftData.getPreUrl}");
+    // print("preurl ${ShiftData.getPreUrl}");
     ShiftData.setNextUrl(data2['nextUrl']);
     // print("jsonData $jsonData");
     return data2;
@@ -47,17 +48,18 @@ class ShiftData {
     String decodeData = sharedPreferences.getString("data") ?? "";
     var data = jsonDecode(decodeData);
     var response = await http.post(Uri.parse(ShiftData.getNextUrl), body: {
-      "staff_id": data['id']
+      "staff_id": "8"
     } // need to use Constants.getStaffID in place of "8"
         );
     var jsonData = jsonDecode(response.body);
     Map<dynamic, dynamic> data2 = jsonData['data'];
     ShiftData.setCurrentShift(data2['currentShift']);
     ShiftData.setPreUrl(data2['preUrl']);
-    print("nexturl ${ShiftData.getNextUrl}");
+    
     ShiftData.setNextUrl(data2['nextUrl']);
     // print("jsonData $jsonData");
     return data2;
+    
   }
 
   //

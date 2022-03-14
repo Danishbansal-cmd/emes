@@ -8,10 +8,14 @@ import 'package:emes/Widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
-  
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     // final homePageArguments = ModalRoute.of(context)!.settings.arguments as HomePageArguments;
@@ -56,7 +60,9 @@ class HomePage extends StatelessWidget {
               print("int ${int}");
               if(int == 0){
                 print("does i print");
-                FirstScreen(setStateValue:"let see some string");
+                setState(() {
+                  
+                });
               }
             },
             tabs:const [

@@ -16,6 +16,8 @@ class Constants {
       "http://trusecurity.emesau.com/dev/api/update_profile";
   static const String _loggedINUserInformationUrl =
       "http://trusecurity.emesau.com/dev/api/get_loggedInUser";
+  static const String _appliedLeavesUrl =
+      "http://trusecurity.emesau.com/dev/api/get_applied_leave";
 
   //
   //setters
@@ -81,6 +83,10 @@ class Constants {
     return _loggedINUserInformationUrl;
   }
 
+  static get getAppliedLeavesUrl {
+    return _appliedLeavesUrl;
+  }
+
   // factory Constants() {
   //   return _constants;
   // }
@@ -89,19 +95,19 @@ class Constants {
   //Day of Shifts
 
   static String nameOfDayOfShift(String value) {
-    if(value == "1"){
+    if (value == "1") {
       return "Monday";
-    } else if(value == "2"){
+    } else if (value == "2") {
       return "Tuesday";
-    }else if(value == "3"){
+    } else if (value == "3") {
       return "Wednesday";
-    }else if(value == "4"){
+    } else if (value == "4") {
       return "Thursday";
-    }else if(value == "5"){
+    } else if (value == "5") {
       return "Friday";
-    }else if(value == "6"){
+    } else if (value == "6") {
       return "Saturday";
-    }else if(value == "0"){
+    } else if (value == "0") {
       return "Sunday";
     }
     return "Error";
