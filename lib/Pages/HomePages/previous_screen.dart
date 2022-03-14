@@ -71,98 +71,93 @@ class _FirstScreenState extends State<FirstScreen> {
                           return Container(
                             color: Colors.white,
                             height: (120 * moreShifts + (moreShifts > 1 ? 5 * (moreShifts - 1) : 0 )).toDouble(),
-                            child: NotificationListener<OverscrollIndicatorNotification>(
-                              onNotification: (OverscrollIndicatorNotification overScroll){
-                                overScroll.disallowGlow();
-                                return true;
+                            child: ListView.separated(
+                              physics:const ClampingScrollPhysics(),
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(
+                                  height: 5,
+                                );
                               },
-                              child: ListView.separated(
-                                separatorBuilder: (context, index) {
-                                  return const SizedBox(
-                                    height: 5,
-                                  );
-                                },
-                                itemBuilder: (context, index2) {
-                                  return Container(
-                                    height: 120,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 15,vertical: 15,
-                                      
-                                    ),
-                                    color: Colors.white,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          height: 90,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              // const Icon(Icons.ad_units),
-                                              Text(
-                                                "Day:  ${Constants.nameOfDayOfShift(shiftData[keyList[index]][index2]['day_of_shift'])} (${shiftData[keyList[index]][index2]['work_date']})",
-                                                style: _textTheme.headline3,
-                                              ),
-                                              Text(
-                                                "Venue Name:  ${shiftData[keyList[index]][index2]['client_name']}",
-                                                style: _textTheme.headline3,
-                                              ),
-                                              Row(
-                                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "From:  ${shiftData[keyList[index]][index2]['time_on']}",
-                                                    style: _textTheme.headline3,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 30,
-                                                  ),
-                                                  Text(
-                                                    "To:  ${shiftData[keyList[index]][index2]['time_off']}",
-                                                    style: _textTheme.headline3,
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
+                              itemBuilder: (context, index2) {
+                                return Container(
+                                  height: 120,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 15,vertical: 15,
+                                    
+                                  ),
+                                  color: Colors.white,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        height: 90,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // const Icon(Icons.ad_units),
+                                            Text(
+                                              "${Constants.nameOfDayOfShift(shiftData[keyList[index]][index2]['day_of_shift'])} (${shiftData[keyList[index]][index2]['work_date']})",
+                                              style: _textTheme.headline3,
+                                            ),
+                                            Text(
+                                              "${shiftData[keyList[index]][index2]['client_name']}",
+                                              style: _textTheme.headline3,
+                                            ),
+                                            Row(
+                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "From:  ${shiftData[keyList[index]][index2]['time_on']}",
+                                                  style: _textTheme.headline3,
+                                                ),
+                                                const SizedBox(
+                                                  width: 30,
+                                                ),
+                                                Text(
+                                                  "To:  ${shiftData[keyList[index]][index2]['time_off']}",
+                                                  style: _textTheme.headline3,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
-                                        Container(
-                                          height: 90,
-                                          padding: const EdgeInsets.symmetric(vertical: 5),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              InkWell(
-                                                onTap: (){
-                                                  // AcceptOrDeclineStatus.acceptShift("${shiftData[keyList[index]][index2]['shift_id']}:${shiftData[keyList[index]][index2]['work_date']}:${shiftData[keyList[index]][index2]['user_id']}",context);
-                                                },
-                                                child: Container(
-                                                  width: 120,
-                                                  padding: const EdgeInsets.symmetric(vertical: 10),
-                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color: Colors.blue),
-                                                  child: Text(shiftData[keyList[index]][index2]['confirmed_by_staff'] == "1" ? "Accepted" : "Accept",textAlign: TextAlign.center,),
-                                                ),
+                                      ),
+                                      Container(
+                                        height: 90,
+                                        padding: const EdgeInsets.symmetric(vertical: 5),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InkWell(
+                                              onTap: (){
+                                                // AcceptOrDeclineStatus.acceptShift("${shiftData[keyList[index]][index2]['shift_id']}:${shiftData[keyList[index]][index2]['work_date']}:${shiftData[keyList[index]][index2]['user_id']}",context);
+                                              },
+                                              child: Container(
+                                                width: 100,
+                                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color: Colors.blue),
+                                                child: Text(shiftData[keyList[index]][index2]['confirmed_by_staff'] == "1" ? "Accepted" : "Accept",textAlign: TextAlign.center,),
                                               ),
-                                              InkWell(
-                                                child: Container(
-                                                  width: 120,
-                                                  padding: const EdgeInsets.symmetric(vertical: 10),
-                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color: Colors.blue),
-                                                  child: Text("Decline",textAlign: TextAlign.center,),
-                                                ),
+                                            ),
+                                            InkWell(
+                                              child: Container(
+                                                width: 100,
+                                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color: Colors.blue),
+                                                child: Text("Decline",textAlign: TextAlign.center,),
                                               ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                },
-                                itemCount: moreShifts,
-                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                              itemCount: moreShifts,
                             ),
                           );
                         },

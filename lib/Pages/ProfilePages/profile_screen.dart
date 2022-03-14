@@ -296,6 +296,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           child: Center(
             child: TextField(
+              enableInteractiveSelection: false,
               controller: controller,
               keyboardType: text == "Email"
                   ? TextInputType.emailAddress

@@ -112,4 +112,23 @@ class Constants {
     }
     return "Error";
   }
+
+  static Widget indicatorTracker() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          constraints:const BoxConstraints(
+              maxHeight: 15, minHeight: 15, minWidth: 15, maxWidth: 15),
+          decoration: BoxDecoration(color: Color.fromARGB(255, 228, 228, 228),borderRadius: BorderRadius.circular(30),),
+        ),
+        Container(height: 20,width: 7,color: Colors.blue,),
+        Container(
+          constraints:const BoxConstraints(
+              maxHeight: 15, minHeight: 15, minWidth: 15, maxWidth: 15),
+          decoration: BoxDecoration(color: Color.fromARGB(255, 228, 228, 228),borderRadius: BorderRadius.circular(30),),
+        ),
+      ],
+    );
+  }
 }
