@@ -6,6 +6,8 @@ import 'package:emes/Pages/inbox_page.dart';
 import 'package:emes/Pages/login_page.dart';
 import 'package:emes/Pages/profile_page.dart';
 import 'package:emes/Pages/signup_page.dart';
+import 'package:emes/Providers/accept_decline_provider.dart';
+import 'package:emes/Providers/homepage_dates_provider.dart';
 import 'package:emes/Providers/login_form_provider.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Themes/themes.dart';
@@ -13,7 +15,6 @@ import 'package:emes/Utils/decision_tree.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,8 +28,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -49,6 +48,12 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<LoginFormProvider>(
           create: (_) => LoginFormProvider(),
         ),
+        ChangeNotifierProvider<AcceptOrDeclineStatus>(
+          create: (_) => AcceptOrDeclineStatus(),
+        ),
+        ChangeNotifierProvider<HomepageDatesProvider>(
+          create: (_) => HomepageDatesProvider(),
+        )
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, appLevelThemeProvider, _) {
@@ -61,7 +66,7 @@ class _MyAppState extends State<MyApp> {
             initialRoute: '/',
             routes: {
               "/": (context) => DecisionTree(),
-              MyRoutes.decisonTreeRoute:(context) => DecisionTree(),
+              MyRoutes.decisonTreeRoute: (context) => DecisionTree(),
               MyRoutes.homePageRoute: (context) => HomePage(),
               MyRoutes.profilePageRoute: (context) => ProfilePage(),
               MyRoutes.applyLeavePageRoute: (context) => ApplyLeavePage(),
@@ -69,7 +74,7 @@ class _MyAppState extends State<MyApp> {
               MyRoutes.loginPageRoute: (context) => LoginPage(),
               MyRoutes.signupPageRoute: (context) => SignupPage(),
               MyRoutes.formTestingPageRoute: (context) => FormTestingPage(),
-              MyRoutes.previousScreenRoute:(context) => FirstScreen(),
+              MyRoutes.previousScreenRoute: (context) => FirstScreen(),
             },
           );
         },

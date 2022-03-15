@@ -1,6 +1,7 @@
 import 'package:emes/Pages/HomePages/previous_screen.dart';
 import 'package:emes/Pages/HomePages/today_screen.dart';
 import 'package:emes/Pages/HomePages/next_screen.dart';
+import 'package:emes/Providers/homepage_dates_provider.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Themes/themes.dart';
@@ -18,9 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    // final homePageArguments = ModalRoute.of(context)!.settings.arguments as HomePageArguments;
     final _colorScheme = Theme.of(context).colorScheme;
-    // Constants.setFirstName("fasf");
     return DefaultTabController(
       initialIndex: 1,
       length: 3,
@@ -41,14 +40,31 @@ class _HomePageState extends State<HomePage> {
             //   },
             // ),
 
-            Column(
-              children: [
-
-              ],
-            ),
+            Consumer<HomepageDatesProvider>(
+              builder: (context, appLevelHomepageDatesProvider, _) {
+                return Container(
+              padding: const EdgeInsets.symmetric(vertical: 6).copyWith(right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Constants.indicatorTracker(Colors.amber),
+                  const SizedBox(width: 12,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 3),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Text(appLevelHomepageDatesProvider.getStartDate),
+                        // Text(appLevelHomepageDatesProvider.getEndDate),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );},),
           ],
           bottom: TabBar(
-            // controller: TabController(length: 1,vsync: TickerProvider),
             labelColor: _colorScheme.primary,
             overlayColor: MaterialStateProperty.all(Colors.blue),
             labelStyle: const TextStyle(
@@ -60,6 +76,12 @@ class _HomePageState extends State<HomePage> {
               print("int ${int}");
               if(int == 0){
                 print("does i print");
+                setState(() {
+                  
+                });
+              }
+              if(int == 2){
+                print("does i print second");
                 setState(() {
                   
                 });

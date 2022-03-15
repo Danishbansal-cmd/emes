@@ -18,6 +18,12 @@ class Constants {
       "http://trusecurity.emesau.com/dev/api/get_loggedInUser";
   static const String _appliedLeavesUrl =
       "http://trusecurity.emesau.com/dev/api/get_applied_leave";
+  static const String _applyLeaveUrl =
+      "http://trusecurity.emesau.com/dev/api/apply_leave";
+  static String _acceptShiftUrl =
+      "http://trusecurity.emesau.com/dev/api/confirm_roster";
+  static String _declineShiftUrl =
+      "http://trusecurity.emesau.com/dev/api/decline_roster";
 
   //
   //setters
@@ -87,6 +93,18 @@ class Constants {
     return _appliedLeavesUrl;
   }
 
+  static get getApplyLeaveUrl {
+    return _applyLeaveUrl;
+  }
+
+  static get getAcceptShiftUrl {
+    return _acceptShiftUrl;
+  }
+
+  static get getDeclineShiftUrl {
+    return _declineShiftUrl;
+  }
+
   // factory Constants() {
   //   return _constants;
   // }
@@ -113,20 +131,44 @@ class Constants {
     return "Error";
   }
 
-  static Widget indicatorTracker() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+  static Widget indicatorTracker(Color color) {
+    return Stack(
       children: [
-        Container(
-          constraints:const BoxConstraints(
-              maxHeight: 15, minHeight: 15, minWidth: 15, maxWidth: 15),
-          decoration: BoxDecoration(color: Color.fromARGB(255, 228, 228, 228),borderRadius: BorderRadius.circular(30),),
+        Column(
+          children: [
+            const SizedBox(
+              height: 5,
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 4),
+              height: 30,
+              width: 7,
+              color: color,
+            ),
+          ],
         ),
-        Container(height: 20,width: 7,color: Colors.blue,),
-        Container(
-          constraints:const BoxConstraints(
-              maxHeight: 15, minHeight: 15, minWidth: 15, maxWidth: 15),
-          decoration: BoxDecoration(color: Color.fromARGB(255, 228, 228, 228),borderRadius: BorderRadius.circular(30),),
+        Column(
+          children: [
+            Container(
+              constraints: const BoxConstraints(
+                  maxHeight: 15, minHeight: 15, minWidth: 15, maxWidth: 15),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 228, 228, 228),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            const SizedBox(
+              height: 14,
+            ),
+            Container(
+              constraints: const BoxConstraints(
+                  maxHeight: 15, minHeight: 15, minWidth: 15, maxWidth: 15),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 228, 228, 228),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ],
         ),
       ],
     );

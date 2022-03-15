@@ -16,7 +16,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    // Future.delayed(Duration(milliseconds: 500), () {
+    // Future.delayed(Duration(milliseconds: 5000), () {
     //   showDialog(
     //     context: context,
     //     barrierDismissible: true,

@@ -29,285 +29,309 @@ class ApplyLeavePage extends StatelessWidget {
         // elevation: 0,
         title: const Text("My Leave"),
         actions: [
-          InkWell(
-            onTap: () {
-              // applyLeaveFormProvider.setFromDateErrorText("");
-              // applyLeaveFormProvider.setToDateErrorText("");
-              // applyLeaveFormProvider.setReasonErrorText("");
-              showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Dialog(
-                      backgroundColor: Colors.transparent,
-                      child: Stack(
-                        children: [
-                          NotificationListener<OverscrollIndicatorNotification>(
-                            onNotification:
-                                (OverscrollIndicatorNotification overScroll) {
-                              overScroll.disallowGlow();
-                              return true;
-                            },
-                            child: SingleChildScrollView(
-                              child: Container(
-                                // width: MediaQuery.of(context).size.width,
-                                height: 420,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 20)
-                                    .copyWith(top: 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(
-                                      height: 10,
+          Consumer<ApplyLeaveFormProvider>(
+            builder: (context, appLevelApplyLeaveFormProvider, _) {
+              return InkWell(
+                onTap: () {
+                  fromDateController.text = "";
+                  toDateController.text = "";
+                  reasonController.text = "";
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Dialog(
+                          backgroundColor: Colors.transparent,
+                          child: Stack(
+                            children: [
+                              NotificationListener<
+                                  OverscrollIndicatorNotification>(
+                                onNotification: (OverscrollIndicatorNotification
+                                    overScroll) {
+                                  overScroll.disallowGlow();
+                                  return true;
+                                },
+                                child: SingleChildScrollView(
+                                  child: Container(
+                                    // width: MediaQuery.of(context).size.width,
+                                    height: 420,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
                                     ),
-                                    //
-                                    //
-                                    //Apply Leave Form First's Row
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                    padding: const EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 20)
+                                        .copyWith(top: 0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "Apply Leave",
-                                          style: _textTheme.headline1,
+                                        const SizedBox(
+                                          height: 10,
                                         ),
-                                        Material(
-                                          color: Colors.transparent,
-                                          child: InkWell(
-                                            borderRadius:
-                                                BorderRadius.circular(25),
-                                            splashColor: Colors.grey,
-                                            onTap: () {
-                                              // Future.delayed(Duration(seconds: 2));
-                                              Navigator.pop(context);
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(30),
-                                                // color: Colors.amber,
-                                              ),
-                                              width: 35,
-                                              height: 35,
-                                              child: const Icon(
-                                                Icons.close_rounded,
-                                                color: Colors.black,
-                                              ),
+                                        //
+                                        //
+                                        //Apply Leave Form First's Row
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Apply Leave",
+                                              style: _textTheme.headline1,
                                             ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    //
-                                    //
-                                    //From Date Field
-                                    const Text("From Date"),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      height: 40,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 2,
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: TextField(
-                                          controller: fromDateController,
-                                          decoration: const InputDecoration(
-                                            // labelText: "hello 1",
-                                            hintText: "Select From Date",
-                                            border: InputBorder.none,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Consumer<ApplyLeaveFormProvider>(
-                                      builder: (context,
-                                          appLevelApplyLeaveFormProvider, _) {
-                                        return Text(
-                                          appLevelApplyLeaveFormProvider
-                                              .getFromDateErrorText,
-                                          style: _textTheme.headline6,
-                                        );
-                                      },
-                                    ),
-                                    //
-                                    //
-                                    //To Date Field
-                                    const Text("To Date"),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      height: 40,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                              color: Colors.grey, width: 2)),
-                                      child: Center(
-                                        child: TextField(
-                                          controller: toDateController,
-                                          decoration: const InputDecoration(
-                                            // labelText: "hello 1",
-                                            hintText: "Select To Date",
-                                            border: InputBorder.none,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Consumer<ApplyLeaveFormProvider>(
-                                      builder: (context,
-                                          appLevelApplyLeaveFormProvider, _) {
-                                        return Text(
-                                          appLevelApplyLeaveFormProvider
-                                              .getToDateErrorText,
-                                          style: _textTheme.headline6,
-                                        );
-                                      },
-                                    ),
-                                    //
-                                    //
-                                    //Reason Field
-                                    const Text("Reason"),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      height: 100,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                              color: Colors.grey, width: 2)),
-                                      child: TextField(
-                                        controller: reasonController,
-                                        decoration: const InputDecoration(
-                                          // labelText: "hello 1",
-                                          hintText: "Type Reason Here...",
-                                          border: InputBorder.none,
-                                        ),
-                                      ),
-                                    ),
-                                    Consumer<ApplyLeaveFormProvider>(
-                                      builder: (context,
-                                          appLevelApplyLeaveFormProvider, _) {
-                                        return Text(
-                                          appLevelApplyLeaveFormProvider
-                                              .getReasonErrorText,
-                                          style: _textTheme.headline6,
-                                        );
-                                      },
-                                    ),
-                                    //
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    //
-                                    // Apply Leave Button
-                                    Consumer<ApplyLeaveFormProvider>(
-                                      builder: (context, applyLeaveFormProvider,
-                                          child) {
-                                        return Material(
-                                          color: Colors.blue,
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          child: InkWell(
-                                            // splashColor: Colors.white,
-                                            onTap: () {
-                                              // RegExp calenderDate = RegExp(
-                                              //     r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
-                                              // //
-                                              // //conditions for fromDateController
-                                              // if (fromDateController
-                                              //     .text.isEmpty) {
-                                              //   applyLeaveFormProvider
-                                              //       .setFromDateErrorText(
-                                              //           "*You must select a value.");
-                                              // } else if (!calenderDate.hasMatch(
-                                              //     fromDateController.text)) {
-                                              //   applyLeaveFormProvider
-                                              //       .setFromDateErrorText(
-                                              //           "*Selected Date should be after current date.");
-                                              // }
-                                              // //
-                                              // //conditions for toDateController
-                                              // if (toDateController
-                                              //     .text.isEmpty) {
-                                              //   applyLeaveFormProvider
-                                              //       .setToDateErrorText(
-                                              //           "*You must select a value.");
-                                              // } else if (!calenderDate.hasMatch(
-                                              //     toDateController.text)) {
-                                              //   applyLeaveFormProvider
-                                              //       .setToDateErrorText(
-                                              //           "*Selected Date should be before date 06/06/2022.");
-                                              // }
-                                              // //
-                                              // //conditions for reasonController
-                                              // if (reasonController
-                                              //     .text.isEmpty) {
-                                              //   applyLeaveFormProvider
-                                              //       .setReasonErrorText(
-                                              //           "*You must select a value.");
-                                              // }
-                                              applyLeaveFormProvider
-                                                  .validateApplyLeaveFormData(
-                                                      fromDateController.text,
-                                                      toDateController.text,
-                                                      reasonController.text);
-                                            },
-                                            child: Container(
-                                              width: double.infinity,
-                                              height: 35,
-                                              child: const Center(
-                                                child: Text(
-                                                  "Apply Leave",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                    letterSpacing: 1,
+                                            Material(
+                                              color: Colors.transparent,
+                                              child: InkWell(
+                                                borderRadius:
+                                                    BorderRadius.circular(25),
+                                                splashColor: Colors.grey,
+                                                onTap: () {
+                                                  // Future.delayed(Duration(seconds: 2));
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30),
+                                                    // color: Colors.amber,
+                                                  ),
+                                                  width: 35,
+                                                  height: 35,
+                                                  child: const Icon(
+                                                    Icons.close_rounded,
+                                                    color: Colors.black,
                                                   ),
                                                 ),
                                               ),
                                             ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        //
+                                        //
+                                        //From Date Field
+                                        const Text("From Date"),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          height: 40,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 10,
                                           ),
-                                        );
-                                      },
-                                    )
-                                  ],
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                              width: 2,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Consumer<
+                                                ApplyLeaveFormProvider>(
+                                              builder: (context,
+                                                  appLevelApplyLeaveFormProvider,
+                                                  _) {
+                                                return TextField(
+                                                  onChanged: (value) {
+                                                    appLevelApplyLeaveFormProvider
+                                                        .setFromDateErrorText(
+                                                            value);
+                                                  },
+                                                  controller:
+                                                      fromDateController,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    // labelText: "hello 1",
+                                                    hintText:
+                                                        "Select From Date",
+                                                    border: InputBorder.none,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        Consumer<ApplyLeaveFormProvider>(
+                                          builder: (context,
+                                              appLevelApplyLeaveFormProvider,
+                                              _) {
+                                            return Text(
+                                              appLevelApplyLeaveFormProvider
+                                                  .getFromDateErrorText,
+                                              style: _textTheme.headline6,
+                                            );
+                                          },
+                                        ),
+                                        //
+                                        //
+                                        //To Date Field
+                                        const Text("To Date"),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          height: 40,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              border: Border.all(
+                                                  color: Colors.grey,
+                                                  width: 2)),
+                                          child: Center(
+                                            child: Consumer<
+                                                ApplyLeaveFormProvider>(
+                                              builder: (context,
+                                                  appLevelApplyLeaveFormProvider,
+                                                  _) {
+                                                return TextField(
+                                                  onChanged: (value) {
+                                                    appLevelApplyLeaveFormProvider
+                                                        .setToDateErrorText(
+                                                            value);
+                                                  },
+                                                  controller: toDateController,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    // labelText: "hello 1",
+                                                    hintText: "Select To Date",
+                                                    border: InputBorder.none,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        Consumer<ApplyLeaveFormProvider>(
+                                          builder: (context,
+                                              appLevelApplyLeaveFormProvider,
+                                              _) {
+                                            return Text(
+                                              appLevelApplyLeaveFormProvider
+                                                  .getToDateErrorText,
+                                              style: _textTheme.headline6,
+                                            );
+                                          },
+                                        ),
+                                        //
+                                        //
+                                        //Reason Field
+                                        const Text("Reason"),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          height: 100,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                              width: 2,
+                                            ),
+                                          ),
+                                          child:
+                                              Consumer<ApplyLeaveFormProvider>(
+                                            builder: (context,
+                                                appLevelApplyLeaveFormProvider,
+                                                _) {
+                                              return TextField(
+                                                onChanged: (value) {
+                                                  appLevelApplyLeaveFormProvider
+                                                      .setReasonErrorText(
+                                                          value);
+                                                },
+                                                controller: reasonController,
+                                                decoration:
+                                                    const InputDecoration(
+                                                  // labelText: "hello 1",
+                                                  hintText:
+                                                      "Type Reason Here...",
+                                                  border: InputBorder.none,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        Consumer<ApplyLeaveFormProvider>(
+                                          builder: (context,
+                                              appLevelApplyLeaveFormProvider,
+                                              _) {
+                                            return Text(
+                                              appLevelApplyLeaveFormProvider
+                                                  .getReasonErrorText,
+                                              style: _textTheme.headline6,
+                                            );
+                                          },
+                                        ),
+                                        //
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        //
+                                        // Apply Leave Button
+                                        Consumer<ApplyLeaveFormProvider>(
+                                          builder: (context,
+                                              applyLeaveFormProvider, child) {
+                                            return Material(
+                                              color: Colors.blue,
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: InkWell(
+                                                // splashColor: Colors.white,
+                                                onTap: () {
+                                                  applyLeaveFormProvider
+                                                      .validateApplyLeaveFormData(
+                                                    fromDateController.text,
+                                                    toDateController.text,
+                                                    reasonController.text,
+                                                    context,
+                                                  );
+                                                },
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  height: 35,
+                                                  child: const Center(
+                                                    child: Text(
+                                                      "Apply Leave",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white,
+                                                        letterSpacing: 1,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  });
+                        );
+                      });
+                },
+                child: Container(
+                  width: 60,
+                  child: Center(child: Icon(Icons.add_circle_outline_outlined)),
+                ),
+              );
             },
-            child: Container(
-              width: 60,
-              child: Center(child: Icon(Icons.add_circle_outline_outlined)),
-            ),
           ),
         ],
       ),
@@ -343,11 +367,12 @@ class ApplyLeavePage extends StatelessWidget {
                             ],
                           )
                         : NotificationListener<OverscrollIndicatorNotification>(
-                          onNotification: (OverscrollIndicatorNotification overScroll){
-                            overScroll.disallowGlow();
-                            return true;
-                          },
-                          child: ListView.separated(
+                            onNotification:
+                                (OverscrollIndicatorNotification overScroll) {
+                              overScroll.disallowGlow();
+                              return true;
+                            },
+                            child: ListView.separated(
                               itemCount: appliedLeavesData.length,
                               itemBuilder: (context, index) {
                                 return Consumer<OpenLeaveBarProvider>(
@@ -374,45 +399,55 @@ class ApplyLeavePage extends StatelessWidget {
                                           Container(
                                             color: Colors.red,
                                             height: 50,
-                                            child: Column(children: [
-                                              Text(appliedLeavesData[index][
-                                                                  'ApplyForHoliday']
-                                                              ['on_date']),
-                                                              const SizedBox(height: 5,),
-                                                              Text(appliedLeavesData[index][
-                                                                  'ApplyForHoliday']
-                                                              ['to_date'])
-                                            ],),
+                                            child: Column(
+                                              children: [
+                                                Text(appliedLeavesData[index]
+                                                        ['ApplyForHoliday']
+                                                    ['on_date']),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(appliedLeavesData[index]
+                                                        ['ApplyForHoliday']
+                                                    ['to_date'])
+                                              ],
+                                            ),
                                           ),
                                           Row(
                                             children: [
                                               Container(
-                                                padding: const EdgeInsets.symmetric(
-                                                    horizontal: 12),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12),
                                                 height: 30,
                                                 child: Center(
                                                   child: Text(
                                                     appliedLeavesData[index][
-                                                                  'ApplyForHoliday']
-                                                              ['status'] ==
-                                                          "0"
-                                                      ? "Pending"
-                                                      : appliedLeavesData[index][
-                                                                      'ApplyForHoliday']
-                                                                  ['status'] ==
-                                                              "1"
-                                                          ? "Accepted"
-                                                          : "Decline",
-                                                    style: TextStyle(color: Colors.white),
+                                                                    'ApplyForHoliday']
+                                                                ['status'] ==
+                                                            "0"
+                                                        ? "Pending"
+                                                        : appliedLeavesData[index]
+                                                                        [
+                                                                        'ApplyForHoliday']
+                                                                    [
+                                                                    'status'] ==
+                                                                "1"
+                                                            ? "Accepted"
+                                                            : "Decline",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
                                                   ),
                                                 ),
                                                 decoration: BoxDecoration(
-                                                  color: appliedLeavesData[index][
+                                                  color: appliedLeavesData[
+                                                                      index][
                                                                   'ApplyForHoliday']
                                                               ['status'] ==
                                                           "0"
                                                       ? Colors.amber
-                                                      : appliedLeavesData[index][
+                                                      : appliedLeavesData[index]
+                                                                      [
                                                                       'ApplyForHoliday']
                                                                   ['status'] ==
                                                               "1"
@@ -431,7 +466,8 @@ class ApplyLeavePage extends StatelessWidget {
                                                 splashColor: Colors.blue,
                                                 onTap: () {
                                                   openLeaveBarProvider
-                                                      .setBoolValueToggle(index);
+                                                      .setBoolValueToggle(
+                                                          index);
                                                   openLeaveBarProvider
                                                       .setTestingIndex(index);
                                                 },
@@ -469,7 +505,7 @@ class ApplyLeavePage extends StatelessWidget {
                                 );
                               },
                             ),
-                        );
+                          );
                   }
                 }
                 return const Center(
@@ -499,6 +535,14 @@ class ApplyLeaveFormProvider extends ChangeNotifier {
 
   get getReasonErrorText {
     return _reasonErrorText;
+  }
+
+  get getFromDateErrorBool {
+    return _fromDateErrorBool;
+  }
+
+  get getToDateErrorBool {
+    return _toDateErrorBool;
   }
 
   setFromDateErrorText(String value) {
@@ -543,12 +587,97 @@ class ApplyLeaveFormProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  validateApplyLeaveFormData(String value1, String value2, String value3) {
+  validateApplyLeaveFormData(
+      String value1, String value2, String value3, BuildContext context) {
     setFromDateErrorText(value1);
     setToDateErrorText(value2);
     setReasonErrorText(value3);
 
-    // if(value1.isNotEmpty && )
+    if (value1.isNotEmpty &&
+        getFromDateErrorBool == false &&
+        value2.isNotEmpty &&
+        getToDateErrorBool == false &&
+        value3.isNotEmpty) {
+      applyLeaveData(value1, value2, context);
+    }
+  }
+
+  Future applyLeaveData(
+      String value1, String value2, BuildContext context) async {
+    var response = await http.post(
+      Uri.parse(Constants.getApplyLeaveUrl),
+      body: {
+        "user_id": Constants.getStaffID,
+        "on_date": value1,
+        "to_date": value2,
+      },
+    );
+
+    var jsonData = jsonDecode(response.body);
+    print("ondate $value1");
+    print("todate $value2");
+    print(Constants.getStaffID);
+    print("message ${jsonData['message']}");
+    Navigator.of(context).pop(true);
+    if (jsonData['status'] == 200) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Stack(
+              children: [
+                Container(
+                  // width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white,
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20)
+                          .copyWith(top: 0),
+                  child: Text(jsonData['message']),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+      // Scaffold.of(context).showSnackBar(
+      //   new SnackBar(
+      //     content: new Text(jsonData['message']),
+      //   ),
+      // );
+    }
+    if (jsonData['status'] == 401) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Stack(
+              children: [
+                Container(
+                  // width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white,
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Center(
+                      child: Text(
+                    jsonData['message'],
+                    style: Theme.of(context).textTheme.headline2,
+                  )),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
   }
 }
 

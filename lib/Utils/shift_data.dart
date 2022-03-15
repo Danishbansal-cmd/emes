@@ -38,7 +38,7 @@ class ShiftData {
     Map<dynamic, dynamic> data2 = jsonData['data'];
     ShiftData.setCurrentShift(data2['currentShift']);
     ShiftData.setPreUrl(data2['preUrl']);
-    // print("preurl ${ShiftData.getPreUrl}");
+    print("currentShift ${ShiftData.getCurrentShift}");
     ShiftData.setNextUrl(data2['nextUrl']);
     // print("jsonData $jsonData");
     return data2;
