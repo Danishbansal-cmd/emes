@@ -65,6 +65,7 @@ class LoginFormProvider extends ChangeNotifier {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var jsonData = jsonDecode(response.body);
     String sharedData = jsonEncode(jsonData['data']);
+    print("jsonData $jsonData");
     if (jsonData['status'] == 200) {
       print("Signed In Successfully.");
       Constants.setFirstName(jsonData['data']['first_name']);

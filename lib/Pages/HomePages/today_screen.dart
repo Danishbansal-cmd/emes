@@ -17,6 +17,13 @@ class _SecondScreenState extends State<SecondScreen> {
 
   @override
   Widget build(BuildContext context) {
+    @override
+    void initState() {
+      super.initState();
+      WidgetsBinding.instance
+          !.addPostFrameCallback((_) => print("panchood"));
+    }
+
     final _textTheme = Theme.of(context).textTheme;
     var date = HomepageDatesProvider();
     return Container(
@@ -147,29 +154,21 @@ class _SecondScreenState extends State<SecondScreen> {
                                               builder: (context,
                                                   appLevelAcceptOrDeclineStatus,
                                                   _) {
-                                                // appLevelAcceptOrDeclineStatus
-                                                //     .setAcceptButtonText(shiftData[
-                                                //                 keyList[index]][
-                                                //             insideKeyList
-                                                //                     .toList()[
-                                                //                 index2]]
-                                                //         ['confirmed_by_staff']);
-                                                // appLevelAcceptOrDeclineStatus
-                                                //     .setDeclineButtonText(shiftData[
-                                                //                 keyList[index]][
-                                                //             insideKeyList
-                                                //                     .toList()[
-                                                //                 index2]]
-                                                //         ['confirmed_by_staff']);
                                                 return InkWell(
                                                   onTap: () {
-                                                    print(
-                                                        "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
-                                                    appLevelAcceptOrDeclineStatus
-                                                        .acceptShift(
-                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}",
-                                                            context);
-                                                    setState(() {});
+                                                    if (shiftData[keyList[
+                                                                    index]][
+                                                                insideKeyList
+                                                                        .toList()[
+                                                                    index2]][
+                                                            'confirmed_by_staff'] !=
+                                                        "1") {
+                                                      appLevelAcceptOrDeclineStatus
+                                                          .acceptShift(
+                                                              "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}",
+                                                              context);
+                                                      setState(() {});
+                                                    }
                                                   },
                                                   child: Container(
                                                     width: 100,
@@ -202,181 +201,172 @@ class _SecondScreenState extends State<SecondScreen> {
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                declineShiftReasonController
-                                                    .text = "";
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return Dialog(
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      child: Stack(
-                                                        children: [
-                                                          Container(
-                                                            height: 220,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                              horizontal: 15,
-                                                              vertical: 20,
-                                                            ),
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                //
-                                                                //
-                                                                //Reason Field
-                                                                const Text(
-                                                                    "Give Reason"),
-                                                                const SizedBox(
-                                                                  height: 5,
-                                                                ),
-                                                                Container(
-                                                                  height: 100,
-                                                                  padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          10),
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(5),
-                                                                    border:
-                                                                        Border
-                                                                            .all(
-                                                                      color: Colors
-                                                                          .grey,
-                                                                      width: 2,
+                                                if (shiftData[keyList[index]][
+                                                            insideKeyList
+                                                                    .toList()[
+                                                                index2]][
+                                                        'confirmed_by_staff'] !=
+                                                    "2") {
+                                                  declineShiftReasonController
+                                                      .text = "";
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return Dialog(
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        child: Stack(
+                                                          children: [
+                                                            Container(
+                                                              height: 220,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5),
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                horizontal: 15,
+                                                                vertical: 20,
+                                                              ),
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  //
+                                                                  //
+                                                                  //Reason Field
+                                                                  const Text(
+                                                                      "Give Reason"),
+                                                                  const SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  Container(
+                                                                    height: 100,
+                                                                    padding: const EdgeInsets
+                                                                            .symmetric(
+                                                                        horizontal:
+                                                                            10),
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5),
+                                                                      border:
+                                                                          Border
+                                                                              .all(
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        width:
+                                                                            2,
+                                                                      ),
+                                                                    ),
+                                                                    child: Consumer<
+                                                                        AcceptOrDeclineStatus>(
+                                                                      builder: (context,
+                                                                          appLevelAcceptOrDeclineStatus,
+                                                                          _) {
+                                                                        return TextField(
+                                                                          onChanged:
+                                                                              (value) {
+                                                                            appLevelAcceptOrDeclineStatus.setDeclineReasonErrorText(value);
+                                                                          },
+                                                                          controller:
+                                                                              declineShiftReasonController,
+                                                                          decoration:
+                                                                              const InputDecoration(
+                                                                            hintText:
+                                                                                "Type Reason Here...",
+                                                                            border:
+                                                                                InputBorder.none,
+                                                                          ),
+                                                                        );
+                                                                      },
                                                                     ),
                                                                   ),
-                                                                  child: Consumer<
+                                                                  Consumer<
                                                                       AcceptOrDeclineStatus>(
                                                                     builder:
                                                                         (context,
                                                                             appLevelAcceptOrDeclineStatus,
                                                                             _) {
-                                                                      return TextField(
-                                                                        onChanged:
-                                                                            (value) {
-                                                                          appLevelAcceptOrDeclineStatus
-                                                                              .setDeclineReasonErrorText(value);
-                                                                        },
-                                                                        controller:
-                                                                            declineShiftReasonController,
-                                                                        decoration:
-                                                                            const InputDecoration(
-                                                                          hintText:
-                                                                              "Type Reason Here...",
-                                                                          border:
-                                                                              InputBorder.none,
-                                                                        ),
+                                                                      return Text(
+                                                                        appLevelAcceptOrDeclineStatus
+                                                                            .getDeclineReasonErrorText,
+                                                                        style: _textTheme
+                                                                            .headline6,
                                                                       );
                                                                     },
                                                                   ),
-                                                                ),
-                                                                Consumer<
-                                                                    AcceptOrDeclineStatus>(
-                                                                  builder: (context,
-                                                                      appLevelAcceptOrDeclineStatus,
-                                                                      _) {
-                                                                    return Text(
-                                                                      appLevelAcceptOrDeclineStatus
-                                                                          .getDeclineReasonErrorText,
-                                                                      style: _textTheme
-                                                                          .headline6,
-                                                                    );
-                                                                  },
-                                                                ),
-                                                                //
-                                                                //
-                                                                const SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                                //
-                                                                //
-                                                                Material(
-                                                                  color: Colors
-                                                                      .blue,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                    50,
+                                                                  //
+                                                                  //
+                                                                  const SizedBox(
+                                                                    height: 10,
                                                                   ),
-                                                                  child: Consumer<
-                                                                      AcceptOrDeclineStatus>(
-                                                                    builder:
-                                                                        (context,
-                                                                            appLevelAcceptOrDeclineStatus,
-                                                                            _) {
-                                                                      return InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          appLevelAcceptOrDeclineStatus
-                                                                              .setDeclineReasonErrorText(declineShiftReasonController.text);
-                                                                          // print(
-                                                                          //     "decline shift works first");
-                                                                          if (declineShiftReasonController
-                                                                              .text
-                                                                              .isNotEmpty) {
-                                                                            print("decline shift works");
-                                                                            print(shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']);
-                                                                            appLevelAcceptOrDeclineStatus.declineShift(
-                                                                                shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id'],
-                                                                                shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'],
-                                                                                snapshot.data['start_date'],
-                                                                                snapshot.data['end_date'],
-                                                                                declineShiftReasonController.text,
-                                                                                context);
-                                                                          }
-                                                                          setState(
-                                                                              () {});
-                                                                        },
-                                                                        child:
-                                                                            Container(
-                                                                          width:
-                                                                              double.infinity,
-                                                                          height:
-                                                                              35,
+                                                                  //
+                                                                  //
+                                                                  Material(
+                                                                    color: Colors
+                                                                        .blue,
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                      50,
+                                                                    ),
+                                                                    child: Consumer<
+                                                                        AcceptOrDeclineStatus>(
+                                                                      builder: (context,
+                                                                          appLevelAcceptOrDeclineStatus,
+                                                                          _) {
+                                                                        return InkWell(
+                                                                          onTap:
+                                                                              () {
+                                                                            appLevelAcceptOrDeclineStatus.setDeclineReasonErrorText(declineShiftReasonController.text);
+                                                                            if (declineShiftReasonController.text.isNotEmpty) {
+                                                                              appLevelAcceptOrDeclineStatus.declineShift(shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id'], shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'], snapshot.data['start_date'], snapshot.data['end_date'], declineShiftReasonController.text, context);
+                                                                            }
+                                                                            setState(() {});
+                                                                          },
                                                                           child:
-                                                                              const Center(
+                                                                              Container(
+                                                                            width:
+                                                                                double.infinity,
+                                                                            height:
+                                                                                35,
                                                                             child:
-                                                                                Text(
-                                                                              "Decline Shift",
-                                                                              style: TextStyle(
-                                                                                fontWeight: FontWeight.bold,
-                                                                                color: Colors.white,
-                                                                                letterSpacing: 1,
+                                                                                const Center(
+                                                                              child: Text(
+                                                                                "Decline Shift",
+                                                                                style: TextStyle(
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                  color: Colors.white,
+                                                                                  letterSpacing: 1,
+                                                                                ),
                                                                               ),
                                                                             ),
                                                                           ),
-                                                                        ),
-                                                                      );
-                                                                    },
+                                                                        );
+                                                                      },
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                              ],
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    );
-                                                  },
-                                                );
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                }
                                               },
                                               child: Consumer<
                                                   AcceptOrDeclineStatus>(
@@ -394,8 +384,6 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                 .circular(5),
                                                         color: Colors.blue),
                                                     child: Text(
-                                                      // appLevelAcceptOrDeclineStatus
-                                                      //     .getDeclineButtonText,
                                                       shiftData[keyList[index]][
                                                                       insideKeyList
                                                                               .toList()[

@@ -147,42 +147,34 @@ class _FirstScreenState extends State<FirstScreen> {
                                               builder: (context,
                                                   appLevelAcceptOrDeclineStatus,
                                                   _) {
-                                                // appLevelAcceptOrDeclineStatus
-                                                //     .setAcceptButtonText(shiftData[
-                                                //                 keyList[index]][
-                                                //             insideKeyList
-                                                //                     .toList()[
-                                                //                 index2]]
-                                                //         ['confirmed_by_staff']);
-                                                // appLevelAcceptOrDeclineStatus
-                                                //     .setDeclineButtonText(shiftData[
-                                                //                 keyList[index]][
-                                                //             insideKeyList
-                                                //                     .toList()[
-                                                //                 index2]]
-                                                //         ['confirmed_by_staff']);
                                                 return InkWell(
                                                   onTap: () {
-                                                    print(
-                                                        "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
-                                                    appLevelAcceptOrDeclineStatus
-                                                        .acceptShift(
-                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}",
-                                                            context);
-                                                    setState(() {
-                                                      ShiftData.setPreUrl((ShiftData
-                                                                  .getPreUrl)
-                                                              .substring(
-                                                                  0,
-                                                                  ((ShiftData.getPreUrl)
-                                                                          .length -
-                                                                      10)) +
-                                                          shiftData[keyList[index]]
-                                                                  [insideKeyList
-                                                                          .toList()[
-                                                                      index2]]
-                                                              ['loop']['M']);
-                                                    });
+                                                    if (shiftData[keyList[
+                                                                    index]][
+                                                                insideKeyList
+                                                                        .toList()[
+                                                                    index2]][
+                                                            'confirmed_by_staff'] !=
+                                                        "1") {
+                                                      appLevelAcceptOrDeclineStatus
+                                                          .acceptShift(
+                                                              "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}",
+                                                              context);
+                                                      setState(() {
+                                                        ShiftData.setPreUrl((ShiftData
+                                                                    .getPreUrl)
+                                                                .substring(
+                                                                    0,
+                                                                    ((ShiftData.getPreUrl)
+                                                                            .length -
+                                                                        10)) +
+                                                            shiftData[keyList[
+                                                                        index]][
+                                                                    insideKeyList
+                                                                        .toList()[index2]]
+                                                                ['loop']['M']);
+                                                      });
+                                                    }
                                                   },
                                                   child: Container(
                                                     width: 100,
@@ -215,6 +207,12 @@ class _FirstScreenState extends State<FirstScreen> {
                                             ),
                                             InkWell(
                                               onTap: () {
+                                                if (shiftData[keyList[index]][
+                                                            insideKeyList
+                                                                    .toList()[
+                                                                index2]][
+                                                        'confirmed_by_staff'] !=
+                                                    "2"){
                                                 declineShiftReasonController
                                                     .text = "";
                                                 showDialog(
@@ -392,7 +390,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                                       ),
                                                     );
                                                   },
-                                                );
+                                                );}
                                               },
                                               child: Consumer<
                                                   AcceptOrDeclineStatus>(

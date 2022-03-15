@@ -388,7 +388,7 @@ class ApplyLeavePage extends StatelessWidget {
                                                       .intTestingIndex ==
                                                   index)
                                           ? 100
-                                          : 50,
+                                          : 52,
                                       width: double.infinity,
                                       child: Row(
                                         crossAxisAlignment:
@@ -413,85 +413,86 @@ class ApplyLeavePage extends StatelessWidget {
                                               ],
                                             ),
                                           ),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 12),
-                                                height: 30,
-                                                child: Center(
-                                                  child: Text(
-                                                    appliedLeavesData[index][
-                                                                    'ApplyForHoliday']
-                                                                ['status'] ==
-                                                            "0"
-                                                        ? "Pending"
-                                                        : appliedLeavesData[index]
-                                                                        [
-                                                                        'ApplyForHoliday']
-                                                                    [
-                                                                    'status'] ==
-                                                                "1"
-                                                            ? "Accepted"
-                                                            : "Decline",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
+                                          Container(
+                                            height: 50,
+                                            child: Row(
+                                              children: [
+                                                // Container(
+                                                //   height: 28,
+                                                //   width: 80,
+                                                //   child: Center(
+                                                //     child: Text(
+                                                //       appliedLeavesData[index][
+                                                //                       'ApplyForHoliday']
+                                                //                   ['status'] ==
+                                                //               "0"
+                                                //           ? "Pending"
+                                                //           : appliedLeavesData[index]
+                                                //                           [
+                                                //                           'ApplyForHoliday']
+                                                //                       [
+                                                //                       'status'] ==
+                                                //                   "1"
+                                                //               ? "Accepted"
+                                                //               : "Decline",
+                                                //       style: TextStyle(
+                                                //           color: Colors.white),
+                                                //     ),
+                                                //   ),
+                                                //   decoration: BoxDecoration(
+                                                //     color: appliedLeavesData[
+                                                //                         index][
+                                                //                     'ApplyForHoliday']
+                                                //                 ['status'] ==
+                                                //             "0"
+                                                //         ? Colors.amber
+                                                //         : appliedLeavesData[index]
+                                                //                         [
+                                                //                         'ApplyForHoliday']
+                                                //                     ['status'] ==
+                                                //                 "1"
+                                                //             ? Colors.green
+                                                //             : Colors.red,
+                                                //     borderRadius:
+                                                //         BorderRadius.circular(50),
+                                                //   ),
+                                                // ),
+                                                const SizedBox(
+                                                  width: 5,
                                                 ),
-                                                decoration: BoxDecoration(
-                                                  color: appliedLeavesData[
-                                                                      index][
-                                                                  'ApplyForHoliday']
-                                                              ['status'] ==
-                                                          "0"
-                                                      ? Colors.amber
-                                                      : appliedLeavesData[index]
-                                                                      [
-                                                                      'ApplyForHoliday']
-                                                                  ['status'] ==
-                                                              "1"
-                                                          ? Colors.green
-                                                          : Colors.red,
+                                                InkWell(
                                                   borderRadius:
                                                       BorderRadius.circular(50),
+                                                  splashColor: Colors.blue,
+                                                  onTap: () {
+                                                    openLeaveBarProvider
+                                                        .setBoolValueToggle(
+                                                            index);
+                                                    openLeaveBarProvider
+                                                        .setTestingIndex(index);
+                                                  },
+                                                  child: SizedBox(
+                                                    width: 40,
+                                                    height: 40,
+                                                    child: (openLeaveBarProvider
+                                                                .boolValue &&
+                                                            openLeaveBarProvider
+                                                                    .intTestingIndex ==
+                                                                index)
+                                                        ? const Icon(
+                                                            Icons
+                                                                .keyboard_arrow_down_rounded,
+                                                            size: 24,
+                                                          )
+                                                        : const Icon(
+                                                            Icons
+                                                                .arrow_forward_ios_rounded,
+                                                            size: 16,
+                                                          ),
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              InkWell(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                splashColor: Colors.blue,
-                                                onTap: () {
-                                                  openLeaveBarProvider
-                                                      .setBoolValueToggle(
-                                                          index);
-                                                  openLeaveBarProvider
-                                                      .setTestingIndex(index);
-                                                },
-                                                child: SizedBox(
-                                                  width: 50,
-                                                  height: 50,
-                                                  child: (openLeaveBarProvider
-                                                              .boolValue &&
-                                                          openLeaveBarProvider
-                                                                  .intTestingIndex ==
-                                                              index)
-                                                      ? const Icon(
-                                                          Icons
-                                                              .keyboard_arrow_down_rounded,
-                                                          size: 24,
-                                                        )
-                                                      : const Icon(
-                                                          Icons
-                                                              .arrow_forward_ios_rounded,
-                                                          size: 16,
-                                                        ),
-                                                ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           )
                                         ],
                                       ),
