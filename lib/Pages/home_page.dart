@@ -55,8 +55,8 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Text(appLevelHomepageDatesProvider.getStartDate),
-                        // Text(appLevelHomepageDatesProvider.getEndDate),
+                        Text(appLevelHomepageDatesProvider.getStartDate),
+                        Text(appLevelHomepageDatesProvider.getEndDate),
                       ],
                     ),
                   ),

@@ -25,4 +25,10 @@ class HomepageDatesProvider extends ChangeNotifier{
     _end_date = value;
     notifyListeners();
   }
+
+  //
+  //builders
+  buildStartDate(){
+    notifyListeners();
+  }
 }

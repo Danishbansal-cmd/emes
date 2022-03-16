@@ -290,7 +290,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSecondary,
               width: 2,
             ),
           ),

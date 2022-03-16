@@ -279,6 +279,7 @@ class LoginPage extends StatelessWidget {
           ),
           child: Center(
             child: TextField(
+              cursorColor: Theme.of(context).colorScheme.secondaryVariant,
               controller: controller,
               keyboardType:text == "Username" ? TextInputType.emailAddress : TextInputType.name,
               textInputAction: text == "CompanyID"
@@ -296,6 +297,7 @@ class LoginPage extends StatelessWidget {
                 hintText: text == "CompanyID" ? text : "Your $text",
                 border: InputBorder.none,
                 suffixIcon: IconButton(
+                  color: Colors.grey,
                   padding: const EdgeInsets.only(bottom: 2,right: 0),
                   onPressed: () {
                     controller.clear();

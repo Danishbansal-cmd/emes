@@ -48,8 +48,9 @@ class _FirstScreenState extends State<FirstScreen> {
                 final keyList = shiftData.keys.toList();
                 print("start_date ${snapshot.data['start_date']}");
                 print("end_date ${snapshot.data['end_date']}");
-                // date.setStartDate(snapshot.data['start_date']);
-                // date.setEndDate(snapshot.data['end_date']);
+                date.setStartDate(snapshot.data['start_date']);
+                date.setEndDate(snapshot.data['end_date']);
+                print("two dates ${date.getStartDate} ${date.getEndDate}");
 
                 return shiftData.isEmpty
                     ? Column(

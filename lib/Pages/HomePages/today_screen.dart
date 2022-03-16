@@ -17,16 +17,27 @@ class _SecondScreenState extends State<SecondScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var date = HomepageDatesProvider();
+    void tryFunction(String value1, String value2) {
+      date.setStartDate("hello");
+      date.setEndDate("hello2");
+    }
+
     @override
     void initState() {
       super.initState();
-      WidgetsBinding.instance
-          !.addPostFrameCallback((_) => print("panchood"));
+      // WidgetsBinding.instance!
+      //     .addPostFrameCallback((_) => tryFunction("hello", "hello2"));
     }
+
+    Future.delayed(Duration.zero, () {
+      //your code goes here
+      tryFunction("hello", "hello2");
+    });
 
     final _textTheme = Theme.of(context).textTheme;
     final _colorScheme = Theme.of(context).colorScheme;
-    var date = HomepageDatesProvider();
+
     return Container(
       color: _colorScheme.background,
       child: Center(
@@ -55,6 +66,8 @@ class _SecondScreenState extends State<SecondScreen> {
                 final keyList = shiftData.keys.toList();
                 print("start_date ${snapshot.data['start_date']}");
                 print("end_date ${snapshot.data['end_date']}");
+                // tryFunction(
+                //     snapshot.data['start_date'], snapshot.data['start_date']);
                 // date.setStartDate(snapshot.data['start_date']);
                 // date.setEndDate(snapshot.data['end_date']);
 
@@ -417,8 +430,10 @@ class _SecondScreenState extends State<SecondScreen> {
             }
 
             // Displaying LoadingSpinner to indicate waiting state
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: CircularProgressIndicator(
+                color: _colorScheme.onSecondary,
+              ),
             );
           },
         ),
