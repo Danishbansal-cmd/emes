@@ -42,7 +42,7 @@ class MyDrawer extends StatelessWidget {
                 // Navigator.pushNamed(context, MyRoutes.homePageRoute);
               },
               child: ListTile(
-                leading: Icon(Icons.calendar_month_outlined),
+                leading: Icon(Icons.calendar_month_outlined,color: _colorScheme.secondaryVariant,),
                 title: Text(
                   "Roster",
                   style: _textTheme.headline2,
@@ -57,7 +57,7 @@ class MyDrawer extends StatelessWidget {
                     context, MyRoutes.profilePageRoute);
               },
               child: ListTile(
-                leading: const Icon(Icons.threed_rotation),
+                leading: Icon(Icons.threed_rotation,color: _colorScheme.secondaryVariant,),
                 title: Text(
                   "Profile",
                   style: _textTheme.headline2,
@@ -72,8 +72,8 @@ class MyDrawer extends StatelessWidget {
                     context, MyRoutes.applyLeavePageRoute);
               },
               child: ListTile(
-                leading: const Icon(
-                  Icons.add_circle,
+                leading: Icon(
+                  Icons.add_circle,color: _colorScheme.secondaryVariant,
                 ),
                 title: Text(
                   "Apply Leave",
@@ -89,7 +89,7 @@ class MyDrawer extends StatelessWidget {
                     context, MyRoutes.inboxPageRoute);
               },
               child: ListTile(
-                leading: const Icon(Icons.forum),
+                leading: Icon(Icons.forum,color: _colorScheme.secondaryVariant,),
                 title: Text(
                   "Inbox",
                   style: _textTheme.headline2,
@@ -98,7 +98,7 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.abc),
+              leading: Icon(Icons.abc,color: _colorScheme.secondaryVariant,),
               title: Consumer<ThemeProvider>(
                 builder: (context, appLevelThemeProvider, _) {
                   return Switch.adaptive(
@@ -127,7 +127,7 @@ class MyDrawer extends StatelessWidget {
                                     horizontal: 25, vertical: 20)
                                 .copyWith(bottom: 5),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.primary,
                               borderRadius: BorderRadius.circular(5),
                             ),
                             height: 160,
@@ -158,7 +158,7 @@ class MyDrawer extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Material(
-                                      color: Colors.white,
+                                      color: Theme.of(context).colorScheme.primary,
                                       child: InkWell(
                                         borderRadius: BorderRadius.circular(5),
                                         splashColor: Colors.blue,
@@ -184,7 +184,7 @@ class MyDrawer extends StatelessWidget {
                                       width: 5,
                                     ),
                                     Material(
-                                      color: Colors.white,
+                                      color: Theme.of(context).colorScheme.primary,
                                       child: InkWell(
                                         onTap: () async{
                                           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -221,7 +221,7 @@ class MyDrawer extends StatelessWidget {
                 );
               },
               child: ListTile(
-                leading: const Icon(Icons.logout),
+                leading: Icon(Icons.logout,color: _colorScheme.secondaryVariant,),
                 title: Text(
                   "Logout",
                   style: _textTheme.headline2,

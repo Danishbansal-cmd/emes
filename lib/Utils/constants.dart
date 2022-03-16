@@ -1,8 +1,11 @@
+import 'package:emes/Providers/accept_decline_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Constants {
   // static final Constants _constants = Constants._internal();
   // Constants._internal();
+
 
   static late String _firstName;
   static late String _lastName;
@@ -131,7 +134,7 @@ class Constants {
     return "Error";
   }
 
-  static Widget indicatorTracker(Color color) {
+  static Widget indicatorTracker(Color color, double value) {
     return Stack(
       children: [
         Column(
@@ -157,8 +160,8 @@ class Constants {
                 borderRadius: BorderRadius.circular(30),
               ),
             ),
-            const SizedBox(
-              height: 14,
+            SizedBox(
+              height: value.toDouble(),
             ),
             Container(
               constraints: const BoxConstraints(
@@ -171,6 +174,43 @@ class Constants {
           ],
         ),
       ],
+    );
+  }
+
+  static Future basicWidget(String value, BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        Future.delayed(
+          const Duration(
+            milliseconds: 800,
+          ),
+          () {
+            Navigator.of(context).pop(true);
+          },
+        );
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Stack(
+            children: [
+              Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Center(
+                  child: Text(
+                    value,
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

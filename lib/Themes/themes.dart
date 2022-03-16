@@ -53,13 +53,19 @@ class MyTheme {
           ),
           toolbarTextStyle: TextStyle(
             color: Colors.black,
-            // fontSize: 18,
-            // letterSpacing: 1,
             fontWeight: FontWeight.bold,
           ),
         ),
         colorScheme:const ColorScheme.light(
-          primary: Colors.black
+          primary: Colors.white,
+          //for labelColor
+          secondary: Colors.black,
+          //for background
+          background: Color(0xfffbfbfb),
+          //applyleave border color
+          onSecondary: Colors.grey,
+          //for Drawer Icons
+          secondaryVariant: Colors.grey
         ),
       );
 
@@ -68,9 +74,9 @@ class MyTheme {
         textTheme: const TextTheme(
           //for status of leavepage
           headline1: TextStyle(
-            fontSize: 16,
-            // fontWeight: FontWeight.w400,
-            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
           ),
           //for error text
           headline6: TextStyle(
@@ -80,7 +86,7 @@ class MyTheme {
           ),
           headline2: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Color(0xff414141),
+            color: Colors.white,
             fontSize: 16,
           ),
           //for the shift text
@@ -89,8 +95,31 @@ class MyTheme {
             fontSize: 16,
           )
         ),
+        //appbar Theme
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xff121212),
+          foregroundColor: Colors.white,
+          titleTextStyle: TextStyle(
+            color: Colors.grey,
+            fontSize: 18,
+            letterSpacing: 1,
+            fontWeight: FontWeight.bold,
+          ),
+          toolbarTextStyle: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         colorScheme: const ColorScheme.dark(
-          primary: Colors.white,
+          primary: Color(0xff1f1f1f),
+          //for labelColor
+          secondary: Colors.white,
+          //for background
+          background: Color(0xff303030),
+          //applyleave border color
+          onSecondary: Color(0xff1f1f1f),
+          //for Drawer Icons
+          secondaryVariant: Colors.grey
         ),
       );
 

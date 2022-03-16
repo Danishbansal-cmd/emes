@@ -16,10 +16,10 @@ class AcceptOrDeclineStatus extends ChangeNotifier {
     var jsonData = jsonDecode(response.body);
     if (jsonData['status'] == 200) {
       print("messsage ${jsonData['message']}");
-      basicWidget(jsonData['message'], context);
+      Constants.basicWidget(jsonData['message'], context);
     }
     if (jsonData['status'] == 401) {
-      basicWidget(jsonData['message'], context);
+      Constants.basicWidget(jsonData['message'], context);
     }
   }
 
@@ -44,10 +44,10 @@ class AcceptOrDeclineStatus extends ChangeNotifier {
     var jsonData = jsonDecode(response.body);
     Navigator.of(context).pop();
     if (jsonData['status'] == 200) {
-      basicWidget(jsonData['message'], context);
+      Constants.basicWidget(jsonData['message'], context);
     }
     if (jsonData['status'] == 401) {
-      basicWidget(jsonData['message'], context);
+      Constants.basicWidget(jsonData['message'], context);
     }
   }
 
@@ -94,39 +94,6 @@ class AcceptOrDeclineStatus extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future basicWidget(String value,BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          Future.delayed(
-              const Duration(
-                milliseconds: 800,
-              ), () {
-            Navigator.of(context).pop(true);
-          });
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            child: Stack(
-              children: [
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.white,
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Center(
-                    child: Text(
-                      value,
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-  }
+  
 }
 

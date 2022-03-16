@@ -9,6 +9,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _colorScheme = Theme.of(context).colorScheme;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -16,10 +17,10 @@ class ProfilePage extends StatelessWidget {
           // elevation: 0,
           title: const Text("My Profile"),
           bottom: TabBar(
+            labelColor: _colorScheme.secondary,
             dragStartBehavior: DragStartBehavior.down,
             labelPadding: const EdgeInsets.symmetric(horizontal: 0.0),
             overlayColor: MaterialStateProperty.all(Colors.blue),
-            labelColor: Colors.black,
             labelStyle: const TextStyle(
               fontWeight: FontWeight.bold,
               letterSpacing: 0.8,

@@ -17,9 +17,10 @@ class _ThirdScreenState extends State<ThirdScreen> {
   @override
   Widget build(BuildContext context) {
     final _textTheme = Theme.of(context).textTheme;
+    final _colorScheme = Theme.of(context).colorScheme;
     // var date = HomepageDatesProvider();
     return Container(
-      // color: Colors.red,
+      color: _colorScheme.background,
       child: Center(
         child: FutureBuilder(
           future: ShiftData.getNextData(),
@@ -73,7 +74,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                           var moreShifts = shiftData[keyList[index]].length;
                           var insideKeyList = shiftData[keyList[index]].keys;
                           return Container(
-                            color: Colors.white,
+                            color: _colorScheme.background,
                             height: (120 * moreShifts +
                                     (moreShifts > 1 ? 5 * (moreShifts - 1) : 0))
                                 .toDouble(),
@@ -92,7 +93,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                     horizontal: 15,
                                     vertical: 15,
                                   ),
-                                  color: Colors.white,
+                                  color: _colorScheme.primary,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,

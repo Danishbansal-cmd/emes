@@ -27,10 +27,9 @@ class LoginPage extends StatelessWidget {
             },
             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    color: Colors.amber,
                     child: Stack(
                       children: [
                         Container(
@@ -45,25 +44,39 @@ class LoginPage extends StatelessWidget {
                               bottomRight: Radius.circular(40),
                             ),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text("some text"),
                           ),
-                          height: MediaQuery.of(context).size.height / 2,
+                          height: 360,
                         ),
                         Container(
                           child: Column(
                             children: [
-                              Text(
-                                "emes".toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                              const SizedBox(height: 20,),
+                              Image.asset("assets/icon.png",scale: 1.75,),
+                              const Text.rich(
+                            TextSpan(
+                              text: "E",
+                              children: [
+                                TextSpan(
+                                  text: "M",
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                  ),
                                 ),
+                                TextSpan(text: "ES"),
+                              ],
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
                               ),
+                            ),
+                          ),
+                              const SizedBox(height: 40,),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.primary,
                                   borderRadius: BorderRadius.circular(40),
                                   boxShadow: const [
                                     BoxShadow(
@@ -130,50 +143,6 @@ class LoginPage extends StatelessWidget {
                                             context);
                                       },
                                     ),
-                                    //
-                                    //companyID row
-                                    // const Text("Company ID"),
-                                    // const SizedBox(
-                                    //   height: 5,
-                                    // ),
-                                    // Container(
-                                    //   height: 40,
-                                    //   padding: const EdgeInsets.symmetric(
-                                    //     horizontal: 10,
-                                    //   ),
-                                    //   decoration: BoxDecoration(
-                                    //     borderRadius: BorderRadius.circular(5),
-                                    //     border: Border.all(
-                                    //       color: Colors.black,
-                                    //       width: 2,
-                                    //     ),
-                                    //   ),
-                                    //   child: Center(
-                                    //     child: TextField(
-                                    //       textInputAction: TextInputAction.done,
-                                    //       controller: companyIDController,
-                                    //       onChanged: (value) {
-                                    //         loginFromProvider
-                                    //             .setCompanyIDError(value);
-                                    //       },
-                                    //       decoration: const InputDecoration(
-                                    //         // labelText: "hello 1",
-                                    //         hintText: "Company ID",
-                                    //         border: InputBorder.none,
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // Consumer<LoginFormProvider>(
-                                    //   builder: (context,
-                                    //       appLevelLoginFormProvider, _) {
-                                    //     return Text(
-                                    //       appLevelLoginFormProvider
-                                    //           .getCompanyIDError,
-                                    //       style: _textTheme.headline6,
-                                    //     );
-                                    //   },
-                                    // ),
                                     Consumer<LoginFormProvider>(
                                       builder: (context,
                                           appLevelLoginFormProvider, _) {
@@ -232,7 +201,6 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    color: Colors.amber,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 30),
                       child: Column(
@@ -244,29 +212,32 @@ class LoginPage extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 6,
                           ),
-                          InkWell(
-                            // focusColor: Colors.yellow,
-                            highlightColor: Colors.transparent,
-                            // overlayColor: Colors.blue,
-                            splashColor: Colors.blue[100],
-                            borderRadius: BorderRadius.circular(3),
-                            onTap: () {
-                              Navigator.pushReplacementNamed(
-                                  context, MyRoutes.signupPageRoute);
-                            },
-                            child: Container(
-                              height: 20,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                              ),
-                              child: const Text(
-                                "Sign Up",
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              // focusColor: Colors.yellow,
+                              // highlightColor: Colors.transparent,
+                              // overlayColor: Colors.blue,
+                              splashColor: Colors.blue[300],
+                              borderRadius: BorderRadius.circular(3),
+                              onTap: () {
+                                Navigator.pushReplacementNamed(
+                                    context, MyRoutes.signupPageRoute);
+                              },
+                              child: Container(
+                                height: 20,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                child: const Text(
+                                  "Sign Up",
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -302,7 +273,7 @@ class LoginPage extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
-              color: Colors.black,
+              color: Colors.grey,
               width: 2,
             ),
           ),

@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Constants.indicatorTracker(Colors.amber),
+                  Constants.indicatorTracker(Colors.amber,14),
                   const SizedBox(width: 12,),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 3),
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
             );},),
           ],
           bottom: TabBar(
-            labelColor: _colorScheme.primary,
+            labelColor: _colorScheme.secondary,
             overlayColor: MaterialStateProperty.all(Colors.blue),
             labelStyle: const TextStyle(
               fontWeight: FontWeight.bold,

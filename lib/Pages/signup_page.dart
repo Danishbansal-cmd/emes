@@ -42,212 +42,230 @@ class SignupPage extends StatelessWidget {
                             bottomRight: Radius.circular(40),
                           ),
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Text("some text"),
                         ),
-                        height: MediaQuery.of(context).size.height / 3,
+                        height: 520,
                       ),
-                      Container(
-                        child: Column(
-                          children: [
-                            Text(
-                              "emes".toUpperCase(),
-                              style: const TextStyle(
+                      Column(
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Image.asset(
+                            "assets/icon.png",
+                            scale: 1.75,
+                          ),
+                          const Text.rich(
+                            TextSpan(
+                              text: "E",
+                              children: [
+                                TextSpan(
+                                  text: "M",
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                TextSpan(text: "ES"),
+                              ],
+                              style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(40),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 3,
-                                    spreadRadius: 0,
-                                    offset: Offset(2, 2),
+                          ),
+                          const SizedBox(
+                            height: 40,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(40),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 3,
+                                  spreadRadius: 0,
+                                  offset: Offset(2, 2),
+                                ),
+                              ],
+                            ),
+                            width: double.infinity,
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 20,
+                            ),
+                            height: 500,
+                            child: ChangeNotifierProvider<SignupFormProvider>(
+                              create: (_) => SignupFormProvider(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  //
+                                  //staff login row
+                                  const Center(
+                                    child: Text(
+                                      "Staff Register",
+                                      style: TextStyle(
+                                          fontSize: 26,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.blue),
+                                    ),
                                   ),
-                                ],
-                              ),
-                              width: double.infinity,
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              height: 500,
-                              child: ChangeNotifierProvider<SignupFormProvider>(
-                                create: (_) => SignupFormProvider(),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    //
-                                    //staff login row
-                                    const Center(
-                                      child: Text(
-                                        "Staff Register",
-                                        style: TextStyle(
-                                            fontSize: 26,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.blue),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    //
-                                    //firstname row
-                                    Consumer<SignupFormProvider>(
-                                      builder: (context,
-                                          appLevelSignupFormProvider, _) {
-                                        return returnFormRow(
-                                            "First Name",
-                                            firstNameController,
-                                            appLevelSignupFormProvider
-                                                .setFirstNameError,
-                                            appLevelSignupFormProvider
-                                                .getFirstNameError,
-                                            context);
-                                      },
-                                    ),
-                                    //
-                                    //Last row
-                                    Consumer<SignupFormProvider>(
-                                      builder: (context,
-                                          appLevelSignupFormProvider, _) {
-                                        return returnFormRow(
-                                            "Last Name",
-                                            lastNameController,
-                                            appLevelSignupFormProvider
-                                                .setLastNameError,
-                                            appLevelSignupFormProvider
-                                                .getLastNameError,
-                                            context);
-                                      },
-                                    ),
-                                    //
-                                    //mobile number row
-                                    Consumer<SignupFormProvider>(
-                                      builder: (context,
-                                          appLevelSignupFormProvider, _) {
-                                        return returnFormRow(
-                                            "Mobile",
-                                            mobileController,
-                                            appLevelSignupFormProvider
-                                                .setMobileError,
-                                            appLevelSignupFormProvider
-                                                .getMobileError,
-                                            context);
-                                      },
-                                    ),
-                                    //
-                                    //Email row
-                                    Consumer<SignupFormProvider>(
-                                      builder: (context,
-                                          appLevelSignupFormProvider, _) {
-                                        return returnFormRow(
-                                            "Email",
-                                            emailController,
-                                            appLevelSignupFormProvider
-                                                .setEmailError,
-                                            appLevelSignupFormProvider
-                                                .getEmailError,
-                                            context);
-                                      },
-                                    ),
-                                    //
-                                    //CompanyID row
-                                    Consumer<SignupFormProvider>(
-                                      builder: (context,
-                                          appLevelSignupFormProvider, _) {
-                                        return returnFormRow(
-                                            "CompanyID",
-                                            companyIDController,
-                                            appLevelSignupFormProvider
-                                                .setCompanyIDError,
-                                            appLevelSignupFormProvider
-                                                .getCompanyIDError,
-                                            context);
-                                      },
-                                    ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  //
+                                  //firstname row
+                                  Consumer<SignupFormProvider>(
+                                    builder: (context,
+                                        appLevelSignupFormProvider, _) {
+                                      return returnFormRow(
+                                          "First Name",
+                                          firstNameController,
+                                          appLevelSignupFormProvider
+                                              .setFirstNameError,
+                                          appLevelSignupFormProvider
+                                              .getFirstNameError,
+                                          context);
+                                    },
+                                  ),
+                                  //
+                                  //Last row
+                                  Consumer<SignupFormProvider>(
+                                    builder: (context,
+                                        appLevelSignupFormProvider, _) {
+                                      return returnFormRow(
+                                          "Last Name",
+                                          lastNameController,
+                                          appLevelSignupFormProvider
+                                              .setLastNameError,
+                                          appLevelSignupFormProvider
+                                              .getLastNameError,
+                                          context);
+                                    },
+                                  ),
+                                  //
+                                  //mobile number row
+                                  Consumer<SignupFormProvider>(
+                                    builder: (context,
+                                        appLevelSignupFormProvider, _) {
+                                      return returnFormRow(
+                                          "Mobile",
+                                          mobileController,
+                                          appLevelSignupFormProvider
+                                              .setMobileError,
+                                          appLevelSignupFormProvider
+                                              .getMobileError,
+                                          context);
+                                    },
+                                  ),
+                                  //
+                                  //Email row
+                                  Consumer<SignupFormProvider>(
+                                    builder: (context,
+                                        appLevelSignupFormProvider, _) {
+                                      return returnFormRow(
+                                          "Email",
+                                          emailController,
+                                          appLevelSignupFormProvider
+                                              .setEmailError,
+                                          appLevelSignupFormProvider
+                                              .getEmailError,
+                                          context);
+                                    },
+                                  ),
+                                  //
+                                  //CompanyID row
+                                  Consumer<SignupFormProvider>(
+                                    builder: (context,
+                                        appLevelSignupFormProvider, _) {
+                                      return returnFormRow(
+                                          "CompanyID",
+                                          companyIDController,
+                                          appLevelSignupFormProvider
+                                              .setCompanyIDError,
+                                          appLevelSignupFormProvider
+                                              .getCompanyIDError,
+                                          context);
+                                    },
+                                  ),
 
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Consumer<SignupFormProvider>(
-                                      builder: (context,
-                                          appLevelSignupFormProvider, _) {
-                                        return Material(
-                                          color: Colors.blue,
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          child: InkWell(
-                                            // splashColor: Colors.white,
-                                            onTap: () {
-                                              appLevelSignupFormProvider
-                                                  .validateSignUpForm(
-                                                firstNameController.text,
-                                                lastNameController.text,
-                                                mobileController.text,
-                                                emailController.text,
-                                                companyIDController.text,
-                                                context,
-                                              );
-                                            },
-                                            child: Container(
-                                              width: double.infinity,
-                                              height: 35,
-                                              child: const Center(
-                                                child: Text(
-                                                  "Sign Up",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                    letterSpacing: 1,
-                                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Consumer<SignupFormProvider>(
+                                    builder: (context,
+                                        appLevelSignupFormProvider, _) {
+                                      return Material(
+                                        color: Colors.blue,
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: InkWell(
+                                          // splashColor: Colors.white,
+                                          onTap: () {
+                                            appLevelSignupFormProvider
+                                                .validateSignUpForm(
+                                              firstNameController.text,
+                                              lastNameController.text,
+                                              mobileController.text,
+                                              emailController.text,
+                                              companyIDController.text,
+                                              context,
+                                            );
+                                          },
+                                          child: Container(
+                                            width: double.infinity,
+                                            height: 35,
+                                            child: const Center(
+                                              child: Text(
+                                                "Sign Up",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  letterSpacing: 1,
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
-                            )
-                          ],
-                        ),
+                            ),
+                          )
+                        ],
                       ),
                     ],
                   ),
-                  Container(
-                    color: Colors.amber,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 30,
-                      ),
-                      child: Column(
-                        children: [
-                          const Text(
-                            "Already have an account?",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w500,
-                            ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 30,
+                    ),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Already have an account?",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
                           ),
-                          SizedBox(
-                            height: 6,
-                          ),
-                          InkWell(
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
                             // focusColor: Colors.yellow,
-                            highlightColor: Colors.transparent,
+                            // highlightColor: Colors.transparent,
                             // overlayColor: Colors.blue,
-                            splashColor: Colors.blue[100],
+                            splashColor: Colors.blue[300],
                             borderRadius: BorderRadius.circular(3),
                             onTap: () {
                               Navigator.pushReplacementNamed(
@@ -266,9 +284,9 @@ class SignupPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ],
@@ -298,7 +316,7 @@ class SignupPage extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
-              color: Colors.black,
+              color: Colors.grey,
               width: 2,
             ),
           ),
@@ -325,7 +343,7 @@ class SignupPage extends StatelessWidget {
                 hintText: text,
                 border: InputBorder.none,
                 suffixIcon: IconButton(
-                  padding: const EdgeInsets.only(bottom: 2,right: 0),
+                  padding: const EdgeInsets.only(bottom: 2, right: 0),
                   onPressed: () {
                     controller.clear();
                   },
