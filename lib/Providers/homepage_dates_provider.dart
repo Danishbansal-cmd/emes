@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class HomepageDatesProvider extends ChangeNotifier{
-  late String _start_date;
-  late String _end_date;
+  String _start_date = "";
+  String _end_date = "";
   static final HomepageDatesProvider _homepageDates = HomepageDatesProvider._internal();
   HomepageDatesProvider._internal();
   factory HomepageDatesProvider() {
@@ -25,10 +25,21 @@ class HomepageDatesProvider extends ChangeNotifier{
     _end_date = value;
     notifyListeners();
   }
+  setStartDate2(String value){
+    _start_date = value;
+  }
+  setEndDate2(String value){
+    _end_date = value;
+  }
 
   //
   //builders
   buildStartDate(){
+    _start_date = getStartDate();
+    notifyListeners();
+  }
+  buildEndDate(){
+    _end_date = getEndDate();
     notifyListeners();
   }
 }

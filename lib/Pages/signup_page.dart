@@ -84,7 +84,7 @@ class SignupPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(40),
                               boxShadow: const [
                                 BoxShadow(
-                                  color: Colors.grey,
+                                  color: Color.fromARGB(255, 83, 83, 83),
                                   blurRadius: 3,
                                   spreadRadius: 0,
                                   offset: Offset(2, 2),
@@ -322,6 +322,7 @@ class SignupPage extends StatelessWidget {
           ),
           child: Center(
             child: TextField(
+              cursorColor:Colors.grey,
               controller: controller,
               keyboardType: text == "Mobile"
                   ? TextInputType.number
@@ -343,6 +344,7 @@ class SignupPage extends StatelessWidget {
                 hintText: text,
                 border: InputBorder.none,
                 suffixIcon: IconButton(
+                  color: Colors.grey,
                   padding: const EdgeInsets.only(bottom: 2, right: 0),
                   onPressed: () {
                     controller.clear();

@@ -80,7 +80,7 @@ class LoginPage extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(40),
                                   boxShadow: const [
                                     BoxShadow(
-                                      color: Colors.grey,
+                                      color: Color.fromARGB(255, 83, 83, 83),
                                       blurRadius: 3,
                                       spreadRadius: 0,
                                       offset: Offset(2, 2),
@@ -279,7 +279,7 @@ class LoginPage extends StatelessWidget {
           ),
           child: Center(
             child: TextField(
-              cursorColor: Theme.of(context).colorScheme.secondaryVariant,
+              cursorColor: Colors.grey,
               controller: controller,
               keyboardType:text == "Username" ? TextInputType.emailAddress : TextInputType.name,
               textInputAction: text == "CompanyID"

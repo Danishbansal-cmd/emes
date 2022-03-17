@@ -197,7 +197,7 @@ class Constants {
                 height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Center(

@@ -296,6 +296,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           child: Center(
             child: TextField(
+              cursorColor: Colors.grey,
               enableInteractiveSelection: false,
               controller: controller,
               keyboardType: text == "Email"
@@ -317,6 +318,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 hintText: text,
                 border: InputBorder.none,
                 suffixIcon: IconButton(
+                  color: Colors.grey,
                   padding: const EdgeInsets.only(bottom: 2, right: 0),
                   onPressed: () {
                     controller.clear();

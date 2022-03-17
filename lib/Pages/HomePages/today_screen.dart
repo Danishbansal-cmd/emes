@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:emes/Providers/accept_decline_provider.dart';
 import 'package:emes/Providers/homepage_dates_provider.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SecondScreen extends StatefulWidget {
   SecondScreen({Key? key}) : super(key: key);
@@ -19,20 +23,33 @@ class _SecondScreenState extends State<SecondScreen> {
   Widget build(BuildContext context) {
     var date = HomepageDatesProvider();
     void tryFunction(String value1, String value2) {
-      date.setStartDate("hello");
-      date.setEndDate("hello2");
+      date.setStartDate(value1);
+      date.setEndDate(value2);
     }
 
-    @override
-    void initState() {
-      super.initState();
-      // WidgetsBinding.instance!
-      //     .addPostFrameCallback((_) => tryFunction("hello", "hello2"));
-    }
+    // @override
+    // void initState() async {
+    //   super.initState();
+    //   // WidgetsBinding.instance!.addPostFrameCallback((_) => setState(() {}));
+      
+    // }
 
-    Future.delayed(Duration.zero, () {
+    Future.delayed(Duration.zero, () async{
       //your code goes here
-      tryFunction("hello", "hello2");
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      String decodeData = sharedPreferences.getString("data") ?? "";
+      var data = jsonDecode(decodeData);
+      final myFuture = http.post(
+        Uri.parse(Constants.getShiftUrl),
+        body: {
+          "staff_id": data['id'],
+        },
+      );
+      myFuture.then(
+        (value) =>
+            tryFunction((jsonDecode(value.body))['data']['start_date'], (jsonDecode(value.body))['data']['end_date']),
+      );
     });
 
     final _textTheme = Theme.of(context).textTheme;
@@ -64,10 +81,10 @@ class _SecondScreenState extends State<SecondScreen> {
                 // Extracting data from snapshot object
                 final shiftData = snapshot.data['allShifts'] as Map;
                 final keyList = shiftData.keys.toList();
-                print("start_date ${snapshot.data['start_date']}");
-                print("end_date ${snapshot.data['end_date']}");
+                // print("start_date ${snapshot.data['start_date']}");
+                // print("end_date ${snapshot.data['end_date']}");
                 // tryFunction(
-                //     snapshot.data['start_date'], snapshot.data['start_date']);
+                //     snapshot.data['start_date'], snapshot.data['end_date']);
                 // date.setStartDate(snapshot.data['start_date']);
                 // date.setEndDate(snapshot.data['end_date']);
 
@@ -238,9 +255,8 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
-                                                                            5),
-                                                                color: Colors
-                                                                    .white,
+                                                                            5,),
+                                                                color: Theme.of(context).colorScheme.primary,
                                                               ),
                                                               padding:
                                                                   const EdgeInsets
@@ -260,7 +276,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                   //
                                                                   //Reason Field
                                                                   const Text(
-                                                                      "Give Reason"),
+                                                                      "Give Reason",),
                                                                   const SizedBox(
                                                                     height: 5,
                                                                   ),
@@ -278,8 +294,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                       border:
                                                                           Border
                                                                               .all(
-                                                                        color: Colors
-                                                                            .grey,
+                                                                        color: Colors.grey,
                                                                         width:
                                                                             2,
                                                                       ),
@@ -290,6 +305,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                           appLevelAcceptOrDeclineStatus,
                                                                           _) {
                                                                         return TextField(
+                                                                          cursorColor: Colors.grey,
                                                                           onChanged:
                                                                               (value) {
                                                                             appLevelAcceptOrDeclineStatus.setDeclineReasonErrorText(value);
@@ -348,7 +364,10 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                             if (declineShiftReasonController.text.isNotEmpty) {
                                                                               appLevelAcceptOrDeclineStatus.declineShift(shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id'], shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'], snapshot.data['start_date'], snapshot.data['end_date'], declineShiftReasonController.text, context);
                                                                             }
-                                                                            setState(() {});
+                                                                            if(declineShiftReasonController.text.isNotEmpty){
+                                                                              setState(() {});
+                                                                            }
+                                                                            
                                                                           },
                                                                           child:
                                                                               Container(

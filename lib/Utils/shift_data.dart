@@ -18,11 +18,12 @@ class ShiftData {
     } // need to use Constants.getStaffID in place of "8"
         );
     var jsonData = jsonDecode(response.body);
+    Constants.setStaffID(data['id']);
     Map<dynamic, dynamic> data2 = jsonData['data'];
     ShiftData.setCurrentShift(data2['currentShift']);
     ShiftData.setPreUrl(data2['preUrl']);
     ShiftData.setNextUrl(data2['nextUrl']);
-    print("nexturl ${ShiftData.getNextUrl}");
+    // print("nexturl ${ShiftData.getNextUrl}");
     // print("jsonData $jsonData");
     return data2;
   }
@@ -35,10 +36,11 @@ class ShiftData {
     } // need to use Constants.getStaffID in place of "8"
         );
     var jsonData = jsonDecode(response.body);
+    Constants.setStaffID(data['id']);
     Map<dynamic, dynamic> data2 = jsonData['data'];
     ShiftData.setCurrentShift(data2['currentShift']);
     ShiftData.setPreUrl(data2['preUrl']);
-    print("currentShift ${ShiftData.getCurrentShift}");
+    // print("currentShift ${ShiftData.getCurrentShift}");
     ShiftData.setNextUrl(data2['nextUrl']);
     // print("jsonData $jsonData");
     return data2;
@@ -52,6 +54,7 @@ class ShiftData {
     } // need to use Constants.getStaffID in place of "8"
         );
     var jsonData = jsonDecode(response.body);
+    Constants.setStaffID(data['id']);
     Map<dynamic, dynamic> data2 = jsonData['data'];
     ShiftData.setCurrentShift(data2['currentShift']);
     ShiftData.setPreUrl(data2['preUrl']);

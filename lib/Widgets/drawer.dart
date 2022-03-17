@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:emes/Themes/themes.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Routes/routes.dart';
@@ -8,11 +10,39 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends StatefulWidget {
   const MyDrawer({Key? key}) : super(key: key);
 
   @override
+  State<MyDrawer> createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
+  String firstName = "";String lastName = ""; String email = "";
+  
+  // @override
+  // void initState() async{
+  //   // super.initState();
+  //   SharedPreferences sharedPreferences =
+  //         await SharedPreferences.getInstance();
+  //     String decodeData = sharedPreferences.getString("data") ?? "";
+  //     var data = jsonDecode(decodeData);
+  //     firstName = data['first_name'];
+  //     lastName = data['last_name'];
+  //     email = data['email'];
+  // }
+  
+  @override
   Widget build(BuildContext context) {
+    // Future.delayed(Duration.zero, () async{
+    //   SharedPreferences sharedPreferences =
+    //       await SharedPreferences.getInstance();
+    //   String decodeData = sharedPreferences.getString("data") ?? "";
+    //   var data = jsonDecode(decodeData);
+    //   firstName = data['first_name'];
+    //   lastName = data['last_name'];
+    //   email = data['email'];
+    // });
     print("image url\n ");
     ShiftData.getData();
     final _textTheme = Theme.of(context).textTheme;

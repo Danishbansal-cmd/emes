@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:emes/Pages/HomePages/previous_screen.dart';
 import 'package:emes/Pages/HomePages/today_screen.dart';
 import 'package:emes/Pages/HomePages/next_screen.dart';
@@ -5,9 +7,12 @@ import 'package:emes/Providers/homepage_dates_provider.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Themes/themes.dart';
+import 'package:emes/Utils/shift_data.dart';
 import 'package:emes/Widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -17,8 +22,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var date = HomepageDatesProvider();
   @override
   Widget build(BuildContext context) {
+    void tryFunction(String value1, String value2) {
+      // print("tryfunction real values $value1   $value2");
+      date.setStartDate(value1);
+      date.setEndDate(value2);
+    }
+
     final _colorScheme = Theme.of(context).colorScheme;
     return DefaultTabController(
       initialIndex: 1,
@@ -43,26 +55,31 @@ class _HomePageState extends State<HomePage> {
             Consumer<HomepageDatesProvider>(
               builder: (context, appLevelHomepageDatesProvider, _) {
                 return Container(
-              padding: const EdgeInsets.symmetric(vertical: 6).copyWith(right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Constants.indicatorTracker(Colors.amber,14),
-                  const SizedBox(width: 12,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 3),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(appLevelHomepageDatesProvider.getStartDate),
-                        Text(appLevelHomepageDatesProvider.getEndDate),
-                      ],
-                    ),
+                  padding: const EdgeInsets.symmetric(vertical: 6)
+                      .copyWith(right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Constants.indicatorTracker(Colors.amber, 14),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 3),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(appLevelHomepageDatesProvider.getStartDate),
+                            Text(appLevelHomepageDatesProvider.getEndDate),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );},),
+                );
+              },
+            ),
           ],
           bottom: TabBar(
             labelColor: _colorScheme.secondary,
@@ -72,22 +89,62 @@ class _HomePageState extends State<HomePage> {
               letterSpacing: 0.8,
               fontSize: 15,
             ),
-            onTap: (int){
+            onTap: (int) async {
               print("int ${int}");
-              if(int == 0){
-                print("does i print");
-                setState(() {
-                  
-                });
+              if (int == 0) {
+                // print("do i printaasfdas");
+
+                // void tryFunction(String value1, String value2) {
+                //   // print("tryfunction real values $value1   $value2");
+                //   date.setStartDate(value1);
+                //   date.setEndDate(value2);
+                // }
+
+                //your code goes here
+                SharedPreferences sharedPreferences =
+                    await SharedPreferences.getInstance();
+                String decodeData = sharedPreferences.getString("data") ?? "";
+                var data = jsonDecode(decodeData);
+                final myFuture = http.post(
+                  Uri.parse(ShiftData.getPreUrl),
+                  body: {
+                    "staff_id": data['id'],
+                  },
+                );
+                myFuture.then(
+                  (value) => tryFunction(
+                      (jsonDecode(value.body))['data']['start_date'],
+                      (jsonDecode(value.body))['data']['end_date']),
+                  // print((jsonDecode(value.body))['data']['start_date']);
+                );
+
+                // print("bla bla dates");
+                // print(date.getStartDate);
+                // print(date.getEndDate);
+                setState(() {});
               }
-              if(int == 2){
-                print("does i print second");
-                setState(() {
-                  
-                });
+              if (int == 2) {
+                //your code goes here
+                SharedPreferences sharedPreferences =
+                    await SharedPreferences.getInstance();
+                String decodeData = sharedPreferences.getString("data") ?? "";
+                var data = jsonDecode(decodeData);
+                final myFuture = http.post(
+                  Uri.parse(ShiftData.getNextUrl),
+                  body: {
+                    "staff_id": data['id'],
+                  },
+                );
+                myFuture.then(
+                  (value) => tryFunction(
+                      (jsonDecode(value.body))['data']['start_date'],
+                      (jsonDecode(value.body))['data']['end_date']),
+                  // print((jsonDecode(value.body))['data']['start_date']);
+                );
+                setState(() {});
               }
             },
-            tabs:const [
+            tabs: const [
               Tab(
                 text: 'PREVIOUS',
               ),

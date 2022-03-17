@@ -140,6 +140,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                   appLevelApplyLeaveFormProvider,
                                                   _) {
                                                 return TextField(
+                                                  cursorColor: Colors.grey,
                                                   textInputAction:
                                                       TextInputAction.next,
                                                   onChanged: (value) {
@@ -196,6 +197,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                   appLevelApplyLeaveFormProvider,
                                                   _) {
                                                 return TextField(
+                                                  cursorColor: Colors.grey,
                                                   onChanged: (value) {
                                                     appLevelApplyLeaveFormProvider
                                                         .setToDateErrorText(
@@ -249,6 +251,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                 appLevelApplyLeaveFormProvider,
                                                 _) {
                                               return TextField(
+                                                cursorColor: Colors.grey,
                                                 textInputAction:
                                                     TextInputAction.done,
                                                 maxLines: 5,

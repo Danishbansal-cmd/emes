@@ -229,8 +229,10 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                     BorderRadius
                                                                         .circular(
                                                                             5),
-                                                                color: Colors
-                                                                    .white,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .primary,
                                                               ),
                                                               padding:
                                                                   const EdgeInsets
@@ -263,8 +265,10 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                     decoration:
                                                                         BoxDecoration(
                                                                       borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              5),
+                                                                          BorderRadius
+                                                                              .circular(
+                                                                        5,
+                                                                      ),
                                                                       border:
                                                                           Border
                                                                               .all(
@@ -280,6 +284,8 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                           appLevelAcceptOrDeclineStatus,
                                                                           _) {
                                                                         return TextField(
+                                                                          cursorColor:
+                                                                              Colors.grey,
                                                                           onChanged:
                                                                               (value) {
                                                                             appLevelAcceptOrDeclineStatus.setDeclineReasonErrorText(value);
@@ -341,9 +347,11 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                               print(shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']);
                                                                               appLevelAcceptOrDeclineStatus.declineShift(shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id'], shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'], snapshot.data['start_date'], snapshot.data['end_date'], declineShiftReasonController.text, context);
                                                                             }
-                                                                            setState(() {
-                                                                              ShiftData.setNextUrl((ShiftData.getNextUrl).substring(0, ((ShiftData.getNextUrl).length - 10)) + shiftData[keyList[index]][insideKeyList.toList()[index2]]['loop']['M']);
-                                                                            });
+                                                                            if (declineShiftReasonController.text.isNotEmpty) {
+                                                                              setState(() {
+                                                                                ShiftData.setNextUrl((ShiftData.getNextUrl).substring(0, ((ShiftData.getNextUrl).length - 10)) + shiftData[keyList[index]][insideKeyList.toList()[index2]]['loop']['M']);
+                                                                              });
+                                                                            }
                                                                           },
                                                                           child:
                                                                               Container(
@@ -428,7 +436,9 @@ class _ThirdScreenState extends State<ThirdScreen> {
 
             // Displaying LoadingSpinner to indicate waiting state
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: _colorScheme.onSecondary,
+              ),
             );
           },
         ),

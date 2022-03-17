@@ -106,7 +106,7 @@ class MyTheme {
             fontWeight: FontWeight.bold,
           ),
           toolbarTextStyle: TextStyle(
-            color: Colors.black,
+            color: Colors.grey,
             fontWeight: FontWeight.bold,
           ),
         ),

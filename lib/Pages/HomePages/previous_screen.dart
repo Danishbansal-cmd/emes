@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'package:emes/Providers/accept_decline_provider.dart';
 import 'package:emes/Providers/homepage_dates_provider.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({Key? key}) : super(key: key);
@@ -19,7 +22,6 @@ class _FirstScreenState extends State<FirstScreen> {
   Widget build(BuildContext context) {
     final _textTheme = Theme.of(context).textTheme;
     final _colorScheme = Theme.of(context).colorScheme;
-    var date = HomepageDatesProvider();
     return Container(
       color: _colorScheme.background,
       child: Center(
@@ -46,11 +48,6 @@ class _FirstScreenState extends State<FirstScreen> {
                 // Extracting data from snapshot object
                 final shiftData = snapshot.data['allShifts'] as Map;
                 final keyList = shiftData.keys.toList();
-                print("start_date ${snapshot.data['start_date']}");
-                print("end_date ${snapshot.data['end_date']}");
-                date.setStartDate(snapshot.data['start_date']);
-                date.setEndDate(snapshot.data['end_date']);
-                print("two dates ${date.getStartDate} ${date.getEndDate}");
 
                 return shiftData.isEmpty
                     ? Column(
@@ -232,9 +229,9 @@ class _FirstScreenState extends State<FirstScreen> {
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
-                                                                          5),
+                                                                          5,),
                                                               color:
-                                                                  Colors.white,
+                                                                  Theme.of(context).colorScheme.primary,
                                                             ),
                                                             padding:
                                                                 const EdgeInsets
@@ -254,7 +251,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                                                 //
                                                                 //Reason Field
                                                                 const Text(
-                                                                    "Give Reason"),
+                                                                    "Give Reason",),
                                                                 const SizedBox(
                                                                   height: 5,
                                                                 ),
@@ -284,6 +281,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                                                             appLevelAcceptOrDeclineStatus,
                                                                             _) {
                                                                       return TextField(
+                                                                        cursorColor: Colors.grey,
                                                                         onChanged:
                                                                             (value) {
                                                                           appLevelAcceptOrDeclineStatus
@@ -346,8 +344,8 @@ class _FirstScreenState extends State<FirstScreen> {
                                                                           if (declineShiftReasonController
                                                                               .text
                                                                               .isNotEmpty) {
-                                                                            print("decline shift works");
-                                                                            print(shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']);
+                                                                            // print("decline shift works");
+                                                                            // print(shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']);
                                                                             appLevelAcceptOrDeclineStatus.declineShift(
                                                                                 shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id'],
                                                                                 shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'],
@@ -356,11 +354,13 @@ class _FirstScreenState extends State<FirstScreen> {
                                                                                 declineShiftReasonController.text,
                                                                                 context);
                                                                           }
-                                                                          setState(
+                                                                          if(declineShiftReasonController.text.isNotEmpty){
+                                                                            setState(
                                                                               () {
                                                                             ShiftData.setPreUrl((ShiftData.getPreUrl).substring(0, ((ShiftData.getPreUrl).length - 10)) +
                                                                                 shiftData[keyList[index]][insideKeyList.toList()[index2]]['loop']['M']);
                                                                           });
+                                                                          }
                                                                         },
                                                                         child:
                                                                             Container(
@@ -445,7 +445,9 @@ class _FirstScreenState extends State<FirstScreen> {
 
             // Displaying LoadingSpinner to indicate waiting state
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: _colorScheme.onSecondary,
+              ),
             );
           },
         ),
