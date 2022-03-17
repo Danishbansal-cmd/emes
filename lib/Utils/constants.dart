@@ -6,7 +6,6 @@ class Constants {
   // static final Constants _constants = Constants._internal();
   // Constants._internal();
 
-
   static late String _firstName;
   static late String _lastName;
   static late String _email;
@@ -27,6 +26,8 @@ class Constants {
       "http://trusecurity.emesau.com/dev/api/confirm_roster";
   static String _declineShiftUrl =
       "http://trusecurity.emesau.com/dev/api/decline_roster";
+  static String _inboxPageUrl =
+      "http://trusecurity.emesau.com/dev/api/get_new_message_noti/";
 
   //
   //setters
@@ -106,6 +107,10 @@ class Constants {
 
   static get getDeclineShiftUrl {
     return _declineShiftUrl;
+  }
+
+  static get getInboxPageUrl {
+    return _inboxPageUrl;
   }
 
   // factory Constants() {
