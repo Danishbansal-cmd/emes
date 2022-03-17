@@ -12,6 +12,7 @@ import 'package:emes/Providers/login_form_provider.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Themes/themes.dart';
 import 'package:emes/Utils/decision_tree.dart';
+import 'package:emes/Widgets/splashPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -65,7 +66,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             routes: {
-              "/": (context) => DecisionTree(),
+              "/": (context) => SplashPage(),
               MyRoutes.decisonTreeRoute: (context) => DecisionTree(),
               MyRoutes.homePageRoute: (context) => HomePage(),
               MyRoutes.profilePageRoute: (context) => ProfilePage(),
@@ -75,6 +76,7 @@ class _MyAppState extends State<MyApp> {
               MyRoutes.signupPageRoute: (context) => SignupPage(),
               MyRoutes.formTestingPageRoute: (context) => FormTestingPage(),
               MyRoutes.previousScreenRoute: (context) => FirstScreen(),
+              MyRoutes.splashPageRoute: (context) => SplashPage(),
             },
           );
         },

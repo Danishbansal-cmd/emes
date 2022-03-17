@@ -8,4 +8,5 @@ class MyRoutes{
   static String formTestingPageRoute = "/formTestingPage";
   static String decisonTreeRoute = "/decisionTree";
   static String previousScreenRoute = "/previousScreen";
+  static String splashPageRoute = "/splashPage";
 }
