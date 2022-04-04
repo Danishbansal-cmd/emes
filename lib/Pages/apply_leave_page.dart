@@ -59,7 +59,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                     height: 410,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
-                                      color: Theme.of(context).colorScheme.primary,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                     ),
                                     padding: const EdgeInsets.symmetric(
                                             horizontal: 15, vertical: 20)
@@ -96,14 +97,17 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            30,),
+                                                      30,
+                                                    ),
                                                     // color: Colors.amber,
                                                   ),
                                                   width: 35,
                                                   height: 35,
                                                   child: Icon(
                                                     Icons.close_rounded,
-                                                    color: Theme.of(context).colorScheme.secondary,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
                                                   ),
                                                 ),
                                               ),
@@ -185,11 +189,13 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 10),
                                           decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              border: Border.all(
-                                                  color: Colors.grey,
-                                                  width: 2,),),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                              width: 2,
+                                            ),
+                                          ),
                                           child: Center(
                                             child: Consumer<
                                                 ApplyLeaveFormProvider>(
@@ -354,7 +360,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
       drawer: MyDrawer(),
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10).copyWith(top: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 5),
           child: FutureBuilder(
               future: AppliedLeavesProvider.getAppliedLeaves(),
               builder: (context, AsyncSnapshot snapshot) {
@@ -393,109 +399,214 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                               itemBuilder: (context, index) {
                                 return Consumer<OpenLeaveBarProvider>(
                                   builder: (context, openLeaveBarProvider, _) {
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                            color: Theme.of(context).colorScheme.onSecondary, width: 2),
-                                      ),
-                                      height: (openLeaveBarProvider.boolValue &&
-                                              openLeaveBarProvider
-                                                      .getIntTestingIndex ==
-                                                  index)
-                                          ? 120
-                                          : 54,
-                                      width: double.infinity,
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                // color: Colors.grey,
-                                                height: 50,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 4),
-                                                child: Row(
-                                                  children: [
-                                                    const SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Constants.indicatorTracker(
-                                                        appliedLeavesData[index]
-                                                                        [
-                                                                        'ApplyForHoliday']
-                                                                    [
-                                                                    'status'] ==
-                                                                "0"
-                                                            ? Colors.amber
-                                                            : appliedLeavesData[index]
+                                    return InkWell(
+                                      onTap: () {
+                                        openLeaveBarProvider
+                                            .setBoolValueToggle(index);
+                                        openLeaveBarProvider
+                                            .setTestingIndex(index);
+                                      },
+                                      child: Container( //this represents apply leave box
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary,
+                                              width: 1.5),
+                                        ),
+                                        height: (openLeaveBarProvider
+                                                    .boolValue &&
+                                                openLeaveBarProvider
+                                                        .getIntTestingIndex ==
+                                                    index)
+                                            ? 120
+                                            : 54,
+                                        width: double.infinity,
+                                        child: Column(
+                                          children: [
+                                            //upper row which is always visible to the user
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                //box to represent the dates
+                                                Container(
+                                                  // color: Colors.grey,
+                                                  height: 50,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 4),
+                                                  child: Row(
+                                                    children: [
+                                                      const SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      //this indicator with two dots on its top and bottom
+                                                      Constants
+                                                          .indicatorTracker(
+                                                              appliedLeavesData[index]
+                                                                              [
+                                                                              'ApplyForHoliday']
+                                                                          [
+                                                                          'status'] ==
+                                                                      "0"
+                                                                  ? Colors.amber
+                                                                  : appliedLeavesData[index]['ApplyForHoliday']
+                                                                              [
+                                                                              'status'] ==
+                                                                          "1"
+                                                                      ? Colors
+                                                                          .green
+                                                                      : Colors
+                                                                          .red,
+                                                              12),
+                                                      const SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      //dates column of the box
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(appliedLeavesData[
+                                                                      index][
+                                                                  'ApplyForHoliday']
+                                                              ['on_date']),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Text(appliedLeavesData[
+                                                                      index][
+                                                                  'ApplyForHoliday']
+                                                              ['to_date'])
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+
+                                                //second box
+                                                //box to represent the status and the button on the right
+                                                Container(
+                                                  height: 50,
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                        height: 30,
+                                                        width: 80,
+                                                        child: Center(
+                                                          child: Text(
+                                                            appliedLeavesData[index]
                                                                             [
                                                                             'ApplyForHoliday']
                                                                         [
                                                                         'status'] ==
-                                                                    "1"
-                                                                ? Colors.green
-                                                                : Colors.red,
-                                                        12),
-                                                    const SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(appliedLeavesData[
-                                                                    index][
-                                                                'ApplyForHoliday']
-                                                            ['on_date']),
-                                                        const SizedBox(
-                                                          height: 5,
+                                                                    "0"
+                                                                ? "Pending"
+                                                                : appliedLeavesData[index]['ApplyForHoliday']
+                                                                            [
+                                                                            'status'] ==
+                                                                        "1"
+                                                                    ? "Accepted"
+                                                                    : "Decline",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
                                                         ),
-                                                        Text(appliedLeavesData[
-                                                                    index][
-                                                                'ApplyForHoliday']
-                                                            ['to_date'])
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 50,
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      height: 30,
-                                                      width: 80,
-                                                      child: Center(
-                                                        child: Text(
-                                                          appliedLeavesData[index]
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: appliedLeavesData[
+                                                                              index]
                                                                           [
                                                                           'ApplyForHoliday']
                                                                       [
                                                                       'status'] ==
                                                                   "0"
-                                                              ? "Pending"
-                                                              : appliedLeavesData[index]
-                                                                              [
-                                                                              'ApplyForHoliday']
+                                                              ? Colors.amber
+                                                              : appliedLeavesData[
+                                                                              index]['ApplyForHoliday']
                                                                           [
                                                                           'status'] ==
                                                                       "1"
-                                                                  ? "Accepted"
-                                                                  : "Decline",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
+                                                                  ? Colors.green
+                                                                  : Colors.red,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(50),
                                                         ),
                                                       ),
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      InkWell(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                        splashColor:
+                                                            Colors.blue,
+                                                        onTap: () {
+                                                          print(appliedLeavesData[
+                                                                      index][
+                                                                  'ApplyForHoliday']
+                                                              ['reason']);
+                                                          openLeaveBarProvider
+                                                              .setBoolValueToggle(
+                                                                  index);
+                                                          openLeaveBarProvider
+                                                              .setTestingIndex(
+                                                                  index);
+                                                        },
+                                                        child: SizedBox(
+                                                          width: 40,
+                                                          height: 40,
+                                                          child: (openLeaveBarProvider
+                                                                      .boolValue &&
+                                                                  openLeaveBarProvider
+                                                                          .getIntTestingIndex ==
+                                                                      index)
+                                                              ? const Icon(
+                                                                  Icons
+                                                                      .keyboard_arrow_down_rounded,
+                                                                  size: 24,
+                                                                )
+                                                              : const Icon(
+                                                                  Icons
+                                                                      .arrow_forward_ios_rounded,
+                                                                  size: 16,
+                                                                ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            //second row
+                                            //only visible on the tap of the upper box or row
+                                            Row(
+                                              children: [
+                                                Visibility(
+                                                  visible: (openLeaveBarProvider
+                                                              .boolValue &&
+                                                          openLeaveBarProvider
+                                                                  .getIntTestingIndex ==
+                                                              index)
+                                                      ? true
+                                                      : false,
+                                                  child: Expanded(
+                                                    child: Container(
                                                       decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          3,
+                                                        ),
                                                         color: appliedLeavesData[
                                                                             index]
                                                                         [
@@ -513,176 +624,92 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                                     "1"
                                                                 ? Colors.green
                                                                 : Colors.red,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(50),
                                                       ),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    InkWell(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50),
-                                                      splashColor: Colors.blue,
-                                                      onTap: () {
-                                                        print(appliedLeavesData[
-                                                                    index][
-                                                                'ApplyForHoliday']
-                                                            ['reason']);
-                                                        openLeaveBarProvider
-                                                            .setBoolValueToggle(
-                                                                index);
-                                                        openLeaveBarProvider
-                                                            .setTestingIndex(
-                                                                index);
-                                                      },
-                                                      child: SizedBox(
-                                                        width: 40,
-                                                        height: 40,
-                                                        child: (openLeaveBarProvider
-                                                                    .boolValue &&
-                                                                openLeaveBarProvider
-                                                                        .getIntTestingIndex ==
-                                                                    index)
-                                                            ? const Icon(
-                                                                Icons
-                                                                    .keyboard_arrow_down_rounded,
-                                                                size: 24,
-                                                              )
-                                                            : const Icon(
-                                                                Icons
-                                                                    .arrow_forward_ios_rounded,
-                                                                size: 16,
-                                                              ),
+                                                      height: 67,
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 25,
+                                                        vertical: 5,
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Visibility(
-                                                visible: (openLeaveBarProvider
-                                                            .boolValue &&
-                                                        openLeaveBarProvider
-                                                                .getIntTestingIndex ==
-                                                            index)
-                                                    ? true
-                                                    : false,
-                                                child: Expanded(
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              3,),
-                                                      color: appliedLeavesData[
-                                                                          index]
-                                                                      [
-                                                                      'ApplyForHoliday']
-                                                                  ['status'] ==
-                                                              "0"
-                                                          ? Colors.amber
-                                                          : appliedLeavesData[index]
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text.rich(
+                                                              TextSpan(
+                                                                  text:
+                                                                      'Reason:',
+                                                                  style: _textTheme
+                                                                      .headline2!
+                                                                      .copyWith(
+                                                                          color: Colors
+                                                                              .black),
+                                                                  children: <
+                                                                      InlineSpan>[
+                                                                    const TextSpan(
+                                                                        text:
+                                                                            "   "),
+                                                                    TextSpan(
+                                                                      text: appliedLeavesData[index]
+                                                                              [
+                                                                              'ApplyForHoliday']
                                                                           [
-                                                                          'ApplyForHoliday']
-                                                                      [
-                                                                      'status'] ==
-                                                                  "1"
-                                                              ? Colors.green
-                                                              : Colors.red,
-                                                    ),
-                                                    height: 66,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 25,
-                                                      vertical: 5,
-                                                    ),
-                                                    child:
-                                                        SingleChildScrollView(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text.rich(
-                                                            TextSpan(
-                                                                text: 'Reason:',
-                                                                style: _textTheme
-                                                                    .headline2!
-                                                                    .copyWith(
-                                                                        color: Colors
-                                                                            .black),
-                                                                children: <
-                                                                    InlineSpan>[
-                                                                  const TextSpan(
-                                                                      text:
-                                                                          "   "),
-                                                                  TextSpan(
-                                                                    text: appliedLeavesData[index]
+                                                                          'reason'],
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight:
+                                                                              FontWeight.normal),
+                                                                    )
+                                                                  ]),
+                                                            ),
+                                                            (appliedLeavesData[index]
                                                                             [
                                                                             'ApplyForHoliday']
                                                                         [
-                                                                        'reason'],
-                                                                    style: const TextStyle(
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.normal),
-                                                                  )
-                                                                ]),
-                                                          ),
-                                                          (appliedLeavesData[index]
-                                                                          [
-                                                                          'ApplyForHoliday']
-                                                                      [
-                                                                      'admin_msg'] ==
-                                                                  "")
-                                                              ? SizedBox(
-                                                                  height: 0,
-                                                                )
-                                                              : Text.rich(
-                                                                  TextSpan(
-                                                                    text:
-                                                                        'Admin Reply:',
-                                                                    style: _textTheme
-                                                                        .headline2!
-                                                                        .copyWith(
-                                                                            color:
-                                                                                Colors.black),
-                                                                    children: <
-                                                                        InlineSpan>[
-                                                                      const TextSpan(
-                                                                          text:
-                                                                              "   "),
-                                                                      TextSpan(
-                                                                        text: appliedLeavesData[index]['ApplyForHoliday']
-                                                                            [
-                                                                            'admin_msg'],
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                16,
-                                                                            fontWeight:
-                                                                                FontWeight.normal),
-                                                                      )
-                                                                    ],
+                                                                        'admin_msg'] ==
+                                                                    "")
+                                                                ? SizedBox.shrink()
+                                                                : Text.rich(
+                                                                    TextSpan(
+                                                                      text:
+                                                                          'Admin Reply:',
+                                                                      style: _textTheme
+                                                                          .headline2!
+                                                                          .copyWith(
+                                                                              color: Colors.black),
+                                                                      children: <
+                                                                          InlineSpan>[
+                                                                        const TextSpan(
+                                                                            text:
+                                                                                "   "),
+                                                                        TextSpan(
+                                                                          text: appliedLeavesData[index]['ApplyForHoliday']
+                                                                              [
+                                                                              'admin_msg'],
+                                                                          style: const TextStyle(
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight.normal),
+                                                                        )
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     );
                                   },
@@ -690,7 +717,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                               },
                               separatorBuilder: (context, index) {
                                 return const SizedBox(
-                                  height: 10,
+                                  height: 15,
                                 );
                               },
                             ),

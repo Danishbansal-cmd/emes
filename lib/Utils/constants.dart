@@ -122,19 +122,19 @@ class Constants {
 
   static String nameOfDayOfShift(String value) {
     if (value == "1") {
-      return "Monday";
+      return "Monday".substring(0,3);
     } else if (value == "2") {
-      return "Tuesday";
+      return "Tuesday".substring(0,3);
     } else if (value == "3") {
-      return "Wednesday";
+      return "Wednesday".substring(0,3);
     } else if (value == "4") {
-      return "Thursday";
+      return "Thursday".substring(0,3);
     } else if (value == "5") {
-      return "Friday";
+      return "Friday".substring(0,3);
     } else if (value == "6") {
-      return "Saturday";
+      return "Saturday".substring(0,3);
     } else if (value == "0") {
-      return "Sunday";
+      return "Sunday".substring(0,3);
     }
     return "Error";
   }

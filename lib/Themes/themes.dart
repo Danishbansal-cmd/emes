@@ -38,8 +38,13 @@ class MyTheme {
           ),
           //for the shift text
           headline3: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
+            // fontWeight: FontWeight.w600,
+            fontSize: 18,
+          ),
+          //for the shift text client name
+          headline4: TextStyle(
+            color: Color.fromARGB(255, 68, 68, 68),
+            fontSize: 14,
           )
         ),
         appBarTheme: const AppBarTheme(
@@ -63,9 +68,9 @@ class MyTheme {
           //for background
           background: Color(0xfffbfbfb),
           //applyleave border color
-          onSecondary: Colors.grey,
+          onSecondary: Color.fromARGB(255, 34, 34, 34),
           //for Drawer Icons
-          secondaryVariant: Colors.grey
+          secondaryVariant: Color.fromARGB(255, 27, 27, 27)
         ),
       );
 

@@ -70,8 +70,20 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(appLevelHomepageDatesProvider.getStartDate),
-                            Text(appLevelHomepageDatesProvider.getEndDate),
+                            Text(
+                              appLevelHomepageDatesProvider.getStartDate,
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 90, 90, 90),
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            Text(
+                              appLevelHomepageDatesProvider.getEndDate,
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 90, 90, 90),
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
                           ],
                         ),
                       ),
