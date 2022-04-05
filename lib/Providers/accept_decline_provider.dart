@@ -10,45 +10,71 @@ class AcceptOrDeclineStatus extends ChangeNotifier {
   String _declineButtonText = "";
   //
   //accept Shift function
-  acceptShift(String value, BuildContext context) async {
-    var response = await http.post(Uri.parse(Constants.getAcceptShiftUrl),
-        body: {"rosterInfo": value});
-    var jsonData = jsonDecode(response.body);
-    if (jsonData['status'] == 200) {
-      print("messsage ${jsonData['message']}");
-      Constants.basicWidget(jsonData['message'], context);
+  acceptShift(List value, Function callback, BuildContext context) async {
+    print("am i here");
+    if (value.isNotEmpty) {
+      print("am i here2");
+      http.Response response;
+      // ignore: prefer_typing_uninitialized_variables
+      var jsonData;
+      print("length ${value.length}");
+      for (var i = 0; i < value.length; i++) {
+        print("i $i");
+        print("am i here3");
+        await http.post(Uri.parse(Constants.getAcceptShiftUrl),
+            body: {"rosterInfo": value[i]}).then((value) {jsonData = jsonDecode(value.body);print("iamvalue ${jsonData}");});
+        
+        if (jsonData['status'] == 200) {
+          print("messsage ${jsonData['message']}");
+          // Constants.basicWidget(jsonData['message'], context);
+        }
+        if (jsonData['status'] == 401) {
+          // Constants.basicWidget(jsonData['message'], context);
+        }
+      }
     }
-    if (jsonData['status'] == 401) {
-      Constants.basicWidget(jsonData['message'], context);
+    if (value.isNotEmpty) {
+      print("am i here is called 4");
+      // value.clear();
+      callback();
     }
   }
 
   //
   //decline Shift function
-  declineShift(String shiftId, String workDate, String startDate,
-      String endDate, String message, BuildContext context) async {
-    var response = await http.post(
-      Uri.parse(Constants.getDeclineShiftUrl),
-      body: {
-        "sval": jsonEncode(
-          {
-            "rosterInfo": ["$shiftId:$workDate:${Constants.getStaffID}"],
-            "start_date": startDate,
-            "end_date": endDate,
-            "user_id": Constants.getStaffID
-          },
-        ),
-        "sad_message": message,
-      },
-    );
-    var jsonData = jsonDecode(response.body);
-    Navigator.of(context).pop();
-    if (jsonData['status'] == 200) {
-      Constants.basicWidget(jsonData['message'], context);
+  declineShift(List value, String startDate, String endDate, String message,
+      Function callback, BuildContext context) async {
+    http.Response response;
+    // ignore: prefer_typing_uninitialized_variables
+    var jsonData;
+    for (var i = 0; i < value.length; i++) {
+      response = await http.post(
+        Uri.parse(Constants.getDeclineShiftUrl),
+        body: {
+          "sval": jsonEncode(
+            {
+              "rosterInfo": ["${value[i]}"],
+              "start_date": startDate,
+              "end_date": endDate,
+              "user_id": Constants.getStaffID
+            },
+          ),
+          "sad_message": message,
+        },
+      );
+      jsonData = jsonDecode(response.body);
+      if (jsonData['status'] == 200) {
+        // Constants.basicWidget(jsonData['message'], context);
+      }
+      if (jsonData['status'] == 401) {
+        // Constants.basicWidget(jsonData['message'], context);
+      }
     }
-    if (jsonData['status'] == 401) {
-      Constants.basicWidget(jsonData['message'], context);
+    if (value.isNotEmpty) {
+      print("am i here is called 4");
+      callback();
     }
+    // Navigator.of(context).pop();
   }
 
   //
@@ -94,6 +120,4 @@ class AcceptOrDeclineStatus extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  
 }
-

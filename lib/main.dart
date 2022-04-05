@@ -16,6 +16,7 @@ import 'package:emes/Widgets/splashPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(MyApp());
@@ -58,7 +59,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, appLevelThemeProvider, _) {
-          return MaterialApp(
+          return GetMaterialApp(
             title: 'Flutter Demo',
             theme: MyTheme.lightTheme(context),
             darkTheme: MyTheme.darkTheme(context),

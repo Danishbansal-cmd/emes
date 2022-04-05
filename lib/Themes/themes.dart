@@ -45,7 +45,13 @@ class MyTheme {
           headline4: TextStyle(
             color: Color.fromARGB(255, 68, 68, 68),
             fontSize: 14,
-          )
+          ),
+          //for details of the particularshiftpage(checkincheckoutpage)
+          headline5: TextStyle(
+            color: Color.fromARGB(255, 171, 194, 21),
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
@@ -98,7 +104,13 @@ class MyTheme {
           headline3: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 16,
-          )
+          ),
+          //for details of the particularshiftpage(checkincheckoutpage)
+          headline5: TextStyle(
+            color: Color.fromARGB(255, 189, 7, 7),
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
         ),
         //appbar Theme
         appBarTheme: const AppBarTheme(

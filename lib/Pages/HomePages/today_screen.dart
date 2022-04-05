@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:emes/Pages/checkin_checkout_page.dart';
 import 'package:emes/Providers/accept_decline_provider.dart';
 import 'package:emes/Providers/homepage_dates_provider.dart';
 import 'package:emes/Utils/constants.dart';
@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 class SecondScreen extends StatefulWidget {
   SecondScreen({Key? key}) : super(key: key);
@@ -20,6 +21,20 @@ class SecondScreen extends StatefulWidget {
 class _SecondScreenState extends State<SecondScreen> {
   TextEditingController declineShiftReasonController = TextEditingController();
   double shiftContainerHeight = 75;
+  String startDate = "";
+  String endDate = "";
+  //applevel controller initialize
+  final controller = Get.put(AcceptDeclineController());
+
+  //function of callback
+  //need to call from another page
+  callback() {
+    setState(() {
+      controller.idOfSelectedItemsList.clear();
+      controller.selectedItemsList.clear();
+      controller.ifAcceptedShiftIsSelected.value = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +78,7 @@ class _SecondScreenState extends State<SecondScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          //upper list of the page
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(
@@ -72,7 +88,7 @@ class _SecondScreenState extends State<SecondScreen> {
                 future: ShiftData.getData(),
                 builder: (context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
-                    // If we got an error
+                    // If we get an error becuase of network
                     if (snapshot.hasError) {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -86,11 +102,13 @@ class _SecondScreenState extends State<SecondScreen> {
                         ],
                       );
 
-                      // if we got our data
+                      // if we get our data
                     } else if (snapshot.hasData) {
                       // Extracting data from snapshot object
                       final shiftData = snapshot.data['allShifts'] as Map;
                       final keyList = shiftData.keys.toList();
+                      startDate = snapshot.data['start_date'];
+                      endDate = snapshot.data['end_date'];
                       // print("start_date ${snapshot.data['start_date']}");
                       // print("end_date ${snapshot.data['end_date']}");
                       // tryFunction(
@@ -100,6 +118,7 @@ class _SecondScreenState extends State<SecondScreen> {
 
                       return shiftData.isEmpty
                           ? Column(
+                              //if data is empty
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Icon(
@@ -111,12 +130,15 @@ class _SecondScreenState extends State<SecondScreen> {
                                 Text(snapshot.data['shift_title']),
                               ],
                             )
-                          : NotificationListener<OverscrollIndicatorNotification>(
-                            onNotification: (OverscrollIndicatorNotification overScroll){
-                              overScroll.disallowGlow();
-                              return true;
-                            },
-                            child: ListView.separated(
+                          : NotificationListener<
+                              OverscrollIndicatorNotification>(
+                              onNotification:
+                                  (OverscrollIndicatorNotification overScroll) {
+                                overScroll.disallowGlow();
+                                return true;
+                              },
+                              child: ListView.separated(
+                                //first list and if data is not empty
                                 // shrinkWrap: true,
                                 separatorBuilder: (context, index) {
                                   return const SizedBox(
@@ -137,6 +159,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                                 : 0))
                                         .toDouble(),
                                     child: ListView.separated(
+                                      //nested second list
                                       physics: ClampingScrollPhysics(),
                                       // shrinkWrap: true,
                                       separatorBuilder: (context, index) {
@@ -145,6 +168,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                         );
                                       },
                                       itemBuilder: (context, index2) {
+                                        //main box of the shift
                                         return Container(
                                           decoration: BoxDecoration(
                                             color: _colorScheme.primary,
@@ -167,24 +191,119 @@ class _SecondScreenState extends State<SecondScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               //checkbox button
-                                              Container(
-                                                width: 35,
-                                                child: Checkbox(
-                                                  onChanged: (value) {
-                                                    // value = !value!;
-                                                  },
-                                                  value: false,
-                                                  shape: const CircleBorder(),
+                                              Obx(
+                                                () => Container(
+                                                  width: 35,
+                                                  child: Checkbox(
+                                                    onChanged: (value) {
+                                                      if (!controller
+                                                          .selectedItemsList
+                                                          .contains(
+                                                              "$index$index2")) {
+                                                        print("does i work ");
+                                                        print(index);
+                                                        controller
+                                                            .addSelectedItemsList(
+                                                                "$index$index2");
+                                                        controller
+                                                            .addIdOfSelectedItemsList(
+                                                                "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
+                                                        print(
+                                                            "addsil checkbox ${controller.selectedItemsList}");
+                                                        print(
+                                                            "addiosil checkbox ${controller.idOfSelectedItemsList}");
+                                                      } else if (controller
+                                                          .selectedItemsList
+                                                          .contains(
+                                                              "$index$index2")) {
+                                                        controller
+                                                            .deleteSelectedItemsList(
+                                                                "$index$index2");
+                                                        controller
+                                                            .deleteIdOfSelectedItemsList(
+                                                                "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
+                                                        print(
+                                                            "delsil checkbox ${controller.selectedItemsList}");
+                                                        print(
+                                                            "deliosil checkbox ${controller.idOfSelectedItemsList}");
+                                                      }
+                                                    },
+                                                    value: controller
+                                                        .selectedItemsList
+                                                        .contains(
+                                                            "$index$index2"),
+                                                    shape: const CircleBorder(),
+                                                  ),
                                                 ),
                                               ),
+
                                               //data to be represented
                                               Expanded(
                                                 child: InkWell(
+                                                  onTap: () {
+                                                    // controller.clickedItemValue
+                                                    //     .value = index;
+                                                    if (!controller
+                                                        .selectedItemsList
+                                                        .contains(
+                                                            "$index$index2")) {
+                                                      print("does i work ");
+                                                      print(index);
+                                                      controller
+                                                          .addSelectedItemsList(
+                                                              "$index$index2");
+                                                      controller
+                                                          .addIdOfSelectedItemsList(
+                                                              "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
+                                                      if (shiftData[keyList[
+                                                                      index]][
+                                                                  insideKeyList
+                                                                          .toList()[
+                                                                      index2]][
+                                                              'confirmed_by_staff'] ==
+                                                          "1") {
+                                                        controller
+                                                            .ifAcceptedShiftIsSelected
+                                                            .value = true;
+                                                      }
+                                                      // controller.forDeletionOfSelectedItemsList["$index$index2"] = [snapshot.data['start_date'], snapshot.data['end_date'],];
+                                                      print(
+                                                          "addsil ${controller.selectedItemsList}");
+                                                      print(
+                                                          "addiosil ${controller.idOfSelectedItemsList}");
+                                                    } else if (controller
+                                                        .selectedItemsList
+                                                        .contains(
+                                                            "$index$index2")) {
+                                                      controller
+                                                          .deleteSelectedItemsList(
+                                                              "$index$index2");
+                                                      controller
+                                                          .deleteIdOfSelectedItemsList(
+                                                              "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
+                                                      if (shiftData[keyList[
+                                                                      index]][
+                                                                  insideKeyList
+                                                                          .toList()[
+                                                                      index2]][
+                                                              'confirmed_by_staff'] ==
+                                                          "1") {
+                                                        controller
+                                                            .ifAcceptedShiftIsSelected
+                                                            .value = false;
+                                                      }
+                                                      print(
+                                                          "delsil ${controller.selectedItemsList}");
+                                                      print(
+                                                          "deliosil ${controller.idOfSelectedItemsList}");
+                                                    }
+                                                  },
                                                   child: Container(
                                                     padding: const EdgeInsets
                                                         .symmetric(vertical: 3),
                                                     // color: Colors.green,
-                                                    height: shiftContainerHeight,
+                                                    height:
+                                                        shiftContainerHeight,
                                                     child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -193,38 +312,43 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        // const Icon(Icons.ad_units),
+                                                        //shift date
                                                         Text(
                                                           "${Constants.nameOfDayOfShift(shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift'])} ${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(8, 10)}/${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(5, 7)}/${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(0, 4)}",
                                                           style: _textTheme
                                                               .headline3!
                                                               .copyWith(
-                                                            color: shiftData[keyList[
-                                                                            index]][insideKeyList
-                                                                                .toList()[
-                                                                            index2]][
+                                                            color: shiftData[keyList[index]]
+                                                                            [insideKeyList.toList()[index2]]
+                                                                        [
                                                                         'confirmed_by_staff'] ==
                                                                     "1"
-                                                                ? const Color
-                                                                        .fromARGB(
+                                                                ? const Color.fromARGB(
                                                                     255,
                                                                     54,
                                                                     192,
                                                                     59)
-                                                                : const Color
-                                                                        .fromARGB(
-                                                                    255,
-                                                                    34,
-                                                                    34,
-                                                                    34),
+                                                                : shiftData[keyList[index]][insideKeyList.toList()[index2]]['confirmed_by_staff'] ==
+                                                                        "2"
+                                                                    ? Color.fromARGB(
+                                                                        255,
+                                                                        194,
+                                                                        48,
+                                                                        48)
+                                                                    : const Color.fromARGB(
+                                                                        255,
+                                                                        34,
+                                                                        34,
+                                                                        34),
                                                           ),
                                                         ),
+                                                        //shift's client name
                                                         Text(
                                                           "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
                                                           style: _textTheme
                                                               .headline4,
                                                         ),
-                          
+                                                        //shift time
                                                         Text.rich(
                                                           TextSpan(
                                                             text:
@@ -265,10 +389,32 @@ class _SecondScreenState extends State<SecondScreen> {
                                                   ),
                                                 ),
                                               ),
-                          
-                                              //exit button
+
+                                              //button to next page
                                               InkWell(
-                                                onTap: () {},
+                                                onTap: () {
+                                                  Get.to(
+                                                      () =>
+                                                          CheckinCheckoutPage(),
+                                                      arguments: [{
+                                                        "shift_id":
+                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}",
+                                                        "client_id":
+                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_id']}",
+                                                        "work_date":
+                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}",
+                                                        "time_on":
+                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}",
+                                                        "time_off":
+                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}",
+                                                        "task_id":
+                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['task_id']}",
+                                                        "client_name":
+                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
+                                                        "activity_name":
+                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['activity_name']}"
+                                                      }]);
+                                                },
                                                 child: Container(
                                                   // color: Colors.amber,
                                                   // height: 90,
@@ -283,7 +429,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                                   ),
                                                 ),
                                               ),
-                          
+
                                               // Container(
                                               //   height: 90,
                                               //   padding: const EdgeInsets.symmetric(
@@ -562,11 +708,12 @@ class _SecondScreenState extends State<SecondScreen> {
                                   );
                                 },
                               ),
-                          );
+                            );
                     }
                   }
 
                   // Displaying LoadingSpinner to indicate waiting state
+                  //on fetching data from the server or link or api
                   return Center(
                     child: CircularProgressIndicator(
                       color: _colorScheme.onSecondary,
@@ -581,39 +728,96 @@ class _SecondScreenState extends State<SecondScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: Container(
-                    height: 35,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 252, 39, 24),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        "DECLINE",
-                        style: TextStyle(
-                          color: Colors.white,
-                          letterSpacing: 1.5,
-                          fontWeight: FontWeight.bold,
+                  child: Consumer<AcceptOrDeclineStatus>(
+                    builder: (context, appLevelAcceptOrDeclineStatus, _) {
+                      return Material(
+                        color: Color.fromARGB(255, 252, 39, 24),
+                        child: InkWell(
+                          onTap: () {
+                            print("decline");
+                            appLevelAcceptOrDeclineStatus.declineShift(
+                                controller.idOfSelectedItemsList,
+                                startDate,
+                                endDate,
+                                "just",
+                                callback,
+                                context);
+                            // controller.idOfSelectedItemsList.clear();
+                            // controller.selectedItemsList.clear();
+                          },
+                          highlightColor: Colors.amber,
+                          splashColor: Color.fromARGB(255, 126, 19, 19),
+                          child: Container(
+                            height: 40,
+                            decoration: const BoxDecoration(
+                                // color: Color.fromARGB(255, 252, 39, 24),
+                                ),
+                            child: const Center(
+                              child: Text(
+                                "DECLINE",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  letterSpacing: 1.5,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    height: 35,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 36, 255, 43),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        "DECLINE",
-                        style: TextStyle(
-                          color: Colors.white,
-                          letterSpacing: 1.5,
-                          fontWeight: FontWeight.bold,
+                  child: Consumer<AcceptOrDeclineStatus>(
+                    builder: (context, appLevelAcceptOrDeclineStatus, _) {
+                      return Material(
+                        color: Color.fromARGB(255, 36, 255, 43),
+                        child: InkWell(
+                          onTap: () {
+                            print("accept");
+                            if (controller.ifAcceptedShiftIsSelected.value !=
+                                true) {
+                              print("first");
+                              appLevelAcceptOrDeclineStatus.acceptShift(
+                                  controller.idOfSelectedItemsList,
+                                  callback,
+                                  context);
+                            } else {
+                              print("second");
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Accepted shift cannot be selected again.'),
+                                ),
+                              );
+                            }
+
+                            // if (controller.selectedItemsList.isNotEmpty) {
+                            //   setState(() {});
+                            // }
+                          },
+                          splashColor: Color.fromARGB(255, 27, 126, 30),
+                          highlightColor: Colors.amber,
+                          child: Container(
+                            height: 40,
+                            decoration: const BoxDecoration(
+                                // color: Color.fromARGB(255, 36, 255, 43),
+                                ),
+                            child: const Center(
+                              child: Text(
+                                "ACCEPT",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  letterSpacing: 1.5,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -622,5 +826,28 @@ class _SecondScreenState extends State<SecondScreen> {
         ],
       ),
     );
+  }
+}
+
+class AcceptDeclineController extends GetxController {
+  RxList<String> selectedItemsList = <String>[].obs;
+  RxList<String> idOfSelectedItemsList = <String>[].obs;
+  RxBool ifAcceptedShiftIsSelected = false.obs;
+  //for selectedItemsList variable
+  addSelectedItemsList(String value) {
+    selectedItemsList.add(value);
+  }
+
+  deleteSelectedItemsList(String value) {
+    selectedItemsList.remove(value);
+  }
+
+  //for idOfSelectedItemsList variable
+  addIdOfSelectedItemsList(String value) {
+    idOfSelectedItemsList.add(value);
+  }
+
+  deleteIdOfSelectedItemsList(String value) {
+    idOfSelectedItemsList.remove(value);
   }
 }

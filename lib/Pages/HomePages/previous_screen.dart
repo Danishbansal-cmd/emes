@@ -27,8 +27,8 @@ class _FirstScreenState extends State<FirstScreen> {
       color: _colorScheme.background,
       child: Container(
         padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-              ),
+          horizontal: 15,
+        ),
         child: FutureBuilder(
           future: ShiftData.getPreviousData(),
           builder: (context, AsyncSnapshot snapshot) {
@@ -80,7 +80,9 @@ class _FirstScreenState extends State<FirstScreen> {
                           return Container(
                             color: _colorScheme.background,
                             height: (shiftContainerHeight * moreShifts +
-                                    (moreShifts > 1 ? 15 * (moreShifts - 1) : 0))
+                                    (moreShifts > 1
+                                        ? 15 * (moreShifts - 1)
+                                        : 0))
                                 .toDouble(),
                             child: ListView.separated(
                               physics: ClampingScrollPhysics(),
@@ -116,7 +118,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                         child: InkWell(
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(
-                                                vertical: 3,horizontal: 10),
+                                                vertical: 3, horizontal: 10),
                                             // color: Colors.green,
                                             height: shiftContainerHeight,
                                             child: Column(
@@ -131,25 +133,30 @@ class _FirstScreenState extends State<FirstScreen> {
                                                   "${Constants.nameOfDayOfShift(shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift'])} ${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(8, 10)}/${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(5, 7)}/${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(0, 4)}",
                                                   style: _textTheme.headline3!
                                                       .copyWith(
-                                                    color: shiftData[keyList[
-                                                                        index]][
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]
+                                                    color: shiftData[keyList[index]]
+                                                                    [insideKeyList.toList()[index2]]
                                                                 [
                                                                 'confirmed_by_staff'] ==
                                                             "1"
                                                         ? const Color.fromARGB(
                                                             255, 54, 192, 59)
-                                                        : const Color.fromARGB(
-                                                            255, 34, 34, 34),
+                                                        : shiftData[keyList[index]]
+                                                                        [insideKeyList.toList()[index2]]
+                                                                    [
+                                                                    'confirmed_by_staff'] ==
+                                                                "2"
+                                                            ? const Color.fromARGB(
+                                                                255, 194, 48, 48)
+                                                            : const Color.fromARGB(
+                                                                255, 34, 34, 34),
                                                   ),
                                                 ),
+                                                //shift's client name
                                                 Text(
                                                   "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
                                                   style: _textTheme.headline4,
                                                 ),
-
+                                                //shift time
                                                 Text.rich(
                                                   TextSpan(
                                                     text:

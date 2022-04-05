@@ -10,6 +10,9 @@ import 'package:emes/Themes/themes.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:emes/Widgets/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:geocode/geocode.dart';
+import 'package:get/get.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -22,7 +25,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //initializing values here
   var date = HomepageDatesProvider();
+  final homeController = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
     void tryFunction(String value1, String value2) {
@@ -186,3 +192,56 @@ class _HomePageState extends State<HomePage> {
 
 //   HomePageArguments(this.firstName, this.lastName, this.email, this.staffID);
 // }
+
+class HomeController extends GetxController{
+  var location = new Location();
+  bool? serviceEnabled;
+  PermissionStatus? _permissionGranted;
+  String? realAddress;
+  LocationData? coordinates;
+  @override
+  void onInit() {
+    // secureScreen();
+    // TODO: implement onInit
+    super.onInit();
+    getLocation().then((value) {
+      LocationData? location = value;
+      getAddress(location!.latitude!, location.longitude);
+    });
+  }
+
+  Future<LocationData?> getLocation()async{
+    LocationData locationData;
+    serviceEnabled = await location.serviceEnabled();
+    if(!serviceEnabled!){
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled!) {
+        return null;
+      }
+    } 
+
+    _permissionGranted = await location.hasPermission();
+    if(_permissionGranted == PermissionStatus.denied){
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.grantedLimited) {
+        
+        return null;
+      }
+    }
+    locationData = await location.getLocation();
+    coordinates = locationData;
+    return locationData;
+  }
+
+  Future<String?> getAddress(double? lat, double? long) async {
+    if(lat == null || long == null) return "";
+
+    GeoCode geoCode = GeoCode();
+    Address address = await geoCode.reverseGeocoding(latitude: lat, longitude: long);
+    realAddress =
+        "this is the address ${address.countryName} ${address.city} ${address.streetAddress}";
+    print("realAddress ${realAddress}");
+    return realAddress;
+
+  }
+}
