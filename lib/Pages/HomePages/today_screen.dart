@@ -32,7 +32,8 @@ class _SecondScreenState extends State<SecondScreen> {
     setState(() {
       controller.idOfSelectedItemsList.clear();
       controller.selectedItemsList.clear();
-      controller.ifAcceptedShiftIsSelected.value = false;
+      controller.ifAcceptedShiftIsSelected.clear();
+      controller.ifDeclinedShiftIsSelected.clear();
     });
   }
 
@@ -141,9 +142,9 @@ class _SecondScreenState extends State<SecondScreen> {
                                 //first list and if data is not empty
                                 // shrinkWrap: true,
                                 separatorBuilder: (context, index) {
-                                  return const SizedBox(
-                                    height: 15,
-                                  );
+                                  return const SizedBox.shrink(
+                                      // height: 15,
+                                      );
                                 },
                                 itemCount: keyList.length,
                                 itemBuilder: (context, index) {
@@ -153,23 +154,24 @@ class _SecondScreenState extends State<SecondScreen> {
                                       shiftData[keyList[index]].keys;
                                   return Container(
                                     color: _colorScheme.background,
+                                    // color: Colors.red,
                                     height: (shiftContainerHeight * moreShifts +
-                                            (moreShifts > 1
-                                                ? 15 * (moreShifts - 1)
-                                                : 0))
+                                            16 * (moreShifts))
                                         .toDouble(),
                                     child: ListView.separated(
                                       //nested second list
                                       physics: ClampingScrollPhysics(),
                                       // shrinkWrap: true,
                                       separatorBuilder: (context, index) {
-                                        return const SizedBox(
-                                          height: 15,
-                                        );
+                                        return const SizedBox.shrink(
+                                            // height: 15,
+                                            );
                                       },
                                       itemBuilder: (context, index2) {
                                         //main box of the shift
                                         return Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8),
                                           decoration: BoxDecoration(
                                             color: _colorScheme.primary,
                                             borderRadius:
@@ -177,7 +179,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                             border: Border.all(
                                               color: Theme.of(context)
                                                   .colorScheme
-                                                  .onSecondary,
+                                                  .secondary,
                                               width: 1.5,
                                             ),
                                           ),
@@ -200,18 +202,28 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           .selectedItemsList
                                                           .contains(
                                                               "$index$index2")) {
-                                                        print("does i work ");
-                                                        print(index);
                                                         controller
                                                             .addSelectedItemsList(
                                                                 "$index$index2");
                                                         controller
                                                             .addIdOfSelectedItemsList(
                                                                 "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
-                                                        print(
-                                                            "addsil checkbox ${controller.selectedItemsList}");
-                                                        print(
-                                                            "addiosil checkbox ${controller.idOfSelectedItemsList}");
+                                                        if (shiftData[keyList[
+                                                                        index]][
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]
+                                                                [
+                                                                'confirmed_by_staff'] ==
+                                                            "1") {
+                                                          controller
+                                                              .ifAcceptedShiftIsSelected
+                                                              .add(true);
+                                                        } else {
+                                                          controller
+                                                              .ifDeclinedShiftIsSelected
+                                                              .add(true);
+                                                        }
                                                       } else if (controller
                                                           .selectedItemsList
                                                           .contains(
@@ -222,10 +234,22 @@ class _SecondScreenState extends State<SecondScreen> {
                                                         controller
                                                             .deleteIdOfSelectedItemsList(
                                                                 "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
-                                                        print(
-                                                            "delsil checkbox ${controller.selectedItemsList}");
-                                                        print(
-                                                            "deliosil checkbox ${controller.idOfSelectedItemsList}");
+                                                        if (shiftData[keyList[
+                                                                        index]][
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]
+                                                                [
+                                                                'confirmed_by_staff'] ==
+                                                            "1") {
+                                                          controller
+                                                              .ifAcceptedShiftIsSelected
+                                                              .remove(true);
+                                                        } else {
+                                                          controller
+                                                              .ifDeclinedShiftIsSelected
+                                                              .remove(true);
+                                                        }
                                                       }
                                                     },
                                                     value: controller
@@ -264,7 +288,11 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           "1") {
                                                         controller
                                                             .ifAcceptedShiftIsSelected
-                                                            .value = true;
+                                                            .add(true);
+                                                      } else {
+                                                        controller
+                                                            .ifDeclinedShiftIsSelected
+                                                            .add(true);
                                                       }
                                                       // controller.forDeletionOfSelectedItemsList["$index$index2"] = [snapshot.data['start_date'], snapshot.data['end_date'],];
                                                       print(
@@ -290,7 +318,11 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           "1") {
                                                         controller
                                                             .ifAcceptedShiftIsSelected
-                                                            .value = false;
+                                                            .remove(true);
+                                                      } else {
+                                                        controller
+                                                            .ifDeclinedShiftIsSelected
+                                                            .remove(true);
                                                       }
                                                       print(
                                                           "delsil ${controller.selectedItemsList}");
@@ -391,40 +423,97 @@ class _SecondScreenState extends State<SecondScreen> {
                                               ),
 
                                               //button to next page
-                                              InkWell(
-                                                onTap: () {
-                                                  Get.to(
-                                                      () =>
-                                                          CheckinCheckoutPage(),
-                                                      arguments: [{
-                                                        "shift_id":
-                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}",
-                                                        "client_id":
-                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_id']}",
-                                                        "work_date":
-                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}",
-                                                        "time_on":
-                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}",
-                                                        "time_off":
-                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}",
-                                                        "task_id":
-                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['task_id']}",
-                                                        "client_name":
-                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
-                                                        "activity_name":
-                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['activity_name']}"
-                                                      }]);
-                                                },
-                                                child: Container(
-                                                  // color: Colors.amber,
-                                                  // height: 90,
-                                                  width: 40,
-                                                  child: const Center(
-                                                    child: FaIcon(
-                                                      FontAwesomeIcons
-                                                          .arrowUpRightFromSquare,
-                                                      size: 18,
-                                                      color: Colors.blue,
+                                              Material(
+                                                color: Colors.transparent,
+                                                child: InkWell(
+                                                  splashColor: Colors.blue,
+                                                  onTap: () {
+                                                    Future.delayed(
+                                                      const Duration(
+                                                          milliseconds: 200),
+                                                      () {
+                                                        if (shiftData[keyList[
+                                                                        index]][insideKeyList
+                                                                            .toList()[
+                                                                        index2]]
+                                                                    [
+                                                                    'is_confirm'] ==
+                                                                "1" &&
+                                                            shiftData[keyList[
+                                                                        index]][
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['confirmed_by_staff'] ==
+                                                                "1") {
+                                                          Get.to(
+                                                              () =>
+                                                                  CheckinCheckoutPage(),
+                                                              arguments: [
+                                                                {
+                                                                  "shift_id":
+                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}",
+                                                                  "client_id":
+                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_id']}",
+                                                                  "work_date":
+                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}",
+                                                                  "time_on":
+                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}",
+                                                                  "time_off":
+                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}",
+                                                                  "task_id":
+                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['task_id']}",
+                                                                  "client_name":
+                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
+                                                                  "activity_name":
+                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['activity_name']}",
+                                                                  "day_of_shift":
+                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift']}"
+                                                                }
+                                                              ]);
+                                                        } else if (shiftData[keyList[
+                                                                        index]][insideKeyList
+                                                                            .toList()[
+                                                                        index2]]
+                                                                    [
+                                                                    'is_confirm'] !=
+                                                                "1" &&
+                                                            shiftData[keyList[
+                                                                        index]][
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['confirmed_by_staff'] ==
+                                                                "1") {
+                                                          Get.snackbar(
+                                                              'Message',
+                                                              'Shift is not confirmed from the backend.',duration: const Duration(milliseconds: 1200));
+                                                        } else if (shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]
+                                                                [
+                                                                'confirmed_by_staff'] !=
+                                                            "1") {
+                                                          Get.snackbar(
+                                                              'Message',
+                                                              'You need to confirm the shift first.',duration: const Duration(milliseconds: 1200));
+                                                        }
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    // color: Colors.amber,
+                                                    // height: 90,
+                                                    width: 40,
+                                                    child: const Center(
+                                                      child: FaIcon(
+                                                        FontAwesomeIcons
+                                                            .arrowUpRightFromSquare,
+                                                        size: 18,
+                                                        color: Colors.blue,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -735,13 +824,24 @@ class _SecondScreenState extends State<SecondScreen> {
                         child: InkWell(
                           onTap: () {
                             print("decline");
-                            appLevelAcceptOrDeclineStatus.declineShift(
-                                controller.idOfSelectedItemsList,
-                                startDate,
-                                endDate,
-                                "just",
-                                callback,
-                                context);
+                            // print(controller.ifDeclinedShiftIsSelected.value);
+                            if (!controller.ifDeclinedShiftIsSelected.contains(true) &&
+                                controller.idOfSelectedItemsList.isNotEmpty) {
+                              appLevelAcceptOrDeclineStatus.declineShift(
+                                  controller.idOfSelectedItemsList,
+                                  startDate,
+                                  endDate,
+                                  "just",
+                                  callback,
+                                  context);
+                            } else if (controller
+                                .idOfSelectedItemsList.isEmpty) {
+                              Get.snackbar(
+                                  'Message', 'Please select some values.',duration: const Duration(milliseconds: 1200));
+                            } else {
+                              Get.snackbar('Message',
+                                  'Declined shift cannot be declined again.',duration: const Duration(milliseconds: 1200));
+                            }
                             // controller.idOfSelectedItemsList.clear();
                             // controller.selectedItemsList.clear();
                           },
@@ -776,21 +876,20 @@ class _SecondScreenState extends State<SecondScreen> {
                         child: InkWell(
                           onTap: () {
                             print("accept");
-                            if (controller.ifAcceptedShiftIsSelected.value !=
-                                true) {
+                            if (!controller.ifAcceptedShiftIsSelected.contains(true) &&
+                                controller.idOfSelectedItemsList.isNotEmpty) {
                               print("first");
                               appLevelAcceptOrDeclineStatus.acceptShift(
                                   controller.idOfSelectedItemsList,
                                   callback,
                                   context);
+                            } else if (controller
+                                .idOfSelectedItemsList.isEmpty) {
+                              Get.snackbar(
+                                  'Message', 'Please select some values.',duration: const Duration(milliseconds: 1200));
                             } else {
-                              print("second");
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'Accepted shift cannot be selected again.'),
-                                ),
-                              );
+                              Get.snackbar('Message',
+                                  'Accepted shift cannot be accepted again.',duration: const Duration(milliseconds: 1200));
                             }
 
                             // if (controller.selectedItemsList.isNotEmpty) {
@@ -832,7 +931,8 @@ class _SecondScreenState extends State<SecondScreen> {
 class AcceptDeclineController extends GetxController {
   RxList<String> selectedItemsList = <String>[].obs;
   RxList<String> idOfSelectedItemsList = <String>[].obs;
-  RxBool ifAcceptedShiftIsSelected = false.obs;
+  RxList<bool> ifAcceptedShiftIsSelected = <bool>[].obs;
+  RxList<bool> ifDeclinedShiftIsSelected = <bool>[].obs;
   //for selectedItemsList variable
   addSelectedItemsList(String value) {
     selectedItemsList.add(value);

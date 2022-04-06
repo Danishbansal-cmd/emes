@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
             labelColor: _colorScheme.secondary,
             overlayColor: MaterialStateProperty.all(Colors.blue),
             labelStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               letterSpacing: 0.8,
               fontSize: 15,
             ),

@@ -48,19 +48,20 @@ class MyTheme {
           ),
           //for details of the particularshiftpage(checkincheckoutpage)
           headline5: TextStyle(
-            color: Color.fromARGB(255, 171, 194, 21),
-            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 87, 87, 87),
+            fontWeight: FontWeight.w600,
             fontSize: 16,
           ),
         ),
         appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: Color.fromARGB(255, 88, 85, 85)),
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           titleTextStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
+            color: Color.fromARGB(255, 88, 85, 85),
+            fontSize: 16,
             letterSpacing: 1,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w600,
           ),
           toolbarTextStyle: TextStyle(
             color: Colors.black,
@@ -70,7 +71,7 @@ class MyTheme {
         colorScheme:const ColorScheme.light(
           primary: Colors.white,
           //for labelColor
-          secondary: Colors.black,
+          secondary: Color.fromARGB(255, 88, 85, 85),
           //for background
           background: Color(0xfffbfbfb),
           //applyleave border color
