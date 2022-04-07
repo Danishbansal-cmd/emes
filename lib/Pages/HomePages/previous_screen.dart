@@ -4,6 +4,7 @@ import 'package:emes/Providers/homepage_dates_provider.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -38,11 +39,12 @@ class _FirstScreenState extends State<FirstScreen> {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    Icon(
-                      Icons.calendar_month_outlined,
-                      size: 90,
-                      color: Colors.blue,
-                    ),
+                     FaIcon(
+                            FontAwesomeIcons.calendarDays,
+                            size: 70,
+                            color: Colors.blue,
+                          ),
+                           SizedBox(height: 5,),
                     Text("No Shifts Found"),
                   ],
                 );
@@ -57,11 +59,12 @@ class _FirstScreenState extends State<FirstScreen> {
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
-                            Icons.calendar_month_outlined,
-                            size: 90,
+                          const FaIcon(
+                            FontAwesomeIcons.calendarDays,
+                            size: 70,
                             color: Colors.blue,
                           ),
+                          const SizedBox(height: 5,),
                           const Text("No Shifts Found"),
                           Text(snapshot.data['shift_title']),
                         ],

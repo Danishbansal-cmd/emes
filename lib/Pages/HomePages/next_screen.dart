@@ -3,6 +3,7 @@ import 'package:emes/Providers/homepage_dates_provider.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ThirdScreen extends StatefulWidget {
@@ -40,11 +41,12 @@ class _ThirdScreenState extends State<ThirdScreen> {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
-                          Icon(
-                            Icons.calendar_month_outlined,
-                            size: 90,
+                           FaIcon(
+                            FontAwesomeIcons.calendarDays,
+                            size: 70,
                             color: Colors.blue,
                           ),
+                           SizedBox(height: 5,),
                           Text("No Shifts Found"),
                         ],
                       );
@@ -62,11 +64,12 @@ class _ThirdScreenState extends State<ThirdScreen> {
                           ? Column( //if data is empty
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(
-                                  Icons.calendar_month_outlined,
-                                  size: 90,
-                                  color: Colors.blue,
-                                ),
+                                const FaIcon(
+                            FontAwesomeIcons.calendarDays,
+                            size: 70,
+                            color: Colors.blue,
+                          ),
+                          const SizedBox(height: 5,),
                                 const Text("No Shifts Found"),
                                 Text(snapshot.data['shift_title']),
                               ],

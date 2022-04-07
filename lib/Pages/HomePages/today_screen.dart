@@ -94,10 +94,18 @@ class _SecondScreenState extends State<SecondScreen> {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
-                          Icon(
-                            Icons.calendar_month_outlined,
-                            size: 90,
+                          // Icon(
+                          //   Icons.calendar_month_outlined,
+                          //   size: 90,
+                          //   color: Colors.blue,
+                          // ),
+                          FaIcon(
+                            FontAwesomeIcons.calendarDays,
+                            size: 70,
                             color: Colors.blue,
+                          ),
+                          SizedBox(
+                            height: 5,
                           ),
                           Text("No Shifts Found"),
                         ],
@@ -122,10 +130,13 @@ class _SecondScreenState extends State<SecondScreen> {
                               //if data is empty
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(
-                                  Icons.calendar_month_outlined,
-                                  size: 90,
+                                const FaIcon(
+                                  FontAwesomeIcons.calendarDays,
+                                  size: 70,
                                   color: Colors.blue,
+                                ),
+                                const SizedBox(
+                                  height: 5,
                                 ),
                                 const Text("No Shifts Found"),
                                 Text(snapshot.data['shift_title']),
@@ -485,7 +496,11 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                 "1") {
                                                           Get.snackbar(
                                                               'Message',
-                                                              'Shift is not confirmed from the backend.',duration: const Duration(milliseconds: 1200));
+                                                              'Shift is not confirmed from the backend.',
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          1200));
                                                         } else if (shiftData[
                                                                         keyList[
                                                                             index]]
@@ -498,7 +513,11 @@ class _SecondScreenState extends State<SecondScreen> {
                                                             "1") {
                                                           Get.snackbar(
                                                               'Message',
-                                                              'You need to confirm the shift first.',duration: const Duration(milliseconds: 1200));
+                                                              'You need to confirm the shift first.',
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          1200));
                                                         }
                                                       },
                                                     );
@@ -825,7 +844,8 @@ class _SecondScreenState extends State<SecondScreen> {
                           onTap: () {
                             print("decline");
                             // print(controller.ifDeclinedShiftIsSelected.value);
-                            if (!controller.ifDeclinedShiftIsSelected.contains(true) &&
+                            if (!controller.ifDeclinedShiftIsSelected
+                                    .contains(true) &&
                                 controller.idOfSelectedItemsList.isNotEmpty) {
                               appLevelAcceptOrDeclineStatus.declineShift(
                                   controller.idOfSelectedItemsList,
@@ -837,10 +857,12 @@ class _SecondScreenState extends State<SecondScreen> {
                             } else if (controller
                                 .idOfSelectedItemsList.isEmpty) {
                               Get.snackbar(
-                                  'Message', 'Please select some values.',duration: const Duration(milliseconds: 1200));
+                                  'Message', 'Please select some values.',
+                                  duration: const Duration(milliseconds: 1200));
                             } else {
                               Get.snackbar('Message',
-                                  'Declined shift cannot be declined again.',duration: const Duration(milliseconds: 1200));
+                                  'Declined shift cannot be declined again.',
+                                  duration: const Duration(milliseconds: 1200));
                             }
                             // controller.idOfSelectedItemsList.clear();
                             // controller.selectedItemsList.clear();
@@ -872,11 +894,12 @@ class _SecondScreenState extends State<SecondScreen> {
                   child: Consumer<AcceptOrDeclineStatus>(
                     builder: (context, appLevelAcceptOrDeclineStatus, _) {
                       return Material(
-                        color: Color.fromARGB(255, 36, 255, 43),
+                        color: Color.fromARGB(255, 31, 224, 37),
                         child: InkWell(
                           onTap: () {
                             print("accept");
-                            if (!controller.ifAcceptedShiftIsSelected.contains(true) &&
+                            if (!controller.ifAcceptedShiftIsSelected
+                                    .contains(true) &&
                                 controller.idOfSelectedItemsList.isNotEmpty) {
                               print("first");
                               appLevelAcceptOrDeclineStatus.acceptShift(
@@ -886,10 +909,12 @@ class _SecondScreenState extends State<SecondScreen> {
                             } else if (controller
                                 .idOfSelectedItemsList.isEmpty) {
                               Get.snackbar(
-                                  'Message', 'Please select some values.',duration: const Duration(milliseconds: 1200));
+                                  'Message', 'Please select some values.',
+                                  duration: const Duration(milliseconds: 1200));
                             } else {
                               Get.snackbar('Message',
-                                  'Accepted shift cannot be accepted again.',duration: const Duration(milliseconds: 1200));
+                                  'Accepted shift cannot be accepted again.',
+                                  duration: const Duration(milliseconds: 1200));
                             }
 
                             // if (controller.selectedItemsList.isNotEmpty) {

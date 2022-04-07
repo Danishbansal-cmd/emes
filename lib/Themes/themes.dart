@@ -32,8 +32,8 @@ class MyTheme {
 
           //for the drawer items
           headline2: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Color(0xff414141),
+            fontWeight: FontWeight.w600,
+            color: Color.fromARGB(255, 88, 85, 85),
             fontSize: 16,
           ),
           //for the shift text

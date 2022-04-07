@@ -48,4 +48,4 @@ class TestingApi extends StatelessWidget {
 }
 
 // some string or url needed to store
-// http://trusecurity.emesau.com/dev
+// http://trusecurity.emesau.com/dev/api

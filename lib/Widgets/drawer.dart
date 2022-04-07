@@ -7,6 +7,7 @@ import 'package:emes/Utils/get_logged_in_information.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,8 +19,10 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  String firstName = "";String lastName = ""; String email = "";
-  
+  String firstName = "";
+  String lastName = "";
+  String email = "";
+
   // @override
   // void initState() async{
   //   // super.initState();
@@ -31,7 +34,7 @@ class _MyDrawerState extends State<MyDrawer> {
   //     lastName = data['last_name'];
   //     email = data['email'];
   // }
-  
+
   @override
   Widget build(BuildContext context) {
     // Future.delayed(Duration.zero, () async{
@@ -72,7 +75,12 @@ class _MyDrawerState extends State<MyDrawer> {
                 // Navigator.pushNamed(context, MyRoutes.homePageRoute);
               },
               child: ListTile(
-                leading: Icon(Icons.calendar_month_outlined,color: _colorScheme.secondaryVariant,),
+                // leading: Icon(Icons.calendar_month_outlined,color: _colorScheme.secondaryVariant,),
+                leading: FaIcon(
+                  FontAwesomeIcons.calendarDays,
+                  size: 18,
+                  color: _colorScheme.secondary,
+                ),
                 title: Text(
                   "Roster",
                   style: _textTheme.headline2,
@@ -87,7 +95,15 @@ class _MyDrawerState extends State<MyDrawer> {
                     context, MyRoutes.profilePageRoute);
               },
               child: ListTile(
-                leading: Icon(Icons.threed_rotation,color: _colorScheme.secondaryVariant,),
+                // leading: Icon(
+                //   Icons.threed_rotation,
+                //   color: _colorScheme.secondaryVariant,
+                // ),
+                leading: FaIcon(
+                  FontAwesomeIcons.addressCard,
+                  size: 18,
+                  color: _colorScheme.secondary,
+                ),
                 title: Text(
                   "Profile",
                   style: _textTheme.headline2,
@@ -102,8 +118,14 @@ class _MyDrawerState extends State<MyDrawer> {
                     context, MyRoutes.applyLeavePageRoute);
               },
               child: ListTile(
-                leading: Icon(
-                  Icons.add_circle,color: _colorScheme.secondaryVariant,
+                // leading: Icon(
+                //   Icons.add_circle,
+                //   color: _colorScheme.secondaryVariant,
+                // ),
+                leading: FaIcon(
+                  FontAwesomeIcons.circlePlus,
+                  size: 18,
+                  color: _colorScheme.secondary,
                 ),
                 title: Text(
                   "Apply Leave",
@@ -119,7 +141,15 @@ class _MyDrawerState extends State<MyDrawer> {
                     context, MyRoutes.inboxPageRoute);
               },
               child: ListTile(
-                leading: Icon(Icons.forum,color: _colorScheme.secondaryVariant,),
+                // leading: Icon(
+                //   Icons.forum,
+                //   color: _colorScheme.secondaryVariant,
+                // ),
+                leading: FaIcon(
+                  FontAwesomeIcons.solidMessage,
+                  size: 18,
+                  color: _colorScheme.secondary,
+                ),
                 title: Text(
                   "Inbox",
                   style: _textTheme.headline2,
@@ -128,7 +158,15 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.abc,color: _colorScheme.secondaryVariant,),
+              // leading: Icon(
+              //   Icons.abc,
+              //   color: _colorScheme.secondaryVariant,
+              // ),
+              leading: FaIcon(
+                  FontAwesomeIcons.arrowRightFromBracket,
+                  size: 18,
+                  color: _colorScheme.secondary,
+                ),
               title: Consumer<ThemeProvider>(
                 builder: (context, appLevelThemeProvider, _) {
                   return Switch.adaptive(
@@ -188,7 +226,8 @@ class _MyDrawerState extends State<MyDrawer> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Material(
-                                      color: Theme.of(context).colorScheme.primary,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       child: InkWell(
                                         borderRadius: BorderRadius.circular(5),
                                         splashColor: Colors.blue,
@@ -214,13 +253,17 @@ class _MyDrawerState extends State<MyDrawer> {
                                       width: 5,
                                     ),
                                     Material(
-                                      color: Theme.of(context).colorScheme.primary,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       child: InkWell(
-                                        onTap: () async{
-                                          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                                        onTap: () async {
+                                          SharedPreferences sharedPreferences =
+                                              await SharedPreferences
+                                                  .getInstance();
                                           sharedPreferences.clear();
                                           sharedPreferences.commit();
-                                          Navigator.pushReplacementNamed(context, MyRoutes.loginPageRoute);
+                                          Navigator.pushReplacementNamed(
+                                              context, MyRoutes.loginPageRoute);
                                         },
                                         borderRadius: BorderRadius.circular(5),
                                         splashColor: Colors.red,
@@ -251,7 +294,15 @@ class _MyDrawerState extends State<MyDrawer> {
                 );
               },
               child: ListTile(
-                leading: Icon(Icons.logout,color: _colorScheme.secondaryVariant,),
+                // leading: Icon(
+                //   Icons.logout,
+                //   color: _colorScheme.secondaryVariant,
+                // ),
+                leading:FaIcon(
+                  FontAwesomeIcons.arrowRightFromBracket,
+                  size: 18,
+                  color: _colorScheme.secondary,
+                ),
                 title: Text(
                   "Logout",
                   style: _textTheme.headline2,
