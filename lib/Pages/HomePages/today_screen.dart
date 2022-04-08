@@ -182,7 +182,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                         //main box of the shift
                                         return Container(
                                           margin: const EdgeInsets.symmetric(
-                                              vertical: 8),
+                                              vertical: 8,),
                                           decoration: BoxDecoration(
                                             color: _colorScheme.primary,
                                             borderRadius:
@@ -230,11 +230,21 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           controller
                                                               .ifAcceptedShiftIsSelected
                                                               .add(true);
-                                                        } else {
+                                                        } else if (shiftData[keyList[
+                                                                      index]][
+                                                                  insideKeyList
+                                                                          .toList()[
+                                                                      index2]][
+                                                              'confirmed_by_staff'] ==
+                                                          "2"){
                                                           controller
                                                               .ifDeclinedShiftIsSelected
                                                               .add(true);
                                                         }
+                                                        print("acceptedshiftisseleceted ${controller
+                                                              .ifAcceptedShiftIsSelected}");
+                                                        print("edclinedshiftisseleceted ${controller
+                                                              .ifDeclinedShiftIsSelected}");
                                                       } else if (controller
                                                           .selectedItemsList
                                                           .contains(
@@ -256,11 +266,21 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           controller
                                                               .ifAcceptedShiftIsSelected
                                                               .remove(true);
-                                                        } else {
+                                                        } else if (shiftData[keyList[
+                                                                      index]][
+                                                                  insideKeyList
+                                                                          .toList()[
+                                                                      index2]][
+                                                              'confirmed_by_staff'] ==
+                                                          "2"){
                                                           controller
                                                               .ifDeclinedShiftIsSelected
                                                               .remove(true);
                                                         }
+                                                        print("acceptedshiftisseleceted ${controller
+                                                              .ifAcceptedShiftIsSelected}");
+                                                        print("edclinedshiftisseleceted ${controller
+                                                              .ifDeclinedShiftIsSelected}");
                                                       }
                                                     },
                                                     value: controller
@@ -291,20 +311,31 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           .addIdOfSelectedItemsList(
                                                               "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
                                                       if (shiftData[keyList[
+                                                                        index]][
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]
+                                                                [
+                                                                'confirmed_by_staff'] ==
+                                                            "1") {
+                                                          controller
+                                                              .ifAcceptedShiftIsSelected
+                                                              .add(true);
+                                                        } else if (shiftData[keyList[
                                                                       index]][
                                                                   insideKeyList
                                                                           .toList()[
                                                                       index2]][
                                                               'confirmed_by_staff'] ==
-                                                          "1") {
-                                                        controller
-                                                            .ifAcceptedShiftIsSelected
-                                                            .add(true);
-                                                      } else {
-                                                        controller
-                                                            .ifDeclinedShiftIsSelected
-                                                            .add(true);
-                                                      }
+                                                          "2"){
+                                                          controller
+                                                              .ifDeclinedShiftIsSelected
+                                                              .add(true);
+                                                        }
+                                                        print("acceptedshiftisseleceted ${controller
+                                                              .ifAcceptedShiftIsSelected}");
+                                                        print("edclinedshiftisseleceted ${controller
+                                                              .ifDeclinedShiftIsSelected}");
                                                       // controller.forDeletionOfSelectedItemsList["$index$index2"] = [snapshot.data['start_date'], snapshot.data['end_date'],];
                                                       print(
                                                           "addsil ${controller.selectedItemsList}");
@@ -321,20 +352,31 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           .deleteIdOfSelectedItemsList(
                                                               "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
                                                       if (shiftData[keyList[
+                                                                        index]][
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]
+                                                                [
+                                                                'confirmed_by_staff'] ==
+                                                            "1") {
+                                                          controller
+                                                              .ifAcceptedShiftIsSelected
+                                                              .remove(true);
+                                                        } else if (shiftData[keyList[
                                                                       index]][
                                                                   insideKeyList
                                                                           .toList()[
                                                                       index2]][
                                                               'confirmed_by_staff'] ==
-                                                          "1") {
-                                                        controller
-                                                            .ifAcceptedShiftIsSelected
-                                                            .remove(true);
-                                                      } else {
-                                                        controller
-                                                            .ifDeclinedShiftIsSelected
-                                                            .remove(true);
-                                                      }
+                                                          "2"){
+                                                          controller
+                                                              .ifDeclinedShiftIsSelected
+                                                              .remove(true);
+                                                        }
+                                                        print("acceptedshiftisseleceted ${controller
+                                                              .ifAcceptedShiftIsSelected}");
+                                                        print("edclinedshiftisseleceted ${controller
+                                                              .ifDeclinedShiftIsSelected}");
                                                       print(
                                                           "delsil ${controller.selectedItemsList}");
                                                       print(
@@ -373,7 +415,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                     59)
                                                                 : shiftData[keyList[index]][insideKeyList.toList()[index2]]['confirmed_by_staff'] ==
                                                                         "2"
-                                                                    ? Color.fromARGB(
+                                                                    ? const Color.fromARGB(
                                                                         255,
                                                                         194,
                                                                         48,
@@ -443,19 +485,20 @@ class _SecondScreenState extends State<SecondScreen> {
                                                       const Duration(
                                                           milliseconds: 200),
                                                       () {
-                                                        if (shiftData[keyList[
-                                                                        index]][insideKeyList
-                                                                            .toList()[
-                                                                        index2]]
-                                                                    [
-                                                                    'is_confirm'] ==
-                                                                "1" &&
-                                                            shiftData[keyList[
-                                                                        index]][
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['confirmed_by_staff'] ==
-                                                                "1") {
+                                                        // if (shiftData[keyList[
+                                                        //                 index]][insideKeyList
+                                                        //                     .toList()[
+                                                        //                 index2]]
+                                                        //             [
+                                                        //             'is_confirm'] ==
+                                                        //         "1" &&
+
+                                                            // if(shiftData[keyList[
+                                                            //             index]][
+                                                            //         insideKeyList
+                                                            //                 .toList()[
+                                                            //             index2]]['confirmed_by_staff'] ==
+                                                            //     "1") {
                                                           Get.to(
                                                               () =>
                                                                   CheckinCheckoutPage(),
@@ -481,44 +524,47 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                       "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift']}"
                                                                 }
                                                               ]);
-                                                        } else if (shiftData[keyList[
-                                                                        index]][insideKeyList
-                                                                            .toList()[
-                                                                        index2]]
-                                                                    [
-                                                                    'is_confirm'] !=
-                                                                "1" &&
-                                                            shiftData[keyList[
-                                                                        index]][
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['confirmed_by_staff'] ==
-                                                                "1") {
-                                                          Get.snackbar(
-                                                              'Message',
-                                                              'Shift is not confirmed from the backend.',
-                                                              duration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          1200));
-                                                        } else if (shiftData[
-                                                                        keyList[
-                                                                            index]]
-                                                                    [
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]
-                                                                [
-                                                                'confirmed_by_staff'] !=
-                                                            "1") {
-                                                          Get.snackbar(
-                                                              'Message',
-                                                              'You need to confirm the shift first.',
-                                                              duration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          1200));
-                                                        }
+                                                        // } 
+
+                                                        // else if (shiftData[keyList[
+                                                        //                 index]][insideKeyList
+                                                        //                     .toList()[
+                                                        //                 index2]]
+                                                        //             [
+                                                        //             'is_confirm'] !=
+                                                        //         "1" &&
+                                                        //     shiftData[keyList[
+                                                        //                 index]][
+                                                        //             insideKeyList
+                                                        //                     .toList()[
+                                                        //                 index2]]['confirmed_by_staff'] ==
+                                                        //         "1") {
+                                                        //   Get.snackbar(
+                                                        //       'Message',
+                                                        //       'Shift is not confirmed from the backend.',
+                                                        //       duration:
+                                                        //           const Duration(
+                                                        //               milliseconds:
+                                                        //                   1200));
+                                                        // } 
+                                                        // else if (shiftData[
+                                                        //                 keyList[
+                                                        //                     index]]
+                                                        //             [
+                                                        //             insideKeyList
+                                                        //                     .toList()[
+                                                        //                 index2]]
+                                                        //         [
+                                                        //         'confirmed_by_staff'] !=
+                                                        //     "1") {
+                                                        //   Get.snackbar(
+                                                        //       'Message',
+                                                        //       'You need to confirm the shift first.',
+                                                        //       duration:
+                                                        //           const Duration(
+                                                        //               milliseconds:
+                                                        //                   1200));
+                                                        // }
                                                       },
                                                     );
                                                   },
@@ -868,7 +914,7 @@ class _SecondScreenState extends State<SecondScreen> {
                             // controller.selectedItemsList.clear();
                           },
                           highlightColor: Colors.amber,
-                          splashColor: Color.fromARGB(255, 126, 19, 19),
+                          splashColor: const Color.fromARGB(255, 126, 19, 19),
                           child: Container(
                             height: 40,
                             decoration: const BoxDecoration(

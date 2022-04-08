@@ -748,7 +748,7 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
             style: Theme.of(context)
                 .textTheme
                 .headline5!
-                .copyWith(fontFamily: 'Ubuntu-Regular'),
+                .copyWith(fontFamily: 'Ubuntu-Regular',fontWeight: FontWeight.w400,),
           ),
           Text(value2),
         ],

@@ -21,7 +21,7 @@ class MyTheme {
           headline1: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+            color: Color.fromARGB(255, 88, 85, 85),
           ),
           //for error text
           headline6: TextStyle(

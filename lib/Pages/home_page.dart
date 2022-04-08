@@ -134,10 +134,6 @@ class _HomePageState extends State<HomePage> {
                       (jsonDecode(value.body))['data']['end_date']),
                   // print((jsonDecode(value.body))['data']['start_date']);
                 );
-
-                // print("bla bla dates");
-                // print(date.getStartDate);
-                // print(date.getEndDate);
                 setState(() {});
               }
               if (int == 2) {
@@ -176,6 +172,8 @@ class _HomePageState extends State<HomePage> {
         ),
         drawer: const MyDrawer(),
         body: TabBarView(
+          // to disable swiping tabs in TabBar flutter
+          physics: const NeverScrollableScrollPhysics(),
           children: [FirstScreen(), SecondScreen(), ThirdScreen()],
         ),
       ),

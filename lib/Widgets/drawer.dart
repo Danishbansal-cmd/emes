@@ -157,29 +157,30 @@ class _MyDrawerState extends State<MyDrawer> {
                 // subtitle:const  Text("Subtitle Please"),
               ),
             ),
-            ListTile(
-              // leading: Icon(
-              //   Icons.abc,
-              //   color: _colorScheme.secondaryVariant,
-              // ),
-              leading: FaIcon(
-                  FontAwesomeIcons.arrowRightFromBracket,
-                  size: 18,
-                  color: _colorScheme.secondary,
-                ),
-              title: Consumer<ThemeProvider>(
-                builder: (context, appLevelThemeProvider, _) {
-                  return Switch.adaptive(
-                    value: appLevelThemeProvider.themeMode == ThemeMode.dark,
-                    onChanged: (value) {
-                      final provider =
-                          Provider.of<ThemeProvider>(context, listen: false);
-                      provider.toggleTheme(value);
-                    },
-                  );
-                },
-              ),
-            ),
+            // ListTile(
+            //   // leading: Icon(
+            //   //   Icons.abc,
+            //   //   color: _colorScheme.secondaryVariant,
+            //   // ),
+            //   leading: FaIcon(
+            //       FontAwesomeIcons.arrowRightFromBracket,
+            //       size: 18,
+            //       color: _colorScheme.secondary,
+            //     ),
+            //   title: Consumer<ThemeProvider>(
+            //     builder: (context, appLevelThemeProvider, _) {
+            //       return Switch.adaptive(
+            //         value: appLevelThemeProvider.themeMode == ThemeMode.dark,
+            //         onChanged: (value) {
+            //           final provider =
+            //               Provider.of<ThemeProvider>(context, listen: false);
+            //           provider.toggleTheme(value);
+            //         },
+            //       );
+            //     },
+            //   ),
+            // ),
+            
             InkWell(
               onTap: () {
                 Navigator.of(context).pop();
@@ -214,8 +215,8 @@ class _MyDrawerState extends State<MyDrawer> {
                                 const Text(
                                   "Are you sure want to logout of this app?",
                                   style: TextStyle(
-                                    color: Color(0xff525558),
-                                    fontWeight: FontWeight.w500,
+                                    color: Color.fromARGB(255, 148, 148, 148),
+                                    fontWeight: FontWeight.w400,
                                     fontSize: 18,
                                   ),
                                 ),

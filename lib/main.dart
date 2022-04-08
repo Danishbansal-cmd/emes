@@ -60,6 +60,7 @@ class _MyAppState extends State<MyApp> {
       child: Consumer<ThemeProvider>(
         builder: (context, appLevelThemeProvider, _) {
           return GetMaterialApp(
+            // navigatorObservers: [NavigationHistoryObserver()],
             title: 'Flutter Demo',
             theme: MyTheme.lightTheme(context),
             darkTheme: MyTheme.darkTheme(context),
