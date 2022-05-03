@@ -9,7 +9,8 @@ import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:geocoding/geocoding.dart' as geocode;
-import 'package:geocoder/geocoder.dart';
+// import 'package:geocoder/geocoder.dart';
+import 'package:geocoder2/geocoder2.dart';
 // import 'package:geocoding_platform_interface/geocoding_platform_interface.dart';
 
 class CheckinCheckoutPage extends StatefulWidget {
@@ -439,21 +440,32 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
                                   //     "${address.countryName}(${address.countryCode}) ${address.region}(${address.postal}) ${address.streetAddress} ${address.streetNumber}";
                                   //to get user location address
                                   //from geocoder
-                                  var address = await Geocoder.local
-                                      .findAddressesFromCoordinates(Coordinates(
-                                          checkinCheckoutController
+                                  // var address = await Geocoder.local
+                                  //     .findAddressesFromCoordinates(Coordinates(
+                                          // checkinCheckoutController
+                                          //     .locationData!.latitude!,
+                                          // checkinCheckoutController
+                                          //     .locationData!.longitude!));
+                                  // Address newAddress;
+                                  // newAddress = address.first;
+                                  // checkinCheckoutController.addressLocation
+                                  //     .value = newAddress.addressLine;
+                                  // print("geocoder adresses ${address.first}");
+                                  // print(
+                                  //     "geocoder adresses ${newAddress.addressLine}");
+                                  //from geocoder2
+                                  GeoData data = await Geocoder2.getDataFromCoordinates(
+                                    latitude: checkinCheckoutController
                                               .locationData!.latitude!,
-                                          checkinCheckoutController
-                                              .locationData!.longitude!));
-                                  Address newAddress;
-                                  newAddress = address.first;
-                                  checkinCheckoutController.addressLocation
-                                      .value = newAddress.addressLine;
-                                  print("geocoder adresses ${address.first}");
-                                  print(
-                                      "geocoder adresses ${newAddress.addressLine}");
+                                    longitude: checkinCheckoutController
+                                              .locationData!.longitude!,
+                                    googleMapApiKey: "AIzaSyBE4FuOoF0qPuxlXyJeAiVThIMDX0iwx2I");
+                                    checkinCheckoutController.addressLocation
+                                      .value = data.country + " " + data.state + " " + data.city + " " + data.postalCode +" " + data.address;
+                                      print("this is the geocoder2 address ${data.country + " " + data.state + " " + data.city + " " + data.postalCode +" " + data.address}");
+                                    //resume previous function
                                   checkinCheckoutController
-                                      .showAddressLocation.value = true;
+                                      .showAddressLocation.value = true; 
                                   checkinCheckoutController
                                       .showCircularProgressIndicator
                                       .value = false;

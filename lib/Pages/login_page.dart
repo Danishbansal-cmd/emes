@@ -177,7 +177,7 @@ class LoginPage extends StatelessWidget {
                                         },
                                         child: Container(
                                           width: double.infinity,
-                                          height: 35,
+                                          height: 30,
                                           child: const Center(
                                             child: Text(
                                               "Sign In",

@@ -38,6 +38,13 @@ class _SecondScreenState extends State<SecondScreen> {
   }
 
   @override
+    void dispose() {
+        // TODO: implement dispose
+        super.dispose();
+        controller.dispose();
+     }
+
+  @override
   Widget build(BuildContext context) {
     var date = HomepageDatesProvider();
     void tryFunction(String value1, String value2) {

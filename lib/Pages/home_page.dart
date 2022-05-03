@@ -29,6 +29,13 @@ class _HomePageState extends State<HomePage> {
   final homeController = Get.put(HomeController());
 
   @override
+    void dispose() {
+        // TODO: implement dispose
+        super.dispose();
+        homeController.dispose();
+     }
+
+  @override
   Widget build(BuildContext context) {
     void tryFunction(String value1, String value2) {
       // print("tryfunction real values $value1   $value2");
@@ -201,10 +208,11 @@ class HomeController extends GetxController{
     // secureScreen();
     // TODO: implement onInit
     super.onInit();
-    getLocation().then((value) {
-      LocationData? location = value;
-      getAddress(location!.latitude!, location.longitude);
-    });
+    getLocation();
+    // .then((value) {
+    //   LocationData? location = value;
+    //   getAddress(location!.latitude!, location.longitude);
+    // });
   }
 
   Future<LocationData?> getLocation()async{
