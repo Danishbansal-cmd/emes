@@ -283,7 +283,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           height: 5,
         ),
         Container(
-          height: 40,
           padding: const EdgeInsets.symmetric(
             horizontal: 10,
           ).copyWith(right: 0),
@@ -294,37 +293,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: 2,
             ),
           ),
-          child: Center(
-            child: TextField(
-              cursorColor: Colors.grey,
-              enableInteractiveSelection: false,
-              controller: controller,
-              keyboardType: text == "Email"
-                  ? TextInputType.emailAddress
-                  : text == "Mobile"
-                      ? TextInputType.phone
-                      : TextInputType.name,
-              textInputAction:
-                  text == "Email" ? TextInputAction.done : TextInputAction.next,
-              onSubmitted: (value) {
-                text == "Email"
-                    ? FocusScope.of(context).dispose()
-                    : FocusScope.of(context).nextFocus();
-              },
-              onChanged: (value) {
-                setfunction(value);
-              },
-              decoration: InputDecoration(
-                hintText: text,
-                border: InputBorder.none,
-                suffixIcon: IconButton(
-                  color: Colors.grey,
-                  padding: const EdgeInsets.only(bottom: 2, right: 0),
-                  onPressed: () {
-                    controller.clear();
-                  },
-                  icon: const Icon(Icons.cancel),
-                ),
+          child: TextField(
+            textAlignVertical: TextAlignVertical.center,
+            cursorColor: Colors.grey,
+            enableInteractiveSelection: false,
+            controller: controller,
+            keyboardType: text == "Email"
+                ? TextInputType.emailAddress
+                : text == "Mobile"
+                    ? TextInputType.phone
+                    : TextInputType.name,
+            textInputAction:
+                text == "Email" ? TextInputAction.done : TextInputAction.next,
+            onSubmitted: (value) {
+              text == "Email"
+                  ? FocusScope.of(context).dispose()
+                  : FocusScope.of(context).nextFocus();
+            },
+            onChanged: (value) {
+              setfunction(value);
+            },
+            decoration: InputDecoration(
+              hintText: text,
+              border: InputBorder.none,
+              suffixIcon: IconButton(
+                color: Colors.grey,
+                padding: const EdgeInsets.only(bottom: 2, right: 0),
+                onPressed: () {
+                  controller.clear();
+                },
+                icon: const Icon(Icons.cancel),
               ),
             ),
           ),

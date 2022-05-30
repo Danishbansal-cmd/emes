@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Widgets/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,11 +14,12 @@ class ApplyLeavePage extends StatefulWidget {
 }
 
 class _ApplyLeavePageState extends State<ApplyLeavePage> {
+  //initializing text controller
   TextEditingController fromDateController = TextEditingController();
-
   TextEditingController toDateController = TextEditingController();
-
   TextEditingController reasonController = TextEditingController();
+  //initializing getxcontroller
+  final applyLeavePageController = Get.put(ApplyLeavePageController());
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                 child: SingleChildScrollView(
                                   child: Container(
                                     // width: MediaQuery.of(context).size.width,
-                                    height: 410,
+                                    // height: 410,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       color:
@@ -73,8 +74,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                           height: 10,
                                         ),
                                         //
-                                        //
                                         //Apply Leave Form First's Row
+                                        //and main heading Row
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -125,10 +126,9 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                           height: 5,
                                         ),
                                         Container(
-                                          height: 40,
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 10,
-                                          ),
+                                          ).copyWith(right: 0),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(5),
@@ -137,45 +137,37 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                               width: 2,
                                             ),
                                           ),
-                                          child: Center(
-                                            child: Consumer<
-                                                ApplyLeaveFormProvider>(
-                                              builder: (context,
-                                                  appLevelApplyLeaveFormProvider,
-                                                  _) {
-                                                return TextField(
-                                                  cursorColor: Colors.grey,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  onChanged: (value) {
-                                                    appLevelApplyLeaveFormProvider
-                                                        .setFromDateErrorText(
-                                                            value);
-                                                  },
-                                                  controller:
-                                                      fromDateController,
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    // labelText: "hello 1",
-                                                    hintText:
-                                                        "Select From Date",
-                                                    border: InputBorder.none,
-                                                  ),
-                                                );
-                                              },
+                                          child: TextField(
+                                            cursorColor: Colors.grey,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            onChanged: (value) {
+                                              applyLeavePageController
+                                                  .setFromDateErrorText(value);
+                                            },
+                                            controller: fromDateController,
+                                            textAlignVertical:
+                                                TextAlignVertical.center,
+                                            decoration: InputDecoration(
+                                              hintText: "Select From Date",
+                                              border: InputBorder.none,
+                                              suffixIcon: IconButton(
+                                                color: Colors.grey,
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 2, right: 0),
+                                                onPressed: () {
+                                                  fromDateController.clear();
+                                                },
+                                                icon: const Icon(Icons.cancel),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                        Consumer<ApplyLeaveFormProvider>(
-                                          builder: (context,
-                                              appLevelApplyLeaveFormProvider,
-                                              _) {
-                                            return Text(
-                                              appLevelApplyLeaveFormProvider
-                                                  .getFromDateErrorText,
-                                              style: _textTheme.headline6,
-                                            );
-                                          },
+                                        Obx(() => Text(
+                                            applyLeavePageController
+                                                .getFromDateErrorText,
+                                            style: _textTheme.headline6,
+                                          ),
                                         ),
                                         //
                                         //
@@ -185,9 +177,9 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                           height: 5,
                                         ),
                                         Container(
-                                          height: 40,
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: 10),
+                                            horizontal: 10,
+                                          ).copyWith(right: 0),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(5),
@@ -196,41 +188,37 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                               width: 2,
                                             ),
                                           ),
-                                          child: Center(
-                                            child: Consumer<
-                                                ApplyLeaveFormProvider>(
-                                              builder: (context,
-                                                  appLevelApplyLeaveFormProvider,
-                                                  _) {
-                                                return TextField(
-                                                  cursorColor: Colors.grey,
-                                                  onChanged: (value) {
-                                                    appLevelApplyLeaveFormProvider
-                                                        .setToDateErrorText(
-                                                            value);
-                                                  },
-                                                  controller: toDateController,
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    // labelText: "hello 1",
-                                                    hintText: "Select To Date",
-                                                    border: InputBorder.none,
-                                                  ),
-                                                );
-                                              },
+                                          child: TextField(
+                                            textInputAction: TextInputAction.done,
+                                            textAlignVertical:
+                                                TextAlignVertical.center,
+                                            cursorColor: Colors.grey,
+                                            onChanged: (value) {
+                                              applyLeavePageController
+                                                  .setToDateErrorText(value);
+                                            },
+                                            controller: toDateController,
+                                            decoration: InputDecoration(
+                                              // labelText: "hello 1",
+                                              hintText: "Select To Date",
+                                              border: InputBorder.none,
+                                              suffixIcon: IconButton(
+                                                color: Colors.grey,
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 2, right: 0),
+                                                onPressed: () {
+                                                  fromDateController.clear();
+                                                },
+                                                icon: const Icon(Icons.cancel),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                        Consumer<ApplyLeaveFormProvider>(
-                                          builder: (context,
-                                              appLevelApplyLeaveFormProvider,
-                                              _) {
-                                            return Text(
-                                              appLevelApplyLeaveFormProvider
-                                                  .getToDateErrorText,
-                                              style: _textTheme.headline6,
-                                            );
-                                          },
+                                        Obx(() =>  Text(
+                                            applyLeavePageController
+                                                .getToDateErrorText,
+                                            style: _textTheme.headline6,
+                                          ),
                                         ),
                                         //
                                         //
@@ -251,45 +239,31 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                               width: 2,
                                             ),
                                           ),
-                                          child:
-                                              Consumer<ApplyLeaveFormProvider>(
-                                            builder: (context,
-                                                appLevelApplyLeaveFormProvider,
-                                                _) {
-                                              return TextField(
-                                                cursorColor: Colors.grey,
-                                                textInputAction:
-                                                    TextInputAction.done,
-                                                maxLines: 5,
-                                                minLines: 1,
-                                                onChanged: (value) {
-                                                  appLevelApplyLeaveFormProvider
-                                                      .setReasonErrorText(
-                                                    value,
-                                                  );
-                                                },
-                                                controller: reasonController,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  // labelText: "hello 1",
-                                                  hintText:
-                                                      "Type Reason Here...",
-                                                  border: InputBorder.none,
-                                                ),
+                                          child: TextField(
+                                            cursorColor: Colors.grey,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            maxLines: 5,
+                                            minLines: 1,
+                                            onChanged: (value) {
+                                              applyLeavePageController
+                                                  .setReasonErrorText(
+                                                value,
                                               );
                                             },
+                                            controller: reasonController,
+                                            decoration: const InputDecoration(
+                                              // labelText: "hello 1",
+                                              hintText: "Type Reason Here...",
+                                              border: InputBorder.none,
+                                            ),
                                           ),
                                         ),
-                                        Consumer<ApplyLeaveFormProvider>(
-                                          builder: (context,
-                                              appLevelApplyLeaveFormProvider,
-                                              _) {
-                                            return Text(
-                                              appLevelApplyLeaveFormProvider
-                                                  .getReasonErrorText,
-                                              style: _textTheme.headline6,
-                                            );
-                                          },
+                                        Obx(() =>  Text(
+                                            applyLeavePageController
+                                                .getReasonErrorText,
+                                            style: _textTheme.headline6,
+                                          ),
                                         ),
                                         //
                                         const SizedBox(
@@ -297,47 +271,41 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                         ),
                                         //
                                         // Apply Leave Button
-                                        Consumer<ApplyLeaveFormProvider>(
-                                          builder: (context,
-                                              applyLeaveFormProvider, child) {
-                                            return Material(
-                                              color: Colors.blue,
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              child: InkWell(
-                                                // splashColor: Colors.white,
-                                                onTap: () {
-                                                  applyLeaveFormProvider
-                                                      .validateApplyLeaveFormData(
-                                                    fromDateController.text,
-                                                    toDateController.text,
-                                                    reasonController.text
-                                                        .trim()
-                                                        .replaceAll('  ', ' ')
-                                                        .replaceAll('  ', ' '),
-                                                    context,
-                                                  );
-                                                  setState(() {});
-                                                },
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  height: 35,
-                                                  child: const Center(
-                                                    child: Text(
-                                                      "Apply Leave",
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white,
-                                                        letterSpacing: 1,
-                                                      ),
-                                                    ),
+                                        Material(
+                                          color: Colors.blue,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          child: InkWell(
+                                            // splashColor: Colors.white,
+                                            onTap: () {
+                                              applyLeavePageController
+                                                  .validateApplyLeaveFormData(
+                                                fromDateController.text,
+                                                toDateController.text,
+                                                reasonController.text
+                                                    .trim()
+                                                    .replaceAll('  ', ' ')
+                                                    .replaceAll('  ', ' '),
+                                                context,
+                                              );
+                                              // setState(() {});
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              height: 35,
+                                              child: const Center(
+                                                child: Text(
+                                                  "Apply Leave",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    letterSpacing: 1,
                                                   ),
                                                 ),
                                               ),
-                                            );
-                                          },
-                                        )
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -406,7 +374,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                         openLeaveBarProvider
                                             .setTestingIndex(index);
                                       },
-                                      child: Container( //this represents apply leave box
+                                      child: Container(
+                                        //this represents apply leave box
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(5),
@@ -416,13 +385,13 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                   .onSecondary,
                                               width: 1.5),
                                         ),
-                                        height: (openLeaveBarProvider
-                                                    .boolValue &&
-                                                openLeaveBarProvider
-                                                        .getIntTestingIndex ==
-                                                    index)
-                                            ? 120
-                                            : 54,
+                                        // height: (openLeaveBarProvider
+                                        //             .boolValue &&
+                                        //         openLeaveBarProvider
+                                        //                 .getIntTestingIndex ==
+                                        //             index)
+                                        //     ? 120
+                                        //     : 54,
                                         width: double.infinity,
                                         child: Column(
                                           children: [
@@ -435,6 +404,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                       .spaceBetween,
                                               children: [
                                                 //box to represent the dates
+                                                //and the indicator
                                                 Container(
                                                   // color: Colors.grey,
                                                   height: 50,
@@ -477,9 +447,6 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                                       index][
                                                                   'ApplyForHoliday']
                                                               ['on_date']),
-                                                          const SizedBox(
-                                                            height: 5,
-                                                          ),
                                                           Text(appliedLeavesData[
                                                                       index][
                                                                   'ApplyForHoliday']
@@ -496,9 +463,10 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                   height: 50,
                                                   child: Row(
                                                     children: [
+                                                      //status container
                                                       Container(
                                                         height: 30,
-                                                        width: 80,
+                                                        width: 90,
                                                         child: Center(
                                                           child: Text(
                                                             appliedLeavesData[index]
@@ -625,84 +593,83 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                                 ? Colors.green
                                                                 : Colors.red,
                                                       ),
-                                                      height: 67,
+                                                      // height: 67,
                                                       padding: const EdgeInsets
                                                           .symmetric(
                                                         horizontal: 25,
                                                         vertical: 5,
                                                       ),
                                                       child:
-                                                          SingleChildScrollView(
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text.rich(
-                                                              TextSpan(
-                                                                  text:
-                                                                      'Reason:',
-                                                                  style: _textTheme
-                                                                      .headline2!
-                                                                      .copyWith(
-                                                                          color: Colors
-                                                                              .black),
-                                                                  children: <
-                                                                      InlineSpan>[
-                                                                    const TextSpan(
-                                                                        text:
-                                                                            "   "),
-                                                                    TextSpan(
-                                                                      text: appliedLeavesData[index]
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text.rich(
+                                                                TextSpan(
+                                                                    text:
+                                                                        'Reason:',
+                                                                    style: _textTheme
+                                                                        .headline2!
+                                                                        .copyWith(
+                                                                            color: Colors
+                                                                                .black),
+                                                                    children: <
+                                                                        InlineSpan>[
+                                                                      const TextSpan(
+                                                                          text:
+                                                                              "   "),
+                                                                      TextSpan(
+                                                                        text: appliedLeavesData[index]
+                                                                                [
+                                                                                'ApplyForHoliday']
+                                                                            [
+                                                                            'reason'],
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                16,
+                                                                            fontWeight:
+                                                                                FontWeight.normal),
+                                                                      )
+                                                                    ]),
+                                                              ),
+                                                              (appliedLeavesData[index]
                                                                               [
                                                                               'ApplyForHoliday']
                                                                           [
-                                                                          'reason'],
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.normal),
-                                                                    )
-                                                                  ]),
-                                                            ),
-                                                            (appliedLeavesData[index]
-                                                                            [
-                                                                            'ApplyForHoliday']
-                                                                        [
-                                                                        'admin_msg'] ==
-                                                                    "")
-                                                                ? SizedBox.shrink()
-                                                                : Text.rich(
-                                                                    TextSpan(
-                                                                      text:
-                                                                          'Admin Reply:',
-                                                                      style: _textTheme
-                                                                          .headline2!
-                                                                          .copyWith(
-                                                                              color: Colors.black),
-                                                                      children: <
-                                                                          InlineSpan>[
-                                                                        const TextSpan(
-                                                                            text:
-                                                                                "   "),
-                                                                        TextSpan(
-                                                                          text: appliedLeavesData[index]['ApplyForHoliday']
-                                                                              [
-                                                                              'admin_msg'],
-                                                                          style: const TextStyle(
-                                                                              fontSize: 16,
-                                                                              fontWeight: FontWeight.normal),
-                                                                        )
-                                                                      ],
+                                                                          'admin_msg'] ==
+                                                                      "")
+                                                                  ? SizedBox
+                                                                      .shrink()
+                                                                  : Text.rich(
+                                                                      TextSpan(
+                                                                        text:
+                                                                            'Admin Reply:',
+                                                                        style: _textTheme
+                                                                            .headline2!
+                                                                            .copyWith(
+                                                                                color: Colors.black),
+                                                                        children: <
+                                                                            InlineSpan>[
+                                                                          const TextSpan(
+                                                                              text:
+                                                                                  "   "),
+                                                                          TextSpan(
+                                                                            text: appliedLeavesData[index]['ApplyForHoliday']
+                                                                                [
+                                                                                'admin_msg'],
+                                                                            style: const TextStyle(
+                                                                                fontSize: 16,
+                                                                                fontWeight: FontWeight.normal),
+                                                                          )
+                                                                        ],
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                          ],
-                                                        ),
-                                                      ),
+                                                            ],
+                                                          ),
                                                     ),
                                                   ),
                                                 ),
@@ -734,142 +701,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
   }
 }
 
-class ApplyLeaveFormProvider extends ChangeNotifier {
-  String _fromDateErrorText = "";
-  bool _fromDateErrorBool = false;
-  String _toDateErrorText = "";
-  bool _toDateErrorBool = false;
-  String _reasonErrorText = "";
-
-  get getFromDateErrorText {
-    return _fromDateErrorText;
-  }
-
-  get getToDateErrorText {
-    return _toDateErrorText;
-  }
-
-  get getReasonErrorText {
-    return _reasonErrorText;
-  }
-
-  get getFromDateErrorBool {
-    return _fromDateErrorBool;
-  }
-
-  get getToDateErrorBool {
-    return _toDateErrorBool;
-  }
-
-  setFromDateErrorText(String value) {
-    RegExp calenderDate = RegExp(
-        r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
-
-    if (value.isEmpty) {
-      _fromDateErrorText = "*You must select a value.";
-      _fromDateErrorBool = true;
-    } else if (!calenderDate.hasMatch(value)) {
-      _fromDateErrorText = "*Selected Date should be after current date.";
-      _fromDateErrorBool = true;
-    } else {
-      _fromDateErrorText = "";
-      _fromDateErrorBool = false;
-    }
-    notifyListeners();
-  }
-
-  setToDateErrorText(String value) {
-    RegExp calenderDate = RegExp(
-        r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
-    if (value.isEmpty) {
-      _toDateErrorText = "*You must select a value.";
-      _toDateErrorBool = true;
-    } else if (!calenderDate.hasMatch(value)) {
-      _toDateErrorText = "*Selected Date should be before date 06/06/2022.";
-      _toDateErrorBool = true;
-    } else {
-      _toDateErrorText = "";
-      _toDateErrorBool = false;
-    }
-    notifyListeners();
-  }
-
-  setReasonErrorText(String value) {
-    if (value.isEmpty) {
-      _reasonErrorText = "*You must select a value.";
-    }
-    // else if(value.length > 30){
-    //   _reasonErrorText = "*Reason is too long.";
-    // }
-    else {
-      _reasonErrorText = "";
-    }
-    notifyListeners();
-  }
-
-  validateApplyLeaveFormData(
-      String value1, String value2, String value3, BuildContext context) {
-    setFromDateErrorText(value1);
-    setToDateErrorText(value2);
-    setReasonErrorText(value3);
-
-    if (value1.isNotEmpty &&
-        getFromDateErrorBool == false &&
-        value2.isNotEmpty &&
-        getToDateErrorBool == false &&
-        value3.isNotEmpty) {
-      applyLeaveData(value1, value2, value3, context);
-    }
-  }
-
-  Future applyLeaveData(
-      String value1, String value2, String value3, BuildContext context) async {
-    var response = await http.post(
-      Uri.parse(Constants.getApplyLeaveUrl),
-      body: {
-        "user_id": Constants.getStaffID,
-        "on_date": value1,
-        "to_date": value2,
-        "reason": value3
-      },
-    );
-
-    var jsonData = jsonDecode(response.body);
-    print("ondate $value1");
-    print("todate $value2");
-    print(Constants.getStaffID);
-    print("message ${jsonData['message']}");
-    Navigator.of(context).pop(true);
-    if (jsonData['status'] == 200) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            child: Stack(
-              children: [
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.white,
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20)
-                          .copyWith(top: 0),
-                  child: Center(child: Text(jsonData['message'])),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    }
-    if (jsonData['status'] == 401) {
-      Constants.basicWidget(jsonData['message'], context);
-    }
-  }
-}
+class ApplyLeaveFormProvider extends ChangeNotifier {}
 
 class OpenLeaveBarProvider extends ChangeNotifier {
   bool _value = false;
@@ -920,5 +752,140 @@ class AppliedLeavesProvider extends ChangeNotifier {
     // }
 
     return data2;
+  }
+}
+
+class ApplyLeavePageController extends GetxController {
+  RxString _fromDateErrorText = "".obs;
+  RxBool _fromDateErrorBool = false.obs;
+  RxString _toDateErrorText = "".obs;
+  RxBool _toDateErrorBool = false.obs;
+  RxString _reasonErrorText = "".obs;
+
+  get getFromDateErrorText {
+    return _fromDateErrorText.value;
+  }
+
+  get getToDateErrorText {
+    return _toDateErrorText.value;
+  }
+
+  get getReasonErrorText {
+    return _reasonErrorText.value;
+  }
+
+  get getFromDateErrorBool {
+    return _fromDateErrorBool.value;
+  }
+
+  get getToDateErrorBool {
+    return _toDateErrorBool.value;
+  }
+
+  setFromDateErrorText(String value) {
+    RegExp calenderDate = RegExp(
+        r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
+
+    if (value.isEmpty) {
+      _fromDateErrorText.value = "*You must select a value.";
+      _fromDateErrorBool.value = true;
+    } else if (!calenderDate.hasMatch(value)) {
+      _fromDateErrorText.value = "*Selected Date should be after current date.";
+      _fromDateErrorBool.value = true;
+    } else {
+      _fromDateErrorText.value = "";
+      _fromDateErrorBool.value = false;
+    }
+  }
+
+  setToDateErrorText(String value) {
+    RegExp calenderDate = RegExp(
+        r'^[0,1]?\d{1}\/(([0-2]?\d{1})|([3][0,1]{1}))\/(([1]{1}[9]{1}[9]{1}\d{1})|([2-9]{1}\d{3}))$');
+    if (value.isEmpty) {
+      _toDateErrorText.value = "*You must select a value.";
+      _toDateErrorBool.value = true;
+    } else if (!calenderDate.hasMatch(value)) {
+      _toDateErrorText.value =
+          "*Selected Date should be before date 06/06/2022.";
+      _toDateErrorBool.value = true;
+    } else {
+      _toDateErrorText.value = "";
+      _toDateErrorBool.value = false;
+    }
+  }
+
+  setReasonErrorText(String value) {
+    if (value.isEmpty) {
+      _reasonErrorText.value = "*You must select a value.";
+    }
+    // else if(value.length > 30){
+    //   _reasonErrorText = "*Reason is too long.";
+    // }
+    else {
+      _reasonErrorText.value = "";
+    }
+  }
+
+  validateApplyLeaveFormData(
+      String value1, String value2, String value3, BuildContext context) {
+    setFromDateErrorText(value1);
+    setToDateErrorText(value2);
+    setReasonErrorText(value3);
+
+    if (value1.isNotEmpty &&
+        getFromDateErrorBool == false &&
+        value2.isNotEmpty &&
+        getToDateErrorBool == false &&
+        value3.isNotEmpty) {
+      applyLeaveData(value1, value2, value3, context);
+    }
+  }
+
+  Future applyLeaveData(
+      String value1, String value2, String value3, BuildContext context) async {
+    var response = await http.post(
+      Uri.parse(Constants.getApplyLeaveUrl),
+      body: {
+        "user_id": Constants.getStaffID,
+        "on_date": value1,
+        "to_date": value2,
+        "reason": value3
+      },
+    );
+
+    var jsonData = jsonDecode(response.body);
+    print("ondate $value1");
+    print("todate $value2");
+    print(Constants.getStaffID);
+    print("message ${jsonData['message']}");
+    Navigator.of(context).pop(true);
+    if (jsonData['status'] == 200) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Stack(
+              children: [
+                Container(
+                  // height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white,
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20)
+                          .copyWith(top: 0),
+                  child: Center(child: Text(jsonData['message'])),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+    if (jsonData['status'] == 401) {
+      Constants.basicWidget(jsonData['message'], context);
+    }
   }
 }

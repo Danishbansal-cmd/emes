@@ -99,7 +99,7 @@ class SignupPage extends StatelessWidget {
                               horizontal: 20,
                               vertical: 20,
                             ),
-                            height: 500,
+                            // height: 500,
                             child: ChangeNotifierProvider<SignupFormProvider>(
                               create: (_) => SignupFormProvider(),
                               child: Column(
@@ -309,7 +309,6 @@ class SignupPage extends StatelessWidget {
           height: 5,
         ),
         Container(
-          height: 40,
           padding: const EdgeInsets.symmetric(
             horizontal: 10,
           ).copyWith(right: 0),
@@ -320,37 +319,36 @@ class SignupPage extends StatelessWidget {
               width: 2,
             ),
           ),
-          child: Center(
-            child: TextField(
-              cursorColor:Colors.grey,
-              controller: controller,
-              keyboardType: text == "Mobile"
-                  ? TextInputType.number
-                  : text == "Email"
-                      ? TextInputType.emailAddress
-                      : TextInputType.name,
-              textInputAction: text == "CompanyID"
-                  ? TextInputAction.done
-                  : TextInputAction.next,
-              onSubmitted: (value) {
-                text == "CompanyID"
-                    ? FocusScope.of(context).dispose()
-                    : FocusScope.of(context).nextFocus();
-              },
-              onChanged: (value) {
-                setfunction(value);
-              },
-              decoration: InputDecoration(
-                hintText: text,
-                border: InputBorder.none,
-                suffixIcon: IconButton(
-                  color: Colors.grey,
-                  padding: const EdgeInsets.only(bottom: 2, right: 0),
-                  onPressed: () {
-                    controller.clear();
-                  },
-                  icon: const Icon(Icons.cancel),
-                ),
+          child: TextField(
+            cursorColor:Colors.grey,
+            controller: controller,
+            keyboardType: text == "Mobile"
+                ? TextInputType.number
+                : text == "Email"
+                    ? TextInputType.emailAddress
+                    : TextInputType.name,
+            textInputAction: text == "CompanyID"
+                ? TextInputAction.done
+                : TextInputAction.next,
+            onSubmitted: (value) {
+              text == "CompanyID"
+                  ? FocusScope.of(context).dispose()
+                  : FocusScope.of(context).nextFocus();
+            },
+            onChanged: (value) {
+              setfunction(value);
+            },
+            textAlignVertical: TextAlignVertical.center,
+            decoration: InputDecoration(
+              hintText: text,
+              border: InputBorder.none,
+              suffixIcon: IconButton(
+                color: Colors.grey,
+                padding: const EdgeInsets.only(bottom: 2, right: 0),
+                onPressed: () {
+                  controller.clear();
+                },
+                icon: const Icon(Icons.cancel),
               ),
             ),
           ),

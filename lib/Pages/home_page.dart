@@ -67,13 +67,13 @@ class _HomePageState extends State<HomePage> {
             Consumer<HomepageDatesProvider>(
               builder: (context, appLevelHomepageDatesProvider, _) {
                 return Container(
-                  padding: const EdgeInsets.symmetric(vertical: 6)
+                  padding: const EdgeInsets.symmetric(vertical: 3)
                       .copyWith(right: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Constants.indicatorTracker(Colors.amber, 14),
+                      Constants.indicatorTracker(Colors.amber, 18),
                       const SizedBox(
                         width: 12,
                       ),

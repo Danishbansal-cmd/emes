@@ -35,7 +35,7 @@ dependencies:
   font_awesome_flutter: ^10.1.0
   get: ^4.6.1
   google_maps_flutter: ^2.1.4
-  location: ^4.2.0
+  location: ^4.4.0
   geocode: ^1.0.1
   geocoding: ^2.0.4
   geocoder2: ^1.1.0
