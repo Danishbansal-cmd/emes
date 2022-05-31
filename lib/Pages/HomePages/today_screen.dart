@@ -201,7 +201,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                               width: 1.5,
                                             ),
                                           ),
-                                          height: shiftContainerHeight,
+                                          // height: shiftContainerHeight,
                                           // padding: const EdgeInsets.symmetric(
                                           //     // horizontal: 15,
                                           //     // vertical: 15,
@@ -487,6 +487,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                                 color: Colors.transparent,
                                                 child: InkWell(
                                                   splashColor: Colors.blue,
+                                                  borderRadius: BorderRadius.circular(9),
                                                   onTap: () {
                                                     Future.delayed(
                                                       const Duration(
@@ -577,7 +578,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                                   },
                                                   child: Container(
                                                     // color: Colors.amber,
-                                                    // height: 90,
+                                                    height: 40,
                                                     width: 40,
                                                     child: const Center(
                                                       child: FaIcon(

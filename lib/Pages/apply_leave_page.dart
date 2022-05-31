@@ -163,7 +163,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                             ),
                                           ),
                                         ),
-                                        Obx(() => Text(
+                                        Obx(
+                                          () => Text(
                                             applyLeavePageController
                                                 .getFromDateErrorText,
                                             style: _textTheme.headline6,
@@ -189,7 +190,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                             ),
                                           ),
                                           child: TextField(
-                                            textInputAction: TextInputAction.done,
+                                            textInputAction:
+                                                TextInputAction.done,
                                             textAlignVertical:
                                                 TextAlignVertical.center,
                                             cursorColor: Colors.grey,
@@ -214,7 +216,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                             ),
                                           ),
                                         ),
-                                        Obx(() =>  Text(
+                                        Obx(
+                                          () => Text(
                                             applyLeavePageController
                                                 .getToDateErrorText,
                                             style: _textTheme.headline6,
@@ -259,7 +262,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                             ),
                                           ),
                                         ),
-                                        Obx(() =>  Text(
+                                        Obx(
+                                          () => Text(
                                             applyLeavePageController
                                                 .getReasonErrorText,
                                             style: _textTheme.headline6,
@@ -599,77 +603,78 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                         horizontal: 25,
                                                         vertical: 5,
                                                       ),
-                                                      child:
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text.rich(
-                                                                TextSpan(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text.rich(
+                                                            TextSpan(
+                                                                text: 'Reason:',
+                                                                style: _textTheme
+                                                                    .headline2!
+                                                                    .copyWith(
+                                                                        color: Colors
+                                                                            .black),
+                                                                children: <
+                                                                    InlineSpan>[
+                                                                  const TextSpan(
+                                                                      text:
+                                                                          "   "),
+                                                                  TextSpan(
+                                                                    text: appliedLeavesData[index]
+                                                                            [
+                                                                            'ApplyForHoliday']
+                                                                        [
+                                                                        'reason'],
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.normal),
+                                                                  )
+                                                                ]),
+                                                          ),
+                                                          (appliedLeavesData[index]
+                                                                          [
+                                                                          'ApplyForHoliday']
+                                                                      [
+                                                                      'admin_msg'] ==
+                                                                  "")
+                                                              ? SizedBox
+                                                                  .shrink()
+                                                              : Text.rich(
+                                                                  TextSpan(
                                                                     text:
-                                                                        'Reason:',
+                                                                        'Admin Reply:',
                                                                     style: _textTheme
                                                                         .headline2!
                                                                         .copyWith(
-                                                                            color: Colors
-                                                                                .black),
+                                                                            color:
+                                                                                Colors.black),
                                                                     children: <
                                                                         InlineSpan>[
                                                                       const TextSpan(
                                                                           text:
                                                                               "   "),
                                                                       TextSpan(
-                                                                        text: appliedLeavesData[index]
-                                                                                [
-                                                                                'ApplyForHoliday']
+                                                                        text: appliedLeavesData[index]['ApplyForHoliday']
                                                                             [
-                                                                            'reason'],
+                                                                            'admin_msg'],
                                                                         style: const TextStyle(
                                                                             fontSize:
                                                                                 16,
                                                                             fontWeight:
                                                                                 FontWeight.normal),
                                                                       )
-                                                                    ]),
-                                                              ),
-                                                              (appliedLeavesData[index]
-                                                                              [
-                                                                              'ApplyForHoliday']
-                                                                          [
-                                                                          'admin_msg'] ==
-                                                                      "")
-                                                                  ? SizedBox
-                                                                      .shrink()
-                                                                  : Text.rich(
-                                                                      TextSpan(
-                                                                        text:
-                                                                            'Admin Reply:',
-                                                                        style: _textTheme
-                                                                            .headline2!
-                                                                            .copyWith(
-                                                                                color: Colors.black),
-                                                                        children: <
-                                                                            InlineSpan>[
-                                                                          const TextSpan(
-                                                                              text:
-                                                                                  "   "),
-                                                                          TextSpan(
-                                                                            text: appliedLeavesData[index]['ApplyForHoliday']
-                                                                                [
-                                                                                'admin_msg'],
-                                                                            style: const TextStyle(
-                                                                                fontSize: 16,
-                                                                                fontWeight: FontWeight.normal),
-                                                                          )
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                            ],
-                                                          ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -860,29 +865,7 @@ class ApplyLeavePageController extends GetxController {
     print("message ${jsonData['message']}");
     Navigator.of(context).pop(true);
     if (jsonData['status'] == 200) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            child: Stack(
-              children: [
-                Container(
-                  // height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.white,
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20)
-                          .copyWith(top: 0),
-                  child: Center(child: Text(jsonData['message'])),
-                ),
-              ],
-            ),
-          );
-        },
-      );
+      Constants.basicWidget(jsonData['message'], context);
     }
     if (jsonData['status'] == 401) {
       Constants.basicWidget(jsonData['message'], context);

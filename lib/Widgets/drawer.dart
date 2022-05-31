@@ -185,111 +185,114 @@ class _MyDrawerState extends State<MyDrawer> {
               onTap: () {
                 Navigator.of(context).pop();
                 showDialog(
+
                   context: context,
                   builder: (BuildContext context) {
                     return Dialog(
                       backgroundColor: Colors.transparent,
-                      child: Stack(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                    horizontal: 25, vertical: 20)
-                                .copyWith(bottom: 5),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            height: 160,
-                            // width: double.infinity,
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Confirm!",
-                                  style: _textTheme.headline1,
+                      child: 
+                          Stack(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                        horizontal: 25, vertical: 20)
+                                    .copyWith(bottom: 10),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(5),
                                 ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                const Text(
-                                  "Are you sure want to logout of this app?",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 148, 148, 148),
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                height: 180,
+                                // width: double.infinity,
+                                margin: const EdgeInsets.symmetric(horizontal: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Material(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      child: InkWell(
-                                        borderRadius: BorderRadius.circular(5),
-                                        splashColor: Colors.blue,
-                                        onTap: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const SizedBox(
-                                          height: 35,
-                                          width: 80,
-                                          child: Center(
-                                            child: Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                color: Colors.blue,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                    Text(
+                                      "Confirm!",
+                                      style: _textTheme.headline1,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    const Text(
+                                      "Are you sure want to logout of this app?",
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 148, 148, 148),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 18,
                                       ),
                                     ),
                                     const SizedBox(
-                                      width: 5,
+                                      height: 15,
                                     ),
-                                    Material(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      child: InkWell(
-                                        onTap: () async {
-                                          SharedPreferences sharedPreferences =
-                                              await SharedPreferences
-                                                  .getInstance();
-                                          sharedPreferences.clear();
-                                          sharedPreferences.commit();
-                                          Navigator.pushReplacementNamed(
-                                              context, MyRoutes.loginPageRoute);
-                                        },
-                                        borderRadius: BorderRadius.circular(5),
-                                        splashColor: Colors.red,
-                                        child: const SizedBox(
-                                          height: 35,
-                                          width: 80,
-                                          child: Center(
-                                            child: Text(
-                                              "Logout",
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold,
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Material(
+                                          color:
+                                              Theme.of(context).colorScheme.primary,
+                                          child: InkWell(
+                                            borderRadius: BorderRadius.circular(5),
+                                            splashColor: Colors.blue,
+                                            onTap: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const SizedBox(
+                                              height: 35,
+                                              width: 80,
+                                              child: Center(
+                                                child: Text(
+                                                  "Cancel",
+                                                  style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Material(
+                                          color:
+                                              Theme.of(context).colorScheme.primary,
+                                          child: InkWell(
+                                            onTap: () async {
+                                              SharedPreferences sharedPreferences =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              sharedPreferences.clear();
+                                              sharedPreferences.commit();
+                                              Navigator.pushReplacementNamed(
+                                                  context, MyRoutes.loginPageRoute);
+                                            },
+                                            borderRadius: BorderRadius.circular(5),
+                                            splashColor: Colors.red,
+                                            child: const SizedBox(
+                                              height: 35,
+                                              width: 80,
+                                              child: Center(
+                                                child: Text(
+                                                  "Logout",
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                   ],
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                                ),
+                              ),
+                            ],
+                          ),
                     );
                   },
                 );

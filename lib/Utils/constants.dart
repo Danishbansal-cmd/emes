@@ -188,7 +188,7 @@ class Constants {
       builder: (context) {
         Future.delayed(
           const Duration(
-            milliseconds: 800,
+            milliseconds: 1200,
           ),
           () {
             Navigator.of(context).pop(true);
@@ -199,7 +199,7 @@ class Constants {
           child: Stack(
             children: [
               Container(
-                height: 50,
+                height: 70,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   color: Theme.of(context).colorScheme.primary,

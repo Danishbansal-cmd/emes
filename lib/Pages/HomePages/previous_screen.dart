@@ -108,7 +108,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                   return Container(
                                     margin:
                                         const EdgeInsets.symmetric(vertical: 8),
-                                    height: shiftContainerHeight,
+                                    // height: shiftContainerHeight,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       border: Border.all(

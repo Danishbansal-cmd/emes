@@ -151,11 +151,11 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                           margin: const EdgeInsets.symmetric(
                                             vertical: 8,
                                           ),
-                                          height: shiftContainerHeight,
-                                          padding: const EdgeInsets.symmetric(
-                                              // horizontal: 15,
-                                              // vertical: 15,
-                                              ),
+                                          // height: shiftContainerHeight,
+                                          // padding: const EdgeInsets.symmetric(
+                                          //     // horizontal: 15,
+                                          //     // vertical: 15,
+                                          //     ),
                                           decoration: BoxDecoration(
                                             color: _colorScheme.primary,
                                             borderRadius:
@@ -729,6 +729,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                 color: Colors.transparent,
                                                 child: InkWell(
                                                   splashColor: Colors.blue,
+                                                  borderRadius: BorderRadius.circular(9),
                                                   onTap: () {
                                                     Future.delayed(
                                                       const Duration(
@@ -816,7 +817,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                   },
                                                   child: Container(
                                                     // color: Colors.amber,
-                                                    // height: 90,
+                                                    height: 40,
                                                     width: 40,
                                                     child: const Center(
                                                       child: FaIcon(
