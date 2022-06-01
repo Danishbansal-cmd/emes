@@ -60,6 +60,17 @@ class _MyAppState extends State<MyApp> {
       child: Consumer<ThemeProvider>(
         builder: (context, appLevelThemeProvider, _) {
           return GetMaterialApp(
+            builder: (context, child) {
+              final constrainedTextScaleFactor =
+                  MediaQuery.of(context).textScaleFactor.clamp(1.0, 1.2);
+
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  textScaleFactor: constrainedTextScaleFactor as double?,
+                ),
+                child: child!,
+              );
+            },
             // navigatorObservers: [NavigationHistoryObserver()],
             title: 'Flutter Demo',
             theme: MyTheme.lightTheme(context),
