@@ -25,6 +25,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //initializing values here
   final homeController = Get.put(HomeController());
+  //initializing getx controller
+  final controller = Get.put(fscontroller());
+  //initializing getx controller
+  final controllerns = Get.put(nscontroller());
 
   @override
   void dispose() {
@@ -137,13 +141,19 @@ ShiftData _shiftData = ShiftData();
                   "staff_id": data['id'],
                 },
               );
+              if(int == 0){
+                controller.valueint.value++;
+              }
+              if(int == 2){
+                controllerns.valueintns.value++;
+              }
               myFuture.then(
                 (value) => setDateFunction(
                     (jsonDecode(value.body))['data']['start_date'],
                     (jsonDecode(value.body))['data']['end_date']),
                 // print((jsonDecode(value.body))['data']['start_date']);
               );
-              setState(() {});
+              // setState(() {});
             },
             tabs: const [
               Tab(
