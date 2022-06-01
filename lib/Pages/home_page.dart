@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
     homeController.dispose();
   }
-
+ShiftData _shiftData = ShiftData();
   @override
   Widget build(BuildContext context) {
     //initializing homepagedates getx controller
@@ -129,10 +129,10 @@ class _HomePageState extends State<HomePage> {
               var data = jsonDecode(decodeData);
               final myFuture = http.post(
                 Uri.parse(int == 0
-                    ? ShiftData.getPreUrl
+                    ? _shiftData.getPreUrl
                     : int == 1
                         ? Constants.getShiftUrl
-                        : ShiftData.getNextUrl),
+                        : _shiftData.getNextUrl),
                 body: {
                   "staff_id": data['id'],
                 },
