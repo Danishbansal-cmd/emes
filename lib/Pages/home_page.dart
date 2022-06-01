@@ -114,7 +114,6 @@ class _HomePageState extends State<HomePage> {
               fontSize: 15,
             ),
             onTap: (int) async {
-              print("int ${int}");
               if (int == 0) {
                 // print("do i printaasfdas");
 

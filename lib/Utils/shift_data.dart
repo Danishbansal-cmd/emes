@@ -23,6 +23,9 @@ class ShiftData {
     ShiftData.setCurrentShift(data2['currentShift']);
     ShiftData.setPreUrl(data2['preUrl']);
     ShiftData.setNextUrl(data2['nextUrl']);
+    print("previous Shift ${ShiftData.getPreUrl}");
+    print("current Shift ${ShiftData.getCurrentShift}");
+    print("next Shift ${ShiftData.getNextUrl}");
     // print("nexturl ${ShiftData.getNextUrl}");
     // print("jsonData $jsonData");
     return data2;
@@ -42,6 +45,9 @@ class ShiftData {
     ShiftData.setPreUrl(data2['preUrl']);
     // print("currentShift ${ShiftData.getCurrentShift}");
     ShiftData.setNextUrl(data2['nextUrl']);
+    print("previous Shift ${ShiftData.getPreUrl}");
+    print("current Shift ${ShiftData.getCurrentShift}");
+    print("next Shift ${ShiftData.getNextUrl}");
     // print("jsonData $jsonData");
     return data2;
   }
@@ -58,8 +64,10 @@ class ShiftData {
     Map<dynamic, dynamic> data2 = jsonData['data'];
     ShiftData.setCurrentShift(data2['currentShift']);
     ShiftData.setPreUrl(data2['preUrl']);
-    
     ShiftData.setNextUrl(data2['nextUrl']);
+    print("previous Shift ${ShiftData.getPreUrl}");
+    print("current Shift ${ShiftData.getCurrentShift}");
+    print("next Shift ${ShiftData.getNextUrl}");
     // print("jsonData $jsonData");
     return data2;
     
