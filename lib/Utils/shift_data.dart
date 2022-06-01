@@ -46,8 +46,8 @@ class ShiftData {
     var jsonData = jsonDecode(response.body);
     Constants.setStaffID(data['id']);
     Map<dynamic, dynamic> data2 = jsonData['data'];
-    // setPreUrl(data2['preUrl']);
-    // setNextUrl(data2['nextUrl']);
+    setPreUrl(data2['preUrl']);
+    setNextUrl(data2['nextUrl']);
     print("previous Shift ${getPreUrl}");
     print("next Shift ${getNextUrl}");
     print("break 111111111111111111111111111111111");
@@ -67,8 +67,8 @@ class ShiftData {
     var jsonData = jsonDecode(response.body);
     Constants.setStaffID(data['id']);
     Map<dynamic, dynamic> data2 = jsonData['data'];
-    // setPreUrl(data2['preUrl']);
-    // setNextUrl(data2['nextUrl']);
+    setPreUrl(data2['preUrl']);
+    setNextUrl(data2['nextUrl']);
     print("previous Shift ${getPreUrl}");
     print("next Shift ${getNextUrl}");
     print("break 222222222222222222222222222222222222");

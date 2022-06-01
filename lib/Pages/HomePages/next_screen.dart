@@ -45,7 +45,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                 horizontal: 15,
               ),
               child: FutureBuilder(
-                future: _shiftData.getPreviousData(),
+                future: _shiftData.getNextData(),
                 builder: (context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     // If we get an error becuase of network
