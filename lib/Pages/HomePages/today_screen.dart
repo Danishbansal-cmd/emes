@@ -26,6 +26,8 @@ class _SecondScreenState extends State<SecondScreen> {
   //applevel controller initialize
   final controller = Get.put(AcceptDeclineController());
 
+  ShiftData _shiftData = ShiftData();
+
   //function of callback
   //need to call from another page
   callback() {
@@ -98,7 +100,7 @@ class _SecondScreenState extends State<SecondScreen> {
                 horizontal: 15,
               ),
               child: FutureBuilder(
-                future: ShiftData.getData(),
+                future: _shiftData.getData(),
                 builder: (context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     // If we get an error becuase of network

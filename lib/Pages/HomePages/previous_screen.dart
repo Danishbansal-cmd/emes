@@ -18,6 +18,7 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
   TextEditingController declineShiftReasonController = TextEditingController();
   double shiftContainerHeight = 75;
+  ShiftData _shiftData = ShiftData();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class _FirstScreenState extends State<FirstScreen> {
           horizontal: 15,
         ),
         child: FutureBuilder(
-          future: ShiftData.getPreviousData(),
+          future: _shiftData.getPreviousData(),
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               // If we got an error

@@ -18,7 +18,13 @@ class _SplashPageState extends State<SplashPage> {
 
   void getNextScreen() async {
     await Future.delayed(
-      const Duration(milliseconds: 1500),() => Navigator.pushNamed(context, MyRoutes.decisonTreeRoute)
+      const Duration(milliseconds: 1500),
+      () => Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (context) => DecisionTree(),
+        ),
+      ),
     );
   }
 
@@ -31,9 +37,17 @@ class _SplashPageState extends State<SplashPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset("assets/icon.png",scale: 1,),
-              const SizedBox(height: 5,),
-              const Text("EMES",style: TextStyle(fontSize: 22,letterSpacing: 1.5),),
+              Image.asset(
+                "assets/icon.png",
+                scale: 1,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              const Text(
+                "EMES",
+                style: TextStyle(fontSize: 22, letterSpacing: 1.5),
+              ),
             ],
           ),
         ),

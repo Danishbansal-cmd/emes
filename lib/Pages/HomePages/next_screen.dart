@@ -24,6 +24,8 @@ class _ThirdScreenState extends State<ThirdScreen> {
   //applevel controller initialize
   final controller = Get.put(AcceptDeclineControllerNextScreen());
 
+  ShiftData _shiftData = ShiftData();
+
   @override
   Widget build(BuildContext context) {
     //initializing acceptordeclineshift getx controller
@@ -43,7 +45,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                 horizontal: 15,
               ),
               child: FutureBuilder(
-                future: ShiftData.getNextData(),
+                future: _shiftData.getPreviousData(),
                 builder: (context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     // If we get an error becuase of network
@@ -866,10 +868,10 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                   controller.selectedItemsList.clear();
                                   controller.ifAcceptedShiftIsSelected.clear();
                                   controller.ifDeclinedShiftIsSelected.clear();
-                                  ShiftData.setNextUrl((ShiftData.getNextUrl)
+                                  _shiftData.setNextUrl((_shiftData.getNextUrl)
                                           .substring(
                                               0,
-                                              ((ShiftData.getNextUrl).length -
+                                              ((_shiftData.getNextUrl).length -
                                                   10)) +
                                       nextScreenCurrentDate);
                                 });
@@ -925,10 +927,10 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                   controller.selectedItemsList.clear();
                                   controller.ifAcceptedShiftIsSelected.clear();
                                   controller.ifDeclinedShiftIsSelected.clear();
-                                  ShiftData.setNextUrl((ShiftData.getNextUrl)
+                                  _shiftData.setNextUrl((_shiftData.getNextUrl)
                                           .substring(
                                               0,
-                                              ((ShiftData.getNextUrl).length -
+                                              ((_shiftData.getNextUrl).length -
                                                   10)) +
                                       nextScreenCurrentDate);
                                 });

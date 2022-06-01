@@ -27,7 +27,7 @@ class _DecisionTreeState extends State<DecisionTree> {
   checkLogInStatus() async {
     sharedPreferences = await SharedPreferences.getInstance();
     if(sharedPreferences.getString("token") == null){
-      Navigator.pushNamed(context, MyRoutes.loginPageRoute);
+      Navigator.push(context, MaterialPageRoute<void>(builder: (context) => LoginPage(),),);
     }else {
       String decodeData = sharedPreferences.getString("data") ?? "";
       var data = jsonDecode(decodeData);
@@ -36,7 +36,7 @@ class _DecisionTreeState extends State<DecisionTree> {
       // Constants.setEmail(data['email']);
       Constants.setStaffID(data['id']);
       GetLoggedInUserInformation.getData();
-      Navigator.pushNamed(context, MyRoutes.homePageRoute);
+      Navigator.push(context, MaterialPageRoute<void>(builder: (context) => HomePage(),),);
     }
   }
   @override
