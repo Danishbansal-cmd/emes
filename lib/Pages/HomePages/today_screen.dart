@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:emes/Pages/checkin_checkout_page.dart';
+import 'package:emes/Pages/home_page.dart';
 import 'package:emes/Providers/accept_decline_provider.dart';
-import 'package:emes/Providers/homepage_dates_provider.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:flutter/material.dart';
@@ -37,19 +37,23 @@ class _SecondScreenState extends State<SecondScreen> {
     });
   }
 
-  @override
-    void dispose() {
-        // TODO: implement dispose
-        super.dispose();
-        controller.dispose();
-     }
+  // @override
+  //   void dispose() {
+  //       super.dispose();
+  //       controller.dispose();
+  //    }
 
   @override
   Widget build(BuildContext context) {
-    var date = HomepageDatesProvider();
-    void tryFunction(String value1, String value2) {
-      date.setStartDate(value1);
-      date.setEndDate(value2);
+    //initializing homepagedates getx controller
+    final homepageDatesController = Get.put(HomepageDatesController());
+    //initializing acceptordeclineshift getx controller
+    final acceptOrDeclineStatusController =
+        Get.put(AcceptOrDeclineStatusController());
+
+    void setDateFunction(String value1, String value2) {
+      homepageDatesController.setStartDate(value1);
+      homepageDatesController.setEndDate(value2);
     }
 
     // @override
@@ -72,7 +76,8 @@ class _SecondScreenState extends State<SecondScreen> {
         },
       );
       myFuture.then(
-        (value) => tryFunction((jsonDecode(value.body))['data']['start_date'],
+        (value) => setDateFunction(
+            (jsonDecode(value.body))['data']['start_date'],
             (jsonDecode(value.body))['data']['end_date']),
       );
     });
@@ -189,7 +194,8 @@ class _SecondScreenState extends State<SecondScreen> {
                                         //main box of the shift
                                         return Container(
                                           margin: const EdgeInsets.symmetric(
-                                              vertical: 8,),
+                                            vertical: 8,
+                                          ),
                                           decoration: BoxDecoration(
                                             color: _colorScheme.primary,
                                             borderRadius:
@@ -237,21 +243,24 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           controller
                                                               .ifAcceptedShiftIsSelected
                                                               .add(true);
-                                                        } else if (shiftData[keyList[
-                                                                      index]][
-                                                                  insideKeyList
-                                                                          .toList()[
-                                                                      index2]][
-                                                              'confirmed_by_staff'] ==
-                                                          "2"){
+                                                        } else if (shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]
+                                                                [
+                                                                'confirmed_by_staff'] ==
+                                                            "2") {
                                                           controller
                                                               .ifDeclinedShiftIsSelected
                                                               .add(true);
                                                         }
-                                                        print("acceptedshiftisseleceted ${controller
-                                                              .ifAcceptedShiftIsSelected}");
-                                                        print("edclinedshiftisseleceted ${controller
-                                                              .ifDeclinedShiftIsSelected}");
+                                                        print(
+                                                            "acceptedshiftisseleceted ${controller.ifAcceptedShiftIsSelected}");
+                                                        print(
+                                                            "edclinedshiftisseleceted ${controller.ifDeclinedShiftIsSelected}");
                                                       } else if (controller
                                                           .selectedItemsList
                                                           .contains(
@@ -273,21 +282,24 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           controller
                                                               .ifAcceptedShiftIsSelected
                                                               .remove(true);
-                                                        } else if (shiftData[keyList[
-                                                                      index]][
-                                                                  insideKeyList
-                                                                          .toList()[
-                                                                      index2]][
-                                                              'confirmed_by_staff'] ==
-                                                          "2"){
+                                                        } else if (shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]
+                                                                [
+                                                                'confirmed_by_staff'] ==
+                                                            "2") {
                                                           controller
                                                               .ifDeclinedShiftIsSelected
                                                               .remove(true);
                                                         }
-                                                        print("acceptedshiftisseleceted ${controller
-                                                              .ifAcceptedShiftIsSelected}");
-                                                        print("edclinedshiftisseleceted ${controller
-                                                              .ifDeclinedShiftIsSelected}");
+                                                        print(
+                                                            "acceptedshiftisseleceted ${controller.ifAcceptedShiftIsSelected}");
+                                                        print(
+                                                            "edclinedshiftisseleceted ${controller.ifDeclinedShiftIsSelected}");
                                                       }
                                                     },
                                                     value: controller
@@ -318,31 +330,32 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           .addIdOfSelectedItemsList(
                                                               "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
                                                       if (shiftData[keyList[
-                                                                        index]][
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]
-                                                                [
-                                                                'confirmed_by_staff'] ==
-                                                            "1") {
-                                                          controller
-                                                              .ifAcceptedShiftIsSelected
-                                                              .add(true);
-                                                        } else if (shiftData[keyList[
                                                                       index]][
                                                                   insideKeyList
                                                                           .toList()[
                                                                       index2]][
                                                               'confirmed_by_staff'] ==
-                                                          "2"){
-                                                          controller
-                                                              .ifDeclinedShiftIsSelected
-                                                              .add(true);
-                                                        }
-                                                        print("acceptedshiftisseleceted ${controller
-                                                              .ifAcceptedShiftIsSelected}");
-                                                        print("edclinedshiftisseleceted ${controller
-                                                              .ifDeclinedShiftIsSelected}");
+                                                          "1") {
+                                                        controller
+                                                            .ifAcceptedShiftIsSelected
+                                                            .add(true);
+                                                      } else if (shiftData[
+                                                                      keyList[
+                                                                          index]]
+                                                                  [
+                                                                  insideKeyList
+                                                                          .toList()[
+                                                                      index2]][
+                                                              'confirmed_by_staff'] ==
+                                                          "2") {
+                                                        controller
+                                                            .ifDeclinedShiftIsSelected
+                                                            .add(true);
+                                                      }
+                                                      print(
+                                                          "acceptedshiftisseleceted ${controller.ifAcceptedShiftIsSelected}");
+                                                      print(
+                                                          "edclinedshiftisseleceted ${controller.ifDeclinedShiftIsSelected}");
                                                       // controller.forDeletionOfSelectedItemsList["$index$index2"] = [snapshot.data['start_date'], snapshot.data['end_date'],];
                                                       print(
                                                           "addsil ${controller.selectedItemsList}");
@@ -359,31 +372,32 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           .deleteIdOfSelectedItemsList(
                                                               "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
                                                       if (shiftData[keyList[
-                                                                        index]][
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]
-                                                                [
-                                                                'confirmed_by_staff'] ==
-                                                            "1") {
-                                                          controller
-                                                              .ifAcceptedShiftIsSelected
-                                                              .remove(true);
-                                                        } else if (shiftData[keyList[
                                                                       index]][
                                                                   insideKeyList
                                                                           .toList()[
                                                                       index2]][
                                                               'confirmed_by_staff'] ==
-                                                          "2"){
-                                                          controller
-                                                              .ifDeclinedShiftIsSelected
-                                                              .remove(true);
-                                                        }
-                                                        print("acceptedshiftisseleceted ${controller
-                                                              .ifAcceptedShiftIsSelected}");
-                                                        print("edclinedshiftisseleceted ${controller
-                                                              .ifDeclinedShiftIsSelected}");
+                                                          "1") {
+                                                        controller
+                                                            .ifAcceptedShiftIsSelected
+                                                            .remove(true);
+                                                      } else if (shiftData[
+                                                                      keyList[
+                                                                          index]]
+                                                                  [
+                                                                  insideKeyList
+                                                                          .toList()[
+                                                                      index2]][
+                                                              'confirmed_by_staff'] ==
+                                                          "2") {
+                                                        controller
+                                                            .ifDeclinedShiftIsSelected
+                                                            .remove(true);
+                                                      }
+                                                      print(
+                                                          "acceptedshiftisseleceted ${controller.ifAcceptedShiftIsSelected}");
+                                                      print(
+                                                          "edclinedshiftisseleceted ${controller.ifDeclinedShiftIsSelected}");
                                                       print(
                                                           "delsil ${controller.selectedItemsList}");
                                                       print(
@@ -487,7 +501,8 @@ class _SecondScreenState extends State<SecondScreen> {
                                                 color: Colors.transparent,
                                                 child: InkWell(
                                                   splashColor: Colors.blue,
-                                                  borderRadius: BorderRadius.circular(9),
+                                                  borderRadius:
+                                                      BorderRadius.circular(9),
                                                   onTap: () {
                                                     Future.delayed(
                                                       const Duration(
@@ -501,38 +516,38 @@ class _SecondScreenState extends State<SecondScreen> {
                                                         //             'is_confirm'] ==
                                                         //         "1" &&
 
-                                                            // if(shiftData[keyList[
-                                                            //             index]][
-                                                            //         insideKeyList
-                                                            //                 .toList()[
-                                                            //             index2]]['confirmed_by_staff'] ==
-                                                            //     "1") {
-                                                          Get.to(
-                                                              () =>
-                                                                  CheckinCheckoutPage(),
-                                                              arguments: [
-                                                                {
-                                                                  "shift_id":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}",
-                                                                  "client_id":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_id']}",
-                                                                  "work_date":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}",
-                                                                  "time_on":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}",
-                                                                  "time_off":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}",
-                                                                  "task_id":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['task_id']}",
-                                                                  "client_name":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
-                                                                  "activity_name":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['activity_name']}",
-                                                                  "day_of_shift":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift']}"
-                                                                }
-                                                              ]);
-                                                        // } 
+                                                        // if(shiftData[keyList[
+                                                        //             index]][
+                                                        //         insideKeyList
+                                                        //                 .toList()[
+                                                        //             index2]]['confirmed_by_staff'] ==
+                                                        //     "1") {
+                                                        Get.to(
+                                                            () =>
+                                                                CheckinCheckoutPage(),
+                                                            arguments: [
+                                                              {
+                                                                "shift_id":
+                                                                    "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}",
+                                                                "client_id":
+                                                                    "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_id']}",
+                                                                "work_date":
+                                                                    "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}",
+                                                                "time_on":
+                                                                    "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}",
+                                                                "time_off":
+                                                                    "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}",
+                                                                "task_id":
+                                                                    "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['task_id']}",
+                                                                "client_name":
+                                                                    "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
+                                                                "activity_name":
+                                                                    "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['activity_name']}",
+                                                                "day_of_shift":
+                                                                    "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift']}"
+                                                              }
+                                                            ]);
+                                                        // }
 
                                                         // else if (shiftData[keyList[
                                                         //                 index]][insideKeyList
@@ -554,7 +569,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                                         //           const Duration(
                                                         //               milliseconds:
                                                         //                   1200));
-                                                        // } 
+                                                        // }
                                                         // else if (shiftData[
                                                         //                 keyList[
                                                         //                     index]]
@@ -890,9 +905,7 @@ class _SecondScreenState extends State<SecondScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: Consumer<AcceptOrDeclineStatus>(
-                    builder: (context, appLevelAcceptOrDeclineStatus, _) {
-                      return Material(
+                  child: Material(
                         color: Color.fromARGB(255, 252, 39, 24),
                         child: InkWell(
                           onTap: () {
@@ -901,7 +914,7 @@ class _SecondScreenState extends State<SecondScreen> {
                             if (!controller.ifDeclinedShiftIsSelected
                                     .contains(true) &&
                                 controller.idOfSelectedItemsList.isNotEmpty) {
-                              appLevelAcceptOrDeclineStatus.declineShift(
+                              acceptOrDeclineStatusController.declineShift(
                                   controller.idOfSelectedItemsList,
                                   startDate,
                                   endDate,
@@ -940,14 +953,10 @@ class _SecondScreenState extends State<SecondScreen> {
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
                 ),
                 Expanded(
-                  child: Consumer<AcceptOrDeclineStatus>(
-                    builder: (context, appLevelAcceptOrDeclineStatus, _) {
-                      return Material(
+                  child: Material(
                         color: Color.fromARGB(255, 31, 224, 37),
                         child: InkWell(
                           onTap: () {
@@ -956,7 +965,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                     .contains(true) &&
                                 controller.idOfSelectedItemsList.isNotEmpty) {
                               print("first");
-                              appLevelAcceptOrDeclineStatus.acceptShift(
+                              acceptOrDeclineStatusController.acceptShift(
                                   controller.idOfSelectedItemsList,
                                   callback,
                                   context);
@@ -994,9 +1003,7 @@ class _SecondScreenState extends State<SecondScreen> {
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
                 ),
               ],
             ),

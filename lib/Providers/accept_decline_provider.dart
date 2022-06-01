@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:emes/Utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class AcceptOrDeclineStatus extends ChangeNotifier {
-  String _declineReasonErrorText = "";
+class AcceptOrDeclineStatusController extends GetxController {
+  // String _declineReasonErrorText = "";
   String _acceptButtonText = "";
   String _declineButtonText = "";
   //
@@ -79,9 +80,9 @@ class AcceptOrDeclineStatus extends ChangeNotifier {
 
   //
   //getters
-  get getDeclineReasonErrorText {
-    return _declineReasonErrorText;
-  }
+  // get getDeclineReasonErrorText {
+  //   return _declineReasonErrorText;
+  // }
 
   // get getDeclineButtonText {
   //   return _declineButtonText;
@@ -93,14 +94,13 @@ class AcceptOrDeclineStatus extends ChangeNotifier {
 
   //
   //setters
-  setDeclineReasonErrorText(String value) {
-    if (value.isEmpty) {
-      _declineReasonErrorText = "*You must give a reason.";
-    } else {
-      _declineReasonErrorText = "";
-    }
-    notifyListeners();
-  }
+  // setDeclineReasonErrorText(String value) {
+  //   if (value.isEmpty) {
+  //     _declineReasonErrorText = "*You must give a reason.";
+  //   } else {
+  //     _declineReasonErrorText = "";
+  //   }
+  // }
 
   // setDeclineButtonText(String value) {
   //   if (value == "2") {

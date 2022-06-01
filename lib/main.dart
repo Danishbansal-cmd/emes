@@ -7,8 +7,6 @@ import 'package:emes/Pages/login_page.dart';
 import 'package:emes/Pages/profile_page.dart';
 import 'package:emes/Pages/signup_page.dart';
 import 'package:emes/Providers/accept_decline_provider.dart';
-import 'package:emes/Providers/homepage_dates_provider.dart';
-import 'package:emes/Providers/login_form_provider.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Themes/themes.dart';
 import 'package:emes/Utils/decision_tree.dart';
@@ -41,21 +39,6 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<ThemeProvider>(
           create: (_) => ThemeProvider(),
         ),
-        ChangeNotifierProvider<ApplyLeaveFormProvider>(
-          create: (_) => ApplyLeaveFormProvider(),
-        ),
-        ChangeNotifierProvider<OpenLeaveBarProvider>(
-          create: (_) => OpenLeaveBarProvider(),
-        ),
-        ChangeNotifierProvider<LoginFormProvider>(
-          create: (_) => LoginFormProvider(),
-        ),
-        ChangeNotifierProvider<AcceptOrDeclineStatus>(
-          create: (_) => AcceptOrDeclineStatus(),
-        ),
-        ChangeNotifierProvider<HomepageDatesProvider>(
-          create: (_) => HomepageDatesProvider(),
-        )
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, appLevelThemeProvider, _) {

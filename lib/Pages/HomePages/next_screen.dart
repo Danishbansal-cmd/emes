@@ -1,7 +1,6 @@
 import 'package:emes/Pages/checkin_checkout_page.dart';
 import 'package:emes/Pages/details_page_from_next_screen.dart';
 import 'package:emes/Providers/accept_decline_provider.dart';
-import 'package:emes/Providers/homepage_dates_provider.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:flutter/material.dart';
@@ -24,23 +23,12 @@ class _ThirdScreenState extends State<ThirdScreen> {
   String nextScreenCurrentDate = "";
   //applevel controller initialize
   final controller = Get.put(AcceptDeclineControllerNextScreen());
-  //function of callback
-  //need to call from another page
-  // callback() {
-  //   setState(() {
-  //     controller.idOfSelectedItemsList.clear();
-  //     controller.selectedItemsList.clear();
-  //     controller.ifAcceptedShiftIsSelected.clear();
-  //     controller.ifDeclinedShiftIsSelected.clear();
-  //     // ShiftData.setNextUrl((ShiftData.getNextUrl)
-  //     //         .substring(0, ((ShiftData.getNextUrl).length - 10)) +
-  //     // shiftData[keyList[index]][insideKeyList.toList()[index2]]['loop']
-  //     //     ['M']);
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
+    //initializing acceptordeclineshift getx controller
+    final acceptOrDeclineStatusController =
+        Get.put(AcceptOrDeclineStatusController());
     final _textTheme = Theme.of(context).textTheme;
     final _colorScheme = Theme.of(context).colorScheme;
     // var date = HomepageDatesProvider();
@@ -859,9 +847,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: Consumer<AcceptOrDeclineStatus>(
-                    builder: (context, appLevelAcceptOrDeclineStatus, _) {
-                      return Material(
+                  child: Material(
                         color: Color.fromARGB(255, 252, 39, 24),
                         child: InkWell(
                           onTap: () {
@@ -870,7 +856,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                             if (!controller.ifDeclinedShiftIsSelected
                                     .contains(true) &&
                                 controller.idOfSelectedItemsList.isNotEmpty) {
-                              appLevelAcceptOrDeclineStatus.declineShift(
+                              acceptOrDeclineStatusController.declineShift(
                                   controller.idOfSelectedItemsList,
                                   startDate,
                                   endDate,
@@ -920,14 +906,10 @@ class _ThirdScreenState extends State<ThirdScreen> {
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
                 ),
                 Expanded(
-                  child: Consumer<AcceptOrDeclineStatus>(
-                    builder: (context, appLevelAcceptOrDeclineStatus, _) {
-                      return Material(
+                  child: Material(
                         color: Color.fromARGB(255, 31, 224, 37),
                         child: InkWell(
                           onTap: () {
@@ -936,7 +918,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                     .contains(true) &&
                                 controller.idOfSelectedItemsList.isNotEmpty) {
                               print("first");
-                              appLevelAcceptOrDeclineStatus.acceptShift(
+                              acceptOrDeclineStatusController.acceptShift(
                                   controller.idOfSelectedItemsList, () {
                                 setState(() {
                                   controller.idOfSelectedItemsList.clear();
@@ -985,9 +967,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
                 ),
               ],
             ),

@@ -1,7 +1,13 @@
-import 'package:emes/Providers/login_form_provider.dart';
+import 'dart:convert';
+import 'package:emes/Pages/home_page.dart';
+import 'package:http/http.dart' as http;
 import 'package:emes/Routes/routes.dart';
+import 'package:emes/Utils/constants.dart';
+import 'package:emes/Utils/get_logged_in_information.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -12,9 +18,11 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //initializing loginform getx controller
+    final loginFormController = Get.put(LoginFormController());
     print(
         "to check how many times does it run\nto check how many times does it run\nto check how many times does it run\nto check how many times does it run\nto check how many times does it run\n");
-    final loginFromProvider = Provider.of<LoginFormProvider>(context);
+
     final _textTheme = Theme.of(context).textTheme;
     return DefaultTabController(
       length: 2,
@@ -52,28 +60,35 @@ class LoginPage extends StatelessWidget {
                         Container(
                           child: Column(
                             children: [
-                              const SizedBox(height: 20,),
-                              Image.asset("assets/icon.png",scale: 1.75,),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Image.asset(
+                                "assets/icon.png",
+                                scale: 1.75,
+                              ),
                               const Text.rich(
-                            TextSpan(
-                              text: "E",
-                              children: [
                                 TextSpan(
-                                  text: "M",
+                                  text: "E",
+                                  children: [
+                                    TextSpan(
+                                      text: "M",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    TextSpan(text: "ES"),
+                                  ],
                                   style: TextStyle(
-                                    color: Colors.blue,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
                                   ),
                                 ),
-                                TextSpan(text: "ES"),
-                              ],
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
                               ),
-                            ),
-                          ),
-                              const SizedBox(height: 40,),
+                              const SizedBox(
+                                height: 40,
+                              ),
                               Container(
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.primary,
@@ -115,46 +130,42 @@ class LoginPage extends StatelessWidget {
                                     ),
                                     //
                                     //username row
-                                    Consumer<LoginFormProvider>(
-                                      builder: (context,
-                                          appLevelLoginFormProvider, _) {
-                                        return returnFormRow(
-                                            "Username",
-                                            usernameController,
-                                            appLevelLoginFormProvider
-                                                .setUsernameError,
-                                            appLevelLoginFormProvider
-                                                .getUsernameError,
-                                            context);
-                                      },
+                                    returnFormRow(
+                                        "Username",
+                                        usernameController,
+                                        loginFormController.setUsernameError,
+                                        context),
+                                    Obx(
+                                      () => Text(
+                                        loginFormController.getUsernameError,
+                                        style: _textTheme.headline6,
+                                      ),
                                     ),
                                     //
                                     //password row
-                                    Consumer<LoginFormProvider>(
-                                      builder: (context,
-                                          appLevelLoginFormProvider, _) {
-                                        return returnFormRow(
-                                            "Password",
-                                            passwordController,
-                                            appLevelLoginFormProvider
-                                                .setPasswordError,
-                                            appLevelLoginFormProvider
-                                                .getPasswordError,
-                                            context);
-                                      },
+                                    returnFormRow(
+                                        "Password",
+                                        passwordController,
+                                        loginFormController.setPasswordError,
+                                        context),
+                                    Obx(
+                                      () => Text(
+                                        loginFormController.getPasswordError,
+                                        style: _textTheme.headline6,
+                                      ),
                                     ),
-                                    Consumer<LoginFormProvider>(
-                                      builder: (context,
-                                          appLevelLoginFormProvider, _) {
-                                        return returnFormRow(
-                                            "CompanyID",
-                                            companyIDController,
-                                            appLevelLoginFormProvider
-                                                .setCompanyIDError,
-                                            appLevelLoginFormProvider
-                                                .getCompanyIDError,
-                                            context);
-                                      },
+                                    //
+                                    //companyID row
+                                    returnFormRow(
+                                        "CompanyID",
+                                        companyIDController,
+                                        loginFormController.setCompanyIDError,
+                                        context),
+                                    Obx(
+                                      () => Text(
+                                        loginFormController.getCompanyIDError,
+                                        style: _textTheme.headline6,
+                                      ),
                                     ),
                                     //
                                     //sign in button row
@@ -167,7 +178,7 @@ class LoginPage extends StatelessWidget {
                                       child: InkWell(
                                         // splashColor: Colors.white,
                                         onTap: () {
-                                          var a = loginFromProvider
+                                          var a = loginFormController
                                               .validateApplyLeave(
                                                   usernameController.text,
                                                   passwordController.text,
@@ -256,7 +267,7 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget returnFormRow(String text, TextEditingController controller,
-      Function setfunction, String getfunction, BuildContext context) {
+      Function setfunction, BuildContext context) {
     final _textTheme = Theme.of(context).textTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,7 +290,9 @@ class LoginPage extends StatelessWidget {
           child: TextField(
             cursorColor: Colors.grey,
             controller: controller,
-            keyboardType:text == "Username" ? TextInputType.emailAddress : TextInputType.name,
+            keyboardType: text == "Username"
+                ? TextInputType.emailAddress
+                : TextInputType.name,
             textInputAction: text == "CompanyID"
                 ? TextInputAction.done
                 : TextInputAction.next,
@@ -297,7 +310,7 @@ class LoginPage extends StatelessWidget {
               border: InputBorder.none,
               suffixIcon: IconButton(
                 color: Colors.grey,
-                padding: const EdgeInsets.only(bottom: 2,right: 0),
+                padding: const EdgeInsets.only(bottom: 2, right: 0),
                 onPressed: () {
                   controller.clear();
                 },
@@ -306,12 +319,116 @@ class LoginPage extends StatelessWidget {
             ),
           ),
         ),
-        Text(
-          getfunction,
-          style: _textTheme.headline6,
-        ),
       ],
     );
   }
+}
 
+class LoginFormController extends GetxController {
+  RxString _usernameError = "".obs;
+  RxString _passwordError = "".obs;
+  RxString _companyIDError = "".obs;
+
+  //getters and setters
+  get getUsernameError {
+    return _usernameError.value;
+  }
+
+  get getPasswordError {
+    return _passwordError.value;
+  }
+
+  get getCompanyIDError {
+    return _companyIDError.value;
+  }
+
+  setUsernameError(String value) {
+    if (value.isEmpty) {
+      _usernameError.value = "*You must enter a value.";
+    } else {
+      _usernameError.value = "";
+    }
+  }
+
+  setPasswordError(String value) {
+    if (value.isEmpty) {
+      _passwordError.value = "*You must enter a value.";
+    } else {
+      _passwordError.value = "";
+    }
+  }
+
+  setCompanyIDError(String value) {
+    if (value.isEmpty) {
+      _companyIDError.value = "*You must enter a value.";
+    } else {
+      _companyIDError.value = "";
+    }
+  }
+
+  //some functions
+  getData(
+      String value1, String value2, String value3, BuildContext context) async {
+    var response = await http.post(
+      Uri.parse('http://trusecurity.emesau.com/dev/api/login'),
+      body: {
+        "email": value1,
+        "password": value2,
+        "companyID": value3,
+      },
+    );
+
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var jsonData = jsonDecode(response.body);
+    String sharedData = jsonEncode(jsonData['data']);
+    print("jsonData $jsonData");
+    if (jsonData['status'] == 200) {
+      print("Signed In Successfully.");
+      Constants.setFirstName(jsonData['data']['first_name']);
+      Constants.setLastName(jsonData['data']['last_name']);
+      Constants.setEmail(jsonData['data']['email']);
+      Constants.setStaffID(jsonData['data']['id']);
+      Constants.setData(jsonData['data']);
+      sharedPreferences.setString("token", jsonData['data']['token']);
+      sharedPreferences.setString("staffID", jsonData['data']['id']);
+      sharedPreferences.setString("data", sharedData);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute<void>(
+          builder: (context) => HomePage(),
+        ),
+      );
+      GetLoggedInUserInformation.getData();
+    }
+    if (jsonData['status'] == 401) {
+      print("Wrong Username or Password You entered.");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Wrong Username or Password You entered."),
+        ),
+      );
+    }
+    // else{
+    //   print("Something Went Wrong.");
+    // }
+  }
+
+  validateApplyLeave(
+      String value1, String value2, String value3, BuildContext context) async {
+    setUsernameError(value1);
+    setPasswordError(value2);
+    setCompanyIDError(value3);
+    // if(value1.isEmpty){
+    //   setUsernameError("*You must enter a value.");
+    // }
+    // if(value2.isEmpty){
+    //   setPasswordError("*You must enter a value.");
+    // }
+    // if(value3.isEmpty){
+    //   setCompanyIDError("*You must enter a value.");
+    // }
+    if (value1.isNotEmpty && value2.isNotEmpty && value3.isNotEmpty) {
+      getData(value1, value2, value3, context);
+    }
+  }
 }
