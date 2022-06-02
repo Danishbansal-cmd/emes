@@ -24,11 +24,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   //initializing values here
+  //initializing home getx controller
   final homeController = Get.put(HomeController());
-  //initializing getx controller
-  final controller = Get.put(fscontroller());
-  //initializing getx controller
-  final controllerns = Get.put(nscontroller());
+  //initializing fisrstscreen getx controller
+  final firstScreenController = Get.put(FirstScreenController());
+  //initializing thirdscreen getx controller
+  final nextScreenController = Get.put(NextScreenController());
 
   @override
   void dispose() {
@@ -142,10 +143,10 @@ ShiftData _shiftData = ShiftData();
                 },
               );
               if(int == 0){
-                controller.valueint.value++;
+                firstScreenController.setValueInt();
               }
               if(int == 2){
-                controllerns.valueintns.value++;
+                nextScreenController.setValueInt();
               }
               myFuture.then(
                 (value) => setDateFunction(
