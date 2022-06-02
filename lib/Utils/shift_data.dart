@@ -5,13 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ShiftData {
+  //making into singleton class
   static final ShiftData _shiftData = ShiftData._internal();
   ShiftData._internal();
 
   factory ShiftData() {
     return _shiftData;
   }
-  // String _currentShift = '';
   String _preUrl = '';
   String _nextUrl = '';
 
@@ -28,10 +28,6 @@ class ShiftData {
     Map<dynamic, dynamic> data2 = jsonData['data'];
     setPreUrl(data2['preUrl']);
     setNextUrl(data2['nextUrl']);
-    print("previous Shift ${getPreUrl}");
-    print("next Shift ${getNextUrl}");
-    print("break 0000000000000000000000000000");
-    print("jsonDataofcurrentdata $jsonData");
     return data2;
   }
 
@@ -48,10 +44,6 @@ class ShiftData {
     Map<dynamic, dynamic> data2 = jsonData['data'];
     setPreUrl(data2['preUrl']);
     setNextUrl(data2['nextUrl']);
-    print("previous Shift ${getPreUrl}");
-    print("next Shift ${getNextUrl}");
-    print("break 111111111111111111111111111111111");
-    print("jsonDataofpreviousdata $jsonData");
     return data2;
   }
 
@@ -69,16 +61,11 @@ class ShiftData {
     Map<dynamic, dynamic> data2 = jsonData['data'];
     setPreUrl(data2['preUrl']);
     setNextUrl(data2['nextUrl']);
-    print("previous Shift ${getPreUrl}");
-    print("next Shift ${getNextUrl}");
-    print("break 222222222222222222222222222222222222");
-    print("jsonDataofnextdata $jsonData");
     return data2;
   }
 
   //
-  //setters
-
+  //setters and getters
   setPreUrl(String value) {
     _preUrl = value;
   }
@@ -86,9 +73,6 @@ class ShiftData {
   setNextUrl(String value) {
     _nextUrl = value;
   }
-
-  //
-  //getters
 
   get getPreUrl {
     return _preUrl;
