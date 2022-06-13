@@ -39,6 +39,7 @@ dependencies:
   geocode: ^1.0.1
   geocoding: ^2.0.4
   geocoder2: ^1.1.0
+  flutter_html: ^2.2.1
 
 
   # The following adds the Cupertino Icons font to your application.

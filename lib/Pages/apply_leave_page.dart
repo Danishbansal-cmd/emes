@@ -146,15 +146,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                         decoration: InputDecoration(
                                           hintText: "Select From Date",
                                           border: InputBorder.none,
-                                          suffixIcon: IconButton(
-                                            color: Colors.grey,
-                                            padding: const EdgeInsets.only(
-                                                bottom: 2, right: 0),
-                                            onPressed: () {
-                                              fromDateController.clear();
-                                            },
-                                            icon: const Icon(Icons.cancel),
-                                          ),
+                                          suffixIcon: applyLeaveFormButtonsRow(controller: fromDateController),
                                         ),
                                       ),
                                     ),
@@ -197,15 +189,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                           // labelText: "hello 1",
                                           hintText: "Select To Date",
                                           border: InputBorder.none,
-                                          suffixIcon: IconButton(
-                                            color: Colors.grey,
-                                            padding: const EdgeInsets.only(
-                                                bottom: 2, right: 0),
-                                            onPressed: () {
-                                              fromDateController.clear();
-                                            },
-                                            icon: const Icon(Icons.cancel),
-                                          ),
+                                          suffixIcon: applyLeaveFormButtonsRow(controller: toDateController),
                                         ),
                                       ),
                                     ),
@@ -688,6 +672,97 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
       ),
     );
   }
+  
+  Widget applyLeaveFormButtonsRow({required TextEditingController controller}){
+    return Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              SizedBox(
+                                                width: 40,
+                                                child: IconButton(
+                                                  color: Colors.grey,
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 2, right: 0),
+                                                  onPressed: () async {
+                                                    final DateTime? picked =
+                                                        await showDatePicker(
+                                                      context: context,
+                                                      initialDate:
+                                                          DateTime.now(),
+                                                      firstDate: DateTime.now(),
+                                                      lastDate: DateTime(DateTime.now().year,DateTime.now().month + 2,DateTime.now().day),
+                                                      builder:
+                                                          (context, child) {
+                                                        return Theme(
+                                                          data:
+                                                              Theme.of(context)
+                                                                  .copyWith(
+                                                            colorScheme:
+                                                                const ColorScheme
+                                                                    .light(
+                                                              primary:
+                                                                  Colors.yellow,
+                                                              onPrimary:
+                                                                  Colors.black,
+                                                              onSurface:
+                                                                  Colors.green,
+                                                            ),
+                                                            textButtonTheme:
+                                                                TextButtonThemeData(
+                                                              style: TextButton
+                                                                  .styleFrom(
+                                                                primary:
+                                                                    Colors.red,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          child: child!,
+                                                        );
+                                                      },
+                                                    );
+                                                    if (picked != null &&
+                                                        picked !=
+                                                            DateTime.now()) {
+                                                      // setState(() {
+                                                        controller
+                                                            .text = (picked.day
+                                                                .toString().length == 1 ? "0" + picked.day
+                                                                .toString() : picked.day
+                                                                .toString()) +
+                                                            "/" +
+                                                            (picked.month
+                                                                .toString().length == 1 ? "0" + picked.month
+                                                                .toString() : picked.month
+                                                                .toString()) +
+                                                            "/" +
+                                                            picked.year
+                                                                .toString();
+                                                      // });
+                                                    }
+                                                  },
+                                                  icon: const Icon(
+                                                      Icons.calendar_month),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 40,
+                                                child: IconButton(
+                                                  color: Colors.grey,
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 2, right: 0),
+                                                  onPressed: () {
+                                                    controller.clear();
+                                                  },
+                                                  icon:
+                                                      const Icon(Icons.cancel),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+  }
+
 }
 
 class OpenLeaveBarController extends GetxController {
@@ -723,7 +798,7 @@ class OpenLeaveBarController extends GetxController {
   }
 }
 
-class AppliedLeavesProvider  {
+class AppliedLeavesProvider {
   static Future<List> getAppliedLeaves() async {
     // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // String decodeData = sharedPreferences.getString("data") ?? "";

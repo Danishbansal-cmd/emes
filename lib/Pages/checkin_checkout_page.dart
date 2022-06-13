@@ -12,6 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:geocoder/geocoder.dart';
 import 'package:geocoder2/geocoder2.dart';
 // import 'package:geocoding_platform_interface/geocoding_platform_interface.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class CheckinCheckoutPage extends StatefulWidget {
   CheckinCheckoutPage({Key? key}) : super(key: key);
@@ -31,6 +32,25 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
 
   Marker? _firstMarker;
   Marker? _justMarker;
+
+  //initializing initState method
+  @override
+  void initState() {
+    super.initState();
+
+    getUniformInformation();
+  }
+  //to get related information about uniform
+  //whether it is required or not
+  Future<void> getUniformInformation() async {
+    checkinCheckoutController.uniformData.value =
+        await checkinCheckoutController.getUniformInformation(
+            (checkinCheckoutController.details[0])["client_id"]);
+    print(
+        "this is the initsate ${checkinCheckoutController.uniformData.value}");
+  }
+
+  bool isUniformDataAvailable = false;
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +115,40 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
                               .details[0])["activity_name"]),
                       const SizedBox(
                         height: 6,
+                      ),
+                      //to show uniform information data
+                      Obx(
+                        () => checkinCheckoutController.uniformData.isNotEmpty
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Uniform Information",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline5!
+                                          .copyWith(
+                                            fontFamily: 'Ubuntu-Regular',
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                    ),
+                                    Html(
+                                      data: checkinCheckoutController
+                                          .uniformData.value[0] == "1" ? checkinCheckoutController
+                                          .uniformData.value[1] : 'No Uniform Required',
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : CircularProgressIndicator(
+                                color: Colors.blue,
+                              ),
                       ),
                     ],
                   ),
@@ -442,10 +496,10 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
                                   //from geocoder
                                   // var address = await Geocoder.local
                                   //     .findAddressesFromCoordinates(Coordinates(
-                                          // checkinCheckoutController
-                                          //     .locationData!.latitude!,
-                                          // checkinCheckoutController
-                                          //     .locationData!.longitude!));
+                                  // checkinCheckoutController
+                                  //     .locationData!.latitude!,
+                                  // checkinCheckoutController
+                                  //     .locationData!.longitude!));
                                   // Address newAddress;
                                   // newAddress = address.first;
                                   // checkinCheckoutController.addressLocation
@@ -454,18 +508,31 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
                                   // print(
                                   //     "geocoder adresses ${newAddress.addressLine}");
                                   //from geocoder2
-                                  GeoData data = await Geocoder2.getDataFromCoordinates(
-                                    latitude: checkinCheckoutController
-                                              .locationData!.latitude!,
-                                    longitude: checkinCheckoutController
+                                  GeoData data =
+                                      await Geocoder2.getDataFromCoordinates(
+                                          latitude:
+                                              checkinCheckoutController
+                                                  .locationData!.latitude!,
+                                          longitude: checkinCheckoutController
                                               .locationData!.longitude!,
-                                    googleMapApiKey: "AIzaSyBE4FuOoF0qPuxlXyJeAiVThIMDX0iwx2I");
-                                    checkinCheckoutController.addressLocation
-                                      .value = data.country + " " + data.state + " " + data.city + " " + data.postalCode +" " + data.address;
-                                      print("this is the geocoder2 address ${data.country + " " + data.state + " " + data.city + " " + data.postalCode +" " + data.address}");
-                                    //resume previous function
+                                          googleMapApiKey:
+                                              "AIzaSyBE4FuOoF0qPuxlXyJeAiVThIMDX0iwx2I");
                                   checkinCheckoutController
-                                      .showAddressLocation.value = true; 
+                                          .addressLocation.value =
+                                      data.country +
+                                          " " +
+                                          data.state +
+                                          " " +
+                                          data.city +
+                                          " " +
+                                          data.postalCode +
+                                          " " +
+                                          data.address;
+                                  print(
+                                      "this is the geocoder2 address ${data.country + " " + data.state + " " + data.city + " " + data.postalCode + " " + data.address}");
+                                  //resume previous function
+                                  checkinCheckoutController
+                                      .showAddressLocation.value = true;
                                   checkinCheckoutController
                                       .showCircularProgressIndicator
                                       .value = false;
@@ -757,10 +824,10 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
         children: [
           Text(
             value,
-            style: Theme.of(context)
-                .textTheme
-                .headline5!
-                .copyWith(fontFamily: 'Ubuntu-Regular',fontWeight: FontWeight.w400,),
+            style: Theme.of(context).textTheme.headline5!.copyWith(
+                  fontFamily: 'Ubuntu-Regular',
+                  fontWeight: FontWeight.w400,
+                ),
           ),
           Text(value2),
         ],
@@ -788,6 +855,7 @@ class CheckinCheckoutController extends GetxController {
   bool? serviceEnabled;
   PermissionStatus? _permissionGranted;
   var details = Get.arguments;
+  RxList<String> uniformData = <String>[].obs;
 
   Future getLocation() async {
     serviceEnabled = await location.serviceEnabled();
@@ -890,6 +958,31 @@ class CheckinCheckoutController extends GetxController {
       return [
         jsonData['data']['Client']['loc_lat'],
         jsonData['data']['Client']['loc_long']
+      ];
+    }
+
+    return [];
+  }
+
+  //to get the uniform related information of the venueplace
+  Future<List<String>> getUniformInformation(String clientid) async {
+    http.Response response;
+    // ignore: prefer_typing_uninitialized_variables
+    var jsonData;
+    response = await http.post(Uri.parse(
+        'http://trusecurity.emesau.com/dev/api/get_venue/' + clientid));
+
+    jsonData = jsonDecode(response.body);
+    print(jsonData.runtimeType);
+    print((jsonData['status']).runtimeType);
+    // print('adfs');
+    // print(jsonData);
+
+    if (jsonData['status'] == 200) {
+      print("messsage ${jsonData['message']}");
+      return [
+        jsonData['data']['ClientInformation']['uniform_required'],
+        jsonData['data']['ClientInformation']['uniform_description']
       ];
     }
 

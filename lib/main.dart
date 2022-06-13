@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:emes/Pages/HomePages/previous_screen.dart';
 import 'package:emes/Pages/apply_leave_page.dart';
 import 'package:emes/Pages/form_testing_page.dart';
@@ -9,14 +11,20 @@ import 'package:emes/Pages/signup_page.dart';
 import 'package:emes/Providers/accept_decline_provider.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Themes/themes.dart';
-import 'package:emes/Utils/decision_tree.dart';
-import 'package:emes/Widgets/splashPage.dart';
+import 'package:emes/Utils/constants.dart';
+import 'package:emes/Utils/get_logged_in_information.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+var user;
+late SharedPreferences sharedPreferences;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  sharedPreferences = await SharedPreferences.getInstance();
+  user = sharedPreferences.getString("token");
   runApp(MyApp());
 }
 
@@ -60,10 +68,18 @@ class _MyAppState extends State<MyApp> {
             darkTheme: MyTheme.darkTheme(context),
             themeMode: appLevelThemeProvider.themeMode,
             debugShowCheckedModeBanner: false,
-            initialRoute: '/',
+            initialRoute: user == null ? '/loginPage' : homePageFunction(),
+            getPages: [
+              GetPage(
+                name: '/homePage',
+                page: () => HomePage(),
+              ),
+              GetPage(
+                name: '/loginPage',
+                page: () => LoginPage(),
+              ),
+            ],
             routes: {
-              "/": (context) => SplashPage(),
-              MyRoutes.decisonTreeRoute: (context) => DecisionTree(),
               MyRoutes.homePageRoute: (context) => HomePage(),
               MyRoutes.profilePageRoute: (context) => ProfilePage(),
               MyRoutes.applyLeavePageRoute: (context) => ApplyLeavePage(),
@@ -72,11 +88,21 @@ class _MyAppState extends State<MyApp> {
               MyRoutes.signupPageRoute: (context) => SignupPage(),
               MyRoutes.formTestingPageRoute: (context) => FormTestingPage(),
               MyRoutes.previousScreenRoute: (context) => FirstScreen(),
-              MyRoutes.splashPageRoute: (context) => SplashPage(),
             },
           );
         },
       ),
     );
+  }
+
+  String homePageFunction() {
+    String decodeData = sharedPreferences.getString("data") ?? "";
+    var data = jsonDecode(decodeData);
+    // Constants.setFirstName(data['first_name']);
+    // Constants.setLastName(data['last_name']);
+    // Constants.setEmail(data['email']);
+    Constants.setStaffID(data['id']);
+    GetLoggedInUserInformation.getData();
+    return '/homePage';
   }
 }

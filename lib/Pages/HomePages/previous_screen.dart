@@ -252,7 +252,7 @@ class FirstScreenController extends GetxController {
 
   //getters and setters
   get getValueInt {
-    _valueInt.value;
+    return _valueInt.value;
   }
 
   setValueInt() {
