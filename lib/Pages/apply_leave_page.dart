@@ -317,7 +317,9 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                       ),
                     );
                   } else if (snapshot.hasData) {
-                    final appliedLeavesData = snapshot.data as List;
+                    final appliedLeavesData = snapshot.data as Map;
+                    final appliedLeavesDataKeysList = appliedLeavesData.keys.toList();
+
 
                     return appliedLeavesData.isEmpty
                         ? Column(
@@ -339,7 +341,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                               return true;
                             },
                             child: ListView.separated(
-                              itemCount: appliedLeavesData.length,
+                              itemCount: appliedLeavesDataKeysList.length,
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
@@ -390,12 +392,12 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                   ),
                                                   //this indicator with two dots on its top and bottom
                                                   Constants.indicatorTracker(
-                                                      appliedLeavesData[index][
+                                                      appliedLeavesData[appliedLeavesDataKeysList[index]][
                                                                       'ApplyForHoliday']
                                                                   ['status'] ==
                                                               "0"
                                                           ? Colors.amber
-                                                          : appliedLeavesData[index]
+                                                          : appliedLeavesData[appliedLeavesDataKeysList[index]]
                                                                           [
                                                                           'ApplyForHoliday']
                                                                       [
@@ -414,11 +416,11 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                             .center,
                                                     children: [
                                                       Text(appliedLeavesData[
-                                                                  index][
+                                                                  appliedLeavesDataKeysList[index]][
                                                               'ApplyForHoliday']
                                                           ['on_date']),
                                                       Text(appliedLeavesData[
-                                                                  index][
+                                                                  appliedLeavesDataKeysList[index]][
                                                               'ApplyForHoliday']
                                                           ['to_date'])
                                                     ],
@@ -439,14 +441,14 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                     width: 90,
                                                     child: Center(
                                                       child: Text(
-                                                        appliedLeavesData[index]
+                                                        appliedLeavesData[appliedLeavesDataKeysList[index]]
                                                                         [
                                                                         'ApplyForHoliday']
                                                                     [
                                                                     'status'] ==
                                                                 "0"
                                                             ? "Pending"
-                                                            : appliedLeavesData[index]
+                                                            : appliedLeavesData[appliedLeavesDataKeysList[index]]
                                                                             [
                                                                             'ApplyForHoliday']
                                                                         [
@@ -461,13 +463,13 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                     ),
                                                     decoration: BoxDecoration(
                                                       color: appliedLeavesData[
-                                                                          index]
+                                                                          appliedLeavesDataKeysList[index]]
                                                                       [
                                                                       'ApplyForHoliday']
                                                                   ['status'] ==
                                                               "0"
                                                           ? Colors.amber
-                                                          : appliedLeavesData[index]
+                                                          : appliedLeavesData[appliedLeavesDataKeysList[index]]
                                                                           [
                                                                           'ApplyForHoliday']
                                                                       [
@@ -490,7 +492,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                     splashColor: Colors.blue,
                                                     onTap: () {
                                                       print(appliedLeavesData[
-                                                                  index][
+                                                                  appliedLeavesDataKeysList[index]][
                                                               'ApplyForHoliday']
                                                           ['reason']);
                                                       openLeaveBarController
@@ -548,13 +550,13 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                         3,
                                                       ),
                                                       color: appliedLeavesData[
-                                                                          index]
+                                                                          appliedLeavesDataKeysList[index]]
                                                                       [
                                                                       'ApplyForHoliday']
                                                                   ['status'] ==
                                                               "0"
                                                           ? Colors.amber
-                                                          : appliedLeavesData[index]
+                                                          : appliedLeavesData[appliedLeavesDataKeysList[index]]
                                                                           [
                                                                           'ApplyForHoliday']
                                                                       [
@@ -592,7 +594,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                                         "   "),
                                                                 TextSpan(
                                                                   text: appliedLeavesData[
-                                                                              index]
+                                                                              appliedLeavesDataKeysList[index]]
                                                                           [
                                                                           'ApplyForHoliday']
                                                                       [
@@ -606,7 +608,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                                 )
                                                               ]),
                                                         ),
-                                                        (appliedLeavesData[index]
+                                                        (appliedLeavesData[appliedLeavesDataKeysList[index]]
                                                                         [
                                                                         'ApplyForHoliday']
                                                                     [
@@ -628,7 +630,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                                         text:
                                                                             "   "),
                                                                     TextSpan(
-                                                                      text: appliedLeavesData[index]
+                                                                      text: appliedLeavesData[appliedLeavesDataKeysList[index]]
                                                                               [
                                                                               'ApplyForHoliday']
                                                                           [
@@ -665,7 +667,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                   }
                 }
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(color: Colors.blue,),
                 );
               }),
         ),
@@ -799,7 +801,7 @@ class OpenLeaveBarController extends GetxController {
 }
 
 class AppliedLeavesProvider {
-  static Future<List> getAppliedLeaves() async {
+  static Future<Map> getAppliedLeaves() async {
     // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // String decodeData = sharedPreferences.getString("data") ?? "";
     // var data = jsonDecode(decodeData);
@@ -807,7 +809,7 @@ class AppliedLeavesProvider {
       Uri.parse(Constants.getAppliedLeavesUrl + "/" + Constants.getStaffID),
     );
     var jsonData = jsonDecode(response.body);
-    List data2 = jsonData['data'];
+    Map data2 = jsonData['data'];
     // if(jsonData['status' == 200]){
     //    data2 = jsonData['data'];
     // }

@@ -28,6 +28,10 @@ class Constants {
       "http://trusecurity.emesau.com/dev/api/decline_roster";
   static String _inboxPageUrl =
       "http://trusecurity.emesau.com/dev/api/get_new_message_noti/";
+  static String _chatAdmins =
+      "http://trusecurity.emesau.com/dev/api/chat_admins/";
+  static String _chatMessages = "http://trusecurity.emesau.com/dev/api/chat/";
+  static String _sendMessage = "http://trusecurity.emesau.com/dev/api/send_msg";
 
   //
   //setters
@@ -113,6 +117,17 @@ class Constants {
     return _inboxPageUrl;
   }
 
+  static get getChatAdmins {
+    return _chatAdmins;
+  }
+
+  static get getChatMessages {
+    return _chatMessages;
+  }
+  static get getSendMessage {
+    return _sendMessage;
+  }
+
   // factory Constants() {
   //   return _constants;
   // }
@@ -122,19 +137,19 @@ class Constants {
 
   static String nameOfDayOfShift(String value) {
     if (value == "1") {
-      return "Monday".substring(0,3);
+      return "Monday".substring(0, 3);
     } else if (value == "2") {
-      return "Tuesday".substring(0,3);
+      return "Tuesday".substring(0, 3);
     } else if (value == "3") {
-      return "Wednesday".substring(0,3);
+      return "Wednesday".substring(0, 3);
     } else if (value == "4") {
-      return "Thursday".substring(0,3);
+      return "Thursday".substring(0, 3);
     } else if (value == "5") {
-      return "Friday".substring(0,3);
+      return "Friday".substring(0, 3);
     } else if (value == "6") {
-      return "Saturday".substring(0,3);
+      return "Saturday".substring(0, 3);
     } else if (value == "0") {
-      return "Sunday".substring(0,3);
+      return "Sunday".substring(0, 3);
     }
     return "Error";
   }
