@@ -36,6 +36,21 @@ class _ThirdScreenState extends State<ThirdScreen> {
     final _textTheme = Theme.of(context).textTheme;
     final _colorScheme = Theme.of(context).colorScheme;
     // var date = HomepageDatesProvider();
+
+    //function of callback
+    //need to call from another page
+    callback() {
+      setState(() {
+        controller.idOfSelectedItemsList.clear();
+        controller.selectedItemsList.clear();
+        controller.ifAcceptedShiftIsSelected.clear();
+        controller.ifDeclinedShiftIsSelected.clear();
+        _shiftData.setNextUrl((_shiftData.getNextUrl)
+                .substring(0, ((_shiftData.getNextUrl).length - 10)) +
+            nextScreenCurrentDate);
+      });
+    }
+
     return Obx(
       () => nextScreenController.getValueInt > 0
           ? Container(
@@ -579,27 +594,109 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                         .contains(true) &&
                                     controller
                                         .idOfSelectedItemsList.isNotEmpty) {
-                                  acceptOrDeclineStatusController.declineShift(
-                                      controller.idOfSelectedItemsList,
-                                      startDate,
-                                      endDate,
-                                      "just", () {
-                                    setState(() {
-                                      controller.idOfSelectedItemsList.clear();
-                                      controller.selectedItemsList.clear();
-                                      controller.ifAcceptedShiftIsSelected
-                                          .clear();
-                                      controller.ifDeclinedShiftIsSelected
-                                          .clear();
-                                      _shiftData.setNextUrl(
-                                          (_shiftData.getNextUrl).substring(
-                                                  0,
-                                                  ((_shiftData.getNextUrl)
-                                                          .length -
-                                                      10)) +
-                                              nextScreenCurrentDate);
-                                    });
-                                  }, context);
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      TextEditingController
+                                          giveReasonController =
+                                          TextEditingController();
+                                      return Dialog(
+                                        backgroundColor: Colors.transparent,
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                          horizontal: 15)
+                                                      .copyWith(
+                                                top: 20.0,
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Constants
+                                                      .declineShiftPopupTopRow(
+                                                          context),
+                                                  //Some Space
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Constants
+                                                      .textfieldWithCancelSuffixButton(
+                                                          controller
+                                                              .setReasonErrorText,
+                                                          giveReasonController),
+                                                  //
+                                                  Obx(
+                                                    () => Text(
+                                                      controller
+                                                          .getReasonErrorText
+                                                          .value,
+                                                      style:
+                                                          _textTheme.headline6,
+                                                    ),
+                                                  ),
+                                                  //
+                                                  //Decline Shift Button
+                                                  Constants
+                                                      .materialRoundedButton(
+                                                          baseColor: const Color
+                                                                  .fromARGB(
+                                                              255, 252, 39, 24),
+                                                          highlightColor:
+                                                              Colors.amber,
+                                                          splashColor:
+                                                              const Color
+                                                                      .fromARGB(
+                                                                  255,
+                                                                  126,
+                                                                  19,
+                                                                  19),
+                                                          onTapFunction: () {
+                                                            if (giveReasonController
+                                                                .text.isEmpty) {
+                                                              controller
+                                                                  .setReasonErrorText(
+                                                                      giveReasonController
+                                                                          .text);
+                                                            } else {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                              acceptOrDeclineStatusController.declineShift(
+                                                                  controller
+                                                                      .idOfSelectedItemsList,
+                                                                  startDate,
+                                                                  endDate,
+                                                                  giveReasonController
+                                                                      .text,
+                                                                  callback,
+                                                                  context);
+                                                            }
+                                                          },
+                                                          buttonText:
+                                                              "Decline Shift"),
+                                                  //Some Space
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
                                 } else if (controller
                                     .idOfSelectedItemsList.isEmpty) {
                                   Get.snackbar(
@@ -735,6 +832,19 @@ class AcceptDeclineControllerNextScreen extends GetxController {
 
   deleteIdOfSelectedItemsList(String value) {
     idOfSelectedItemsList.remove(value);
+  }
+
+  RxString reasonErrorText = ''.obs;
+  setReasonErrorText(String value) {
+    if (value.isEmpty || value == "") {
+      reasonErrorText.value = "*Reason cannot be empty";
+    } else {
+      reasonErrorText.value = "";
+    }
+  }
+
+  get getReasonErrorText {
+    return reasonErrorText;
   }
 }
 

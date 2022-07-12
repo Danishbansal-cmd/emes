@@ -146,7 +146,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                         decoration: InputDecoration(
                                           hintText: "Select From Date",
                                           border: InputBorder.none,
-                                          suffixIcon: applyLeaveFormButtonsRow(controller: fromDateController),
+                                          suffixIcon: applyLeaveFormButtonsRow(
+                                              controller: fromDateController),
                                         ),
                                       ),
                                     ),
@@ -189,7 +190,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                           // labelText: "hello 1",
                                           hintText: "Select To Date",
                                           border: InputBorder.none,
-                                          suffixIcon: applyLeaveFormButtonsRow(controller: toDateController),
+                                          suffixIcon: applyLeaveFormButtonsRow(
+                                              controller: toDateController),
                                         ),
                                       ),
                                     ),
@@ -318,8 +320,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                     );
                   } else if (snapshot.hasData) {
                     final appliedLeavesData = snapshot.data as Map;
-                    final appliedLeavesDataKeysList = appliedLeavesData.keys.toList();
-
+                    final appliedLeavesDataKeysList =
+                        appliedLeavesData.keys.toList();
 
                     return appliedLeavesData.isEmpty
                         ? Column(
@@ -392,12 +394,15 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                   ),
                                                   //this indicator with two dots on its top and bottom
                                                   Constants.indicatorTracker(
-                                                      appliedLeavesData[appliedLeavesDataKeysList[index]][
+                                                      appliedLeavesData[appliedLeavesDataKeysList[
+                                                                          index]]
+                                                                      [
                                                                       'ApplyForHoliday']
                                                                   ['status'] ==
                                                               "0"
                                                           ? Colors.amber
-                                                          : appliedLeavesData[appliedLeavesDataKeysList[index]]
+                                                          : appliedLeavesData[appliedLeavesDataKeysList[
+                                                                              index]]
                                                                           [
                                                                           'ApplyForHoliday']
                                                                       [
@@ -416,11 +421,13 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                             .center,
                                                     children: [
                                                       Text(appliedLeavesData[
-                                                                  appliedLeavesDataKeysList[index]][
+                                                                  appliedLeavesDataKeysList[
+                                                                      index]][
                                                               'ApplyForHoliday']
                                                           ['on_date']),
                                                       Text(appliedLeavesData[
-                                                                  appliedLeavesDataKeysList[index]][
+                                                                  appliedLeavesDataKeysList[
+                                                                      index]][
                                                               'ApplyForHoliday']
                                                           ['to_date'])
                                                     ],
@@ -441,14 +448,16 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                     width: 90,
                                                     child: Center(
                                                       child: Text(
-                                                        appliedLeavesData[appliedLeavesDataKeysList[index]]
+                                                        appliedLeavesData[appliedLeavesDataKeysList[
+                                                                            index]]
                                                                         [
                                                                         'ApplyForHoliday']
                                                                     [
                                                                     'status'] ==
                                                                 "0"
                                                             ? "Pending"
-                                                            : appliedLeavesData[appliedLeavesDataKeysList[index]]
+                                                            : appliedLeavesData[
+                                                                                appliedLeavesDataKeysList[index]]
                                                                             [
                                                                             'ApplyForHoliday']
                                                                         [
@@ -463,13 +472,15 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                     ),
                                                     decoration: BoxDecoration(
                                                       color: appliedLeavesData[
-                                                                          appliedLeavesDataKeysList[index]]
+                                                                          appliedLeavesDataKeysList[
+                                                                              index]]
                                                                       [
                                                                       'ApplyForHoliday']
                                                                   ['status'] ==
                                                               "0"
                                                           ? Colors.amber
-                                                          : appliedLeavesData[appliedLeavesDataKeysList[index]]
+                                                          : appliedLeavesData[appliedLeavesDataKeysList[
+                                                                              index]]
                                                                           [
                                                                           'ApplyForHoliday']
                                                                       [
@@ -492,7 +503,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                     splashColor: Colors.blue,
                                                     onTap: () {
                                                       print(appliedLeavesData[
-                                                                  appliedLeavesDataKeysList[index]][
+                                                                  appliedLeavesDataKeysList[
+                                                                      index]][
                                                               'ApplyForHoliday']
                                                           ['reason']);
                                                       openLeaveBarController
@@ -550,13 +562,15 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                         3,
                                                       ),
                                                       color: appliedLeavesData[
-                                                                          appliedLeavesDataKeysList[index]]
+                                                                          appliedLeavesDataKeysList[
+                                                                              index]]
                                                                       [
                                                                       'ApplyForHoliday']
                                                                   ['status'] ==
                                                               "0"
                                                           ? Colors.amber
-                                                          : appliedLeavesData[appliedLeavesDataKeysList[index]]
+                                                          : appliedLeavesData[appliedLeavesDataKeysList[
+                                                                              index]]
                                                                           [
                                                                           'ApplyForHoliday']
                                                                       [
@@ -608,7 +622,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                                 )
                                                               ]),
                                                         ),
-                                                        (appliedLeavesData[appliedLeavesDataKeysList[index]]
+                                                        (appliedLeavesData[appliedLeavesDataKeysList[
+                                                                            index]]
                                                                         [
                                                                         'ApplyForHoliday']
                                                                     [
@@ -667,104 +682,81 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                   }
                 }
                 return const Center(
-                  child: CircularProgressIndicator(color: Colors.blue,),
+                  child: CircularProgressIndicator(
+                    color: Colors.blue,
+                  ),
                 );
               }),
         ),
       ),
     );
   }
-  
-  Widget applyLeaveFormButtonsRow({required TextEditingController controller}){
-    return Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              SizedBox(
-                                                width: 40,
-                                                child: IconButton(
-                                                  color: Colors.grey,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 2, right: 0),
-                                                  onPressed: () async {
-                                                    final DateTime? picked =
-                                                        await showDatePicker(
-                                                      context: context,
-                                                      initialDate:
-                                                          DateTime.now(),
-                                                      firstDate: DateTime.now(),
-                                                      lastDate: DateTime(DateTime.now().year,DateTime.now().month + 2,DateTime.now().day),
-                                                      builder:
-                                                          (context, child) {
-                                                        return Theme(
-                                                          data:
-                                                              Theme.of(context)
-                                                                  .copyWith(
-                                                            colorScheme:
-                                                                const ColorScheme
-                                                                    .light(
-                                                              primary:
-                                                                  Colors.yellow,
-                                                              onPrimary:
-                                                                  Colors.black,
-                                                              onSurface:
-                                                                  Colors.green,
-                                                            ),
-                                                            textButtonTheme:
-                                                                TextButtonThemeData(
-                                                              style: TextButton
-                                                                  .styleFrom(
-                                                                primary:
-                                                                    Colors.red,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          child: child!,
-                                                        );
-                                                      },
-                                                    );
-                                                    if (picked != null &&
-                                                        picked !=
-                                                            DateTime.now()) {
-                                                      // setState(() {
-                                                        controller
-                                                            .text = (picked.day
-                                                                .toString().length == 1 ? "0" + picked.day
-                                                                .toString() : picked.day
-                                                                .toString()) +
-                                                            "/" +
-                                                            (picked.month
-                                                                .toString().length == 1 ? "0" + picked.month
-                                                                .toString() : picked.month
-                                                                .toString()) +
-                                                            "/" +
-                                                            picked.year
-                                                                .toString();
-                                                      // });
-                                                    }
-                                                  },
-                                                  icon: const Icon(
-                                                      Icons.calendar_month),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 40,
-                                                child: IconButton(
-                                                  color: Colors.grey,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 2, right: 0),
-                                                  onPressed: () {
-                                                    controller.clear();
-                                                  },
-                                                  icon:
-                                                      const Icon(Icons.cancel),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-  }
 
+  Widget applyLeaveFormButtonsRow({required TextEditingController controller}) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 40,
+          child: IconButton(
+            color: Colors.grey,
+            padding: const EdgeInsets.only(bottom: 2, right: 0),
+            onPressed: () async {
+              final DateTime? picked = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime.now(),
+                lastDate: DateTime(DateTime.now().year,
+                    DateTime.now().month + 2, DateTime.now().day),
+                builder: (context, child) {
+                  return Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: const ColorScheme.light(
+                        primary: Colors.yellow,
+                        onPrimary: Colors.black,
+                        onSurface: Colors.green,
+                      ),
+                      textButtonTheme: TextButtonThemeData(
+                        style: TextButton.styleFrom(
+                          primary: Colors.red,
+                        ),
+                      ),
+                    ),
+                    child: child!,
+                  );
+                },
+              );
+              if (picked != null && picked != DateTime.now()) {
+                // setState(() {
+                controller.text = (picked.day.toString().length == 1
+                        ? "0" + picked.day.toString()
+                        : picked.day.toString()) +
+                    "/" +
+                    (picked.month.toString().length == 1
+                        ? "0" + picked.month.toString()
+                        : picked.month.toString()) +
+                    "/" +
+                    picked.year.toString();
+                // });
+              }
+            },
+            icon: const Icon(Icons.calendar_month),
+          ),
+        ),
+        SizedBox(
+          width: 40,
+          child: IconButton(
+            color: Colors.grey,
+            padding: const EdgeInsets.only(bottom: 2, right: 0),
+            onPressed: () {
+              controller.clear();
+            },
+            icon: const Icon(Icons.cancel),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class OpenLeaveBarController extends GetxController {

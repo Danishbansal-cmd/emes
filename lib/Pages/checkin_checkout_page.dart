@@ -40,6 +40,7 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
 
     getUniformInformation();
   }
+
   //to get related information about uniform
   //whether it is required or not
   Future<void> getUniformInformation() async {
@@ -117,34 +118,67 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
                         height: 6,
                       ),
                       //to show uniform information data
+                      //and (manager_to_report and supervisor_to_report) data
                       Obx(
                         () => checkinCheckoutController.uniformData.isNotEmpty
-                            ? Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                ),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Uniform Information",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline5!
-                                          .copyWith(
-                                            fontFamily: 'Ubuntu-Regular',
-                                            fontWeight: FontWeight.w400,
-                                          ),
+                            ? Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
                                     ),
-                                    Html(
-                                      data: checkinCheckoutController
-                                          .uniformData.value[0] == "1" ? checkinCheckoutController
-                                          .uniformData.value[1] : 'No Uniform Required',
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Uniform Information",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5!
+                                              .copyWith(
+                                                fontFamily: 'Ubuntu-Regular',
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                        ),
+                                        Html(
+                                          data: checkinCheckoutController
+                                                      .uniformData.value[0] ==
+                                                  "1"
+                                              ? checkinCheckoutController
+                                                  .uniformData.value[1]
+                                              : 'No Uniform Required',
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Details(
+                                      "Manager To Report",
+                                              (checkinCheckoutController
+                                                      .uniformData[2] ==
+                                                  "")
+                                          ? "No Manager"
+                                          : checkinCheckoutController
+                                              .uniformData[2]),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Details(
+                                      "Supervisor To Report",
+                                      (checkinCheckoutController
+                                                      .uniformData[3] ==
+                                                  "") ? "No Supervisor" :
+                                      checkinCheckoutController
+                                          .uniformData[3]),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                ],
                               )
                             : CircularProgressIndicator(
                                 color: Colors.blue,
@@ -982,7 +1016,9 @@ class CheckinCheckoutController extends GetxController {
       print("messsage ${jsonData['message']}");
       return [
         jsonData['data']['ClientInformation']['uniform_required'],
-        jsonData['data']['ClientInformation']['uniform_description']
+        jsonData['data']['ClientInformation']['uniform_description'],
+        jsonData['data']['ClientInformation']['manager_to_report'],
+        jsonData['data']['ClientInformation']['supervisor_to_report']
       ];
     }
 

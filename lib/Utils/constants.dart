@@ -124,6 +124,7 @@ class Constants {
   static get getChatMessages {
     return _chatMessages;
   }
+
   static get getSendMessage {
     return _sendMessage;
   }
@@ -231,6 +232,116 @@ class Constants {
           ),
         );
       },
+    );
+  }
+
+  static Widget declineShiftPopupTopRow(
+    BuildContext context,
+  ) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "Decline Shift",
+          style: Theme.of(context).textTheme.headline1,
+        ),
+        Material(
+          color: const Color.fromARGB(0, 199, 38, 38),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(25),
+            splashColor: Colors.grey,
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                  30,
+                ),
+              ),
+              width: 35,
+              height: 35,
+              child: Icon(
+                Icons.close_rounded,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Widget textfieldWithCancelSuffixButton(
+      Function onchangeFunction, TextEditingController controller) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+      ).copyWith(right: 0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(
+          color: Colors.grey,
+          width: 2,
+        ),
+      ),
+      child: TextField(
+        cursorColor: Colors.grey,
+        textInputAction: TextInputAction.done,
+        onChanged: (value) {
+          onchangeFunction(value);
+        },
+        controller: controller,
+        textAlignVertical: TextAlignVertical.center,
+        decoration: InputDecoration(
+          hintText: "Give Reason",
+          border: InputBorder.none,
+          suffixIcon: SizedBox(
+            width: 40,
+            child: IconButton(
+              color: Colors.grey,
+              padding: const EdgeInsets.only(bottom: 2, right: 0),
+              onPressed: () {
+                controller.clear();
+              },
+              icon: const Icon(Icons.cancel),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget materialRoundedButton(
+      {required Color baseColor,
+      Color? highlightColor,
+      Color? splashColor,
+      required Function onTapFunction,
+      required String buttonText}) {
+    return Material(
+      color: baseColor,
+      borderRadius: BorderRadius.circular(50),
+      child: InkWell(
+        highlightColor: highlightColor,
+        splashColor: splashColor,
+        onTap: () {
+          onTapFunction();
+        },
+        child: Container(
+          width: double.infinity,
+          height: 35,
+          child: Center(
+            child: Text(
+              buttonText,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                letterSpacing: 1,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

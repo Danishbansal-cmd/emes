@@ -592,8 +592,6 @@ class _SecondScreenState extends State<SecondScreen> {
                                                   ),
                                                 ),
                                               ),
-
-
                                             ],
                                           ),
                                         );
@@ -624,104 +622,176 @@ class _SecondScreenState extends State<SecondScreen> {
               children: [
                 Expanded(
                   child: Material(
-                        color: Color.fromARGB(255, 252, 39, 24),
-                        child: InkWell(
-                          onTap: () {
-                            print("decline");
-                            // print(controller.ifDeclinedShiftIsSelected.value);
-                            if (!controller.ifDeclinedShiftIsSelected
-                                    .contains(true) &&
-                                controller.idOfSelectedItemsList.isNotEmpty) {
-                              acceptOrDeclineStatusController.declineShift(
-                                  controller.idOfSelectedItemsList,
-                                  startDate,
-                                  endDate,
-                                  "just",
-                                  callback,
-                                  context);
-                            } else if (controller
-                                .idOfSelectedItemsList.isEmpty) {
-                              Get.snackbar(
-                                  'Message', 'Please select some values.',
-                                  duration: const Duration(milliseconds: 1200));
-                            } else {
-                              Get.snackbar('Message',
-                                  'Declined shift cannot be declined again.',
-                                  duration: const Duration(milliseconds: 1200));
-                            }
-                            // controller.idOfSelectedItemsList.clear();
-                            // controller.selectedItemsList.clear();
-                          },
-                          highlightColor: Colors.amber,
-                          splashColor: const Color.fromARGB(255, 126, 19, 19),
-                          child: Container(
-                            height: 40,
-                            decoration: const BoxDecoration(
-                                // color: Color.fromARGB(255, 252, 39, 24),
+                    color: Color.fromARGB(255, 252, 39, 24),
+                    child: InkWell(
+                      onTap: () {
+                        print("decline");
+                        // print(controller.ifDeclinedShiftIsSelected.value);
+                        if (!controller.ifDeclinedShiftIsSelected
+                                .contains(true) &&
+                            controller.idOfSelectedItemsList.isNotEmpty) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              TextEditingController giveReasonController =
+                                  TextEditingController();
+                              return Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                              horizontal: 15)
+                                          .copyWith(
+                                        top: 20.0,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Constants.declineShiftPopupTopRow(
+                                              context),
+                                          //Some Space
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Constants
+                                              .textfieldWithCancelSuffixButton(
+                                                  controller.setReasonErrorText,
+                                                  giveReasonController),
+                                          //
+                                          Obx(
+                                            () => Text(
+                                              controller
+                                                  .getReasonErrorText.value,
+                                              style: _textTheme.headline6,
+                                            ),
+                                          ),
+                                          //
+                                          //Decline Shift Button
+                                          Constants.materialRoundedButton(
+                                              baseColor: const Color.fromARGB(
+                                                  255, 252, 39, 24),
+                                              highlightColor: Colors.amber,
+                                              splashColor: const Color.fromARGB(
+                                                  255, 126, 19, 19),
+                                              onTapFunction: () {
+                                                if (giveReasonController
+                                                    .text.isEmpty) {
+                                                  controller.setReasonErrorText(
+                                                      giveReasonController
+                                                          .text);
+                                                } else {
+                                                  Navigator.of(context).pop();
+                                                  acceptOrDeclineStatusController.declineShift(
+                                                      controller
+                                                          .idOfSelectedItemsList,
+                                                      startDate,
+                                                      endDate,
+                                                      giveReasonController.text,
+                                                      callback,
+                                                      context);
+                                                }
+                                              },
+                                              buttonText: "Decline Shift"),
+                                          //Some Space
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                            child: const Center(
-                              child: Text(
-                                "DECLINE",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  letterSpacing: 1.5,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              );
+                            },
+                          );
+                        } else if (controller.idOfSelectedItemsList.isEmpty) {
+                          Get.snackbar('Message', 'Please select some values.',
+                              duration: const Duration(milliseconds: 1200));
+                        } else {
+                          Get.snackbar('Message',
+                              'Declined shift cannot be declined again.',
+                              duration: const Duration(milliseconds: 1200));
+                        }
+                        // controller.idOfSelectedItemsList.clear();
+                        // controller.selectedItemsList.clear();
+                      },
+                      highlightColor: Colors.amber,
+                      splashColor: const Color.fromARGB(255, 126, 19, 19),
+                      child: Container(
+                        height: 40,
+                        decoration: const BoxDecoration(
+                            // color: Color.fromARGB(255, 252, 39, 24),
+                            ),
+                        child: const Center(
+                          child: Text(
+                            "DECLINE",
+                            style: TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                       ),
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: Material(
-                        color: Color.fromARGB(255, 31, 224, 37),
-                        child: InkWell(
-                          onTap: () {
-                            print("accept");
-                            if (!controller.ifAcceptedShiftIsSelected
-                                    .contains(true) &&
-                                controller.idOfSelectedItemsList.isNotEmpty) {
-                              print("first");
-                              acceptOrDeclineStatusController.acceptShift(
-                                  controller.idOfSelectedItemsList,
-                                  callback,
-                                  context);
-                            } else if (controller
-                                .idOfSelectedItemsList.isEmpty) {
-                              Get.snackbar(
-                                  'Message', 'Please select some values.',
-                                  duration: const Duration(milliseconds: 1200));
-                            } else {
-                              Get.snackbar('Message',
-                                  'Accepted shift cannot be accepted again.',
-                                  duration: const Duration(milliseconds: 1200));
-                            }
+                    color: Color.fromARGB(255, 31, 224, 37),
+                    child: InkWell(
+                      onTap: () {
+                        print("accept");
+                        if (!controller.ifAcceptedShiftIsSelected
+                                .contains(true) &&
+                            controller.idOfSelectedItemsList.isNotEmpty) {
+                          print("first");
+                          acceptOrDeclineStatusController.acceptShift(
+                              controller.idOfSelectedItemsList,
+                              callback,
+                              context);
+                        } else if (controller.idOfSelectedItemsList.isEmpty) {
+                          Get.snackbar('Message', 'Please select some values.',
+                              duration: const Duration(milliseconds: 1200));
+                        } else {
+                          Get.snackbar('Message',
+                              'Accepted shift cannot be accepted again.',
+                              duration: const Duration(milliseconds: 1200));
+                        }
 
-                            // if (controller.selectedItemsList.isNotEmpty) {
-                            //   setState(() {});
-                            // }
-                          },
-                          splashColor: Color.fromARGB(255, 27, 126, 30),
-                          highlightColor: Colors.amber,
-                          child: Container(
-                            height: 40,
-                            decoration: const BoxDecoration(
-                                // color: Color.fromARGB(255, 36, 255, 43),
-                                ),
-                            child: const Center(
-                              child: Text(
-                                "ACCEPT",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  letterSpacing: 1.5,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                        // if (controller.selectedItemsList.isNotEmpty) {
+                        //   setState(() {});
+                        // }
+                      },
+                      splashColor: Color.fromARGB(255, 27, 126, 30),
+                      highlightColor: Colors.amber,
+                      child: Container(
+                        height: 40,
+                        decoration: const BoxDecoration(
+                            // color: Color.fromARGB(255, 36, 255, 43),
+                            ),
+                        child: const Center(
+                          child: Text(
+                            "ACCEPT",
+                            style: TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                       ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -753,5 +823,18 @@ class AcceptDeclineController extends GetxController {
 
   deleteIdOfSelectedItemsList(String value) {
     idOfSelectedItemsList.remove(value);
+  }
+
+  RxString reasonErrorText = ''.obs;
+  setReasonErrorText(String value) {
+    if (value.isEmpty || value == "") {
+      reasonErrorText.value = "*Reason cannot be empty";
+    } else {
+      reasonErrorText.value = "";
+    }
+  }
+
+  get getReasonErrorText {
+    return reasonErrorText;
   }
 }
