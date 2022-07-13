@@ -18,14 +18,50 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:background_fetch/background_fetch.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:rxdart/rxdart.dart';
 
 var user;
 late SharedPreferences sharedPreferences;
+
+// [Android-only] This "Headless Task" is run when the Android app
+// is terminated with enableHeadless: true
+void backgroundFetchHeadlessTask(HeadlessTask task) async {
+  String taskId = task.taskId;
+  bool isTimeout = task.timeout;
+  if (isTimeout) {
+    // This task has exceeded its allowed running-time.
+    // You must stop what you're doing and immediately .finish(taskId)
+    print("[BackgroundFetch] Headless task timed-out: $taskId");
+    BackgroundFetch.finish(taskId);
+    return;
+  }
+  print('[BackgroundFetch] Headless event received.');
+  var response = await http.get(Uri.parse(
+      "http://trusecurity.emesau.com/dev/api/get_new_message_noti/"  + Constants.getStaffID));
+  var jsonResponse = jsonDecode(response.body);
+  if (jsonResponse['data'] > 0) {
+    NotificationApi.showNotification(
+        title: 'New Messages',
+        body: '${jsonResponse["data"]}',
+        payload: 'EMES');
+  }
+  BackgroundFetch.finish(taskId);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   sharedPreferences = await SharedPreferences.getInstance();
   user = sharedPreferences.getString("token");
   runApp(MyApp());
+
+  // Register to receive BackgroundFetch events after app is terminated.
+  // Requires {stopOnTerminate: false, enableHeadless: true}
+  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
 class MyApp extends StatefulWidget {
@@ -36,6 +72,51 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    NotificationApi.init();
+    initPlatformState();
+  }
+
+  Future<void> initPlatformState() async {
+    // Configure BackgroundFetch.
+    int status = await BackgroundFetch.configure(
+        BackgroundFetchConfig(
+            minimumFetchInterval: 15,
+            stopOnTerminate: false,
+            enableHeadless: true,
+            requiresBatteryNotLow: false,
+            requiresCharging: false,
+            requiresStorageNotLow: false,
+            requiresDeviceIdle: false,
+            requiredNetworkType: NetworkType.NONE), (String taskId) async {
+      BackgroundFetch.finish(taskId);
+    }, (String taskId) async {
+      // <-- Task timeout handler.
+      // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
+      print("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
+      BackgroundFetch.finish(taskId);
+    });
+    print('[BackgroundFetch] configure success: $status');
+    String decodeData = sharedPreferences.getString("data") ?? "";
+    var data = jsonDecode(decodeData);
+    print("this is the response from sharedprefernces ${data}");
+    print("this is the response from  Constants.getStaffID() ${Constants.getStaffID}");
+    var response = await http.get(Uri.parse(
+        "http://trusecurity.emesau.com/dev/api/get_new_message_noti/" + Constants.getStaffID));
+    var jsonResponse = jsonDecode(response.body);
+    NotificationApi.showNotification(
+        title: 'New Messages',
+        body: '${jsonResponse["data"]}',
+        payload: 'EMES');
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -104,5 +185,34 @@ class _MyAppState extends State<MyApp> {
     Constants.setStaffID(data['id']);
     GetLoggedInUserInformation.getData();
     return '/homePage';
+  }
+}
+
+class NotificationApi {
+  static final _notification = FlutterLocalNotificationsPlugin();
+  static final onNotifications = BehaviorSubject<String?>();
+
+  static Future showNotification(
+          {int id = 0, String? title, String? body, String? payload}) async =>
+      _notification.show(id, title, body, await _notificationDetails(),
+          payload: payload);
+
+  static Future _notificationDetails() async {
+    return NotificationDetails(
+      android: AndroidNotificationDetails('channel id', 'channel name',
+          channelDescription: 'channel description',
+          importance: Importance.max),
+      iOS: IOSNotificationDetails(),
+    );
+  }
+
+  static Future init({bool initScheduled = false}) async {
+    final android = AndroidInitializationSettings('@mipmap/ic_launcher');
+    final iOS = IOSInitializationSettings();
+    final settings = InitializationSettings(android: android, iOS: iOS);
+    await _notification.initialize(settings,
+        onSelectNotification: (payload) async {
+      onNotifications.add(payload);
+    });
   }
 }
