@@ -43,6 +43,7 @@ dependencies:
   background_fetch: ^1.1.0
   flutter_local_notifications: ^9.4.0
   rxdart: ^0.27.3
+  flutter_app_badger: ^1.4.0
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:emes/Pages/HomePages/previous_screen.dart';
@@ -24,6 +25,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:rxdart/rxdart.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 
 var user;
 late SharedPreferences sharedPreferences;
@@ -40,15 +42,22 @@ void backgroundFetchHeadlessTask(HeadlessTask task) async {
     BackgroundFetch.finish(taskId);
     return;
   }
+  final controller = Get.put(MainPageController());
   print('[BackgroundFetch] Headless event received.');
   var response = await http.get(Uri.parse(
-      "http://trusecurity.emesau.com/dev/api/get_new_message_noti/"  + Constants.getStaffID));
+      "http://trusecurity.emesau.com/dev/api/get_new_message_noti/" +
+          Constants.getStaffID));
   var jsonResponse = jsonDecode(response.body);
   if (jsonResponse['data'] > 0) {
     NotificationApi.showNotification(
         title: 'New Messages',
         body: '${jsonResponse["data"]}',
         payload: 'EMES');
+    controller.setNumberOfNotification(jsonResponse['data']);
+    FlutterAppBadger.updateBadgeCount(jsonResponse['data']);
+  } else {
+    controller.setNumberOfNotification(jsonResponse['data']);
+    FlutterAppBadger.isAppBadgeSupported();
   }
   BackgroundFetch.finish(taskId);
 }
@@ -72,51 +81,42 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  Timer? mytimer;
+
+  //app level initializing controller
+  final controller = Get.put(MainPageController());
+
   @override
   void initState() {
     super.initState();
     NotificationApi.init();
-    initPlatformState();
-  }
-
-  Future<void> initPlatformState() async {
-    // Configure BackgroundFetch.
-    int status = await BackgroundFetch.configure(
-        BackgroundFetchConfig(
-            minimumFetchInterval: 15,
-            stopOnTerminate: false,
-            enableHeadless: true,
-            requiresBatteryNotLow: false,
-            requiresCharging: false,
-            requiresStorageNotLow: false,
-            requiresDeviceIdle: false,
-            requiredNetworkType: NetworkType.NONE), (String taskId) async {
-      BackgroundFetch.finish(taskId);
-    }, (String taskId) async {
-      // <-- Task timeout handler.
-      // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
-      print("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
-      BackgroundFetch.finish(taskId);
+    // initPlatformState();
+    mytimer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      var response = await http.get(Uri.parse(
+          "http://trusecurity.emesau.com/dev/api/get_new_message_noti/" +
+              Constants.getStaffID));
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['data'] > 0) {
+        NotificationApi.showNotification(
+            title: 'Inbox',
+            body: 'New messages: ${jsonResponse["data"]}',
+            payload: 'EMES');
+        controller.setNumberOfNotification(jsonResponse['data']);
+        FlutterAppBadger.updateBadgeCount(jsonResponse['data']);
+      } else {
+        controller.setNumberOfNotification(jsonResponse['data']);
+        FlutterAppBadger.removeBadge();
+      }
     });
-    print('[BackgroundFetch] configure success: $status');
-    String decodeData = sharedPreferences.getString("data") ?? "";
-    var data = jsonDecode(decodeData);
-    print("this is the response from sharedprefernces ${data}");
-    print("this is the response from  Constants.getStaffID() ${Constants.getStaffID}");
-    var response = await http.get(Uri.parse(
-        "http://trusecurity.emesau.com/dev/api/get_new_message_noti/" + Constants.getStaffID));
-    var jsonResponse = jsonDecode(response.body);
-    NotificationApi.showNotification(
-        title: 'New Messages',
-        body: '${jsonResponse["data"]}',
-        payload: 'EMES');
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
   }
 
+  @override
+  void dispose() {
+    mytimer!.cancel();
+    super.dispose();
+  }
+
+  // Future<void>
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -214,5 +214,20 @@ class NotificationApi {
         onSelectNotification: (payload) async {
       onNotifications.add(payload);
     });
+  }
+}
+
+class MainPageController extends GetxController {
+  RxInt _numberOfNotification = 0.obs;
+
+  setNumberOfNotification(int value) {
+    _numberOfNotification.value = value;
+  }
+
+  get getNumberOfNotification {
+    // if(_numberOfNotification.value == '' || _numberOfNotification.value == 0){
+
+    // }
+    return _numberOfNotification.value;
   }
 }

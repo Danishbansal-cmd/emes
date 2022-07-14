@@ -5,11 +5,13 @@ import 'package:emes/Utils/constants.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Utils/get_logged_in_information.dart';
 import 'package:emes/Utils/shift_data.dart';
+import 'package:emes/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -36,6 +38,15 @@ class _MyDrawerState extends State<MyDrawer> {
   //     lastName = data['last_name'];
   //     email = data['email'];
   // }
+
+  //app level initializing mainPage controller
+  final controller = Get.put(MainPageController());
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,27 +147,47 @@ class _MyDrawerState extends State<MyDrawer> {
                 // subtitle:const Text("Subtitle Please"),
               ),
             ),
-            InkWell(
-              onTap: () {
-                // Navigator.pushNamed(context, MyRoutes.inboxPageRoute);
-                Navigator.pushReplacementNamed(
-                    context, MyRoutes.inboxPageRoute);
-              },
-              child: ListTile(
-                // leading: Icon(
-                //   Icons.forum,
-                //   color: _colorScheme.secondaryVariant,
-                // ),
-                leading: FaIcon(
-                  FontAwesomeIcons.solidMessage,
-                  size: 18,
-                  color: _colorScheme.secondary,
+            Obx(
+              () => InkWell(
+                onTap: () {
+                  // Navigator.pushNamed(context, MyRoutes.inboxPageRoute);
+                  Navigator.pushReplacementNamed(
+                      context, MyRoutes.inboxPageRoute);
+                },
+                child: ListTile(
+                  // leading: Icon(
+                  //   Icons.forum,
+                  //   color: _colorScheme.secondaryVariant,
+                  // ),
+                  leading: FaIcon(
+                    FontAwesomeIcons.solidMessage,
+                    size: 18,
+                    color: _colorScheme.secondary,
+                  ),
+                  title: Text(
+                    "Inbox",
+                    style: _textTheme.headline2,
+                  ),
+                  trailing: controller.getNumberOfNotification > 0
+                      ? Container(
+                          padding: const EdgeInsets.all(5.0),
+                          constraints: const BoxConstraints(
+                              minWidth: 25,
+                              maxWidth: 25,
+                              minHeight: 25,
+                              maxHeight: 25),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Text(
+                            controller.getNumberOfNotification.toString(),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      : null,
+                  // subtitle:const  Text("Subtitle Please"),
                 ),
-                title: Text(
-                  "Inbox",
-                  style: _textTheme.headline2,
-                ),
-                // subtitle:const  Text("Subtitle Please"),
               ),
             ),
             // ListTile(

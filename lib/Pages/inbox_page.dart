@@ -3,13 +3,28 @@ import 'dart:convert';
 import 'package:emes/Pages/message_chat.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Widgets/drawer.dart';
+import 'package:emes/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class InboxPage extends StatelessWidget {
+class InboxPage extends StatefulWidget {
   const InboxPage({Key? key}) : super(key: key);
+
+  @override
+  State<InboxPage> createState() => _InboxPageState();
+}
+
+class _InboxPageState extends State<InboxPage> {
+  //app level initializing mainPage controller
+  final controller = Get.put(MainPageController());
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,26 +75,48 @@ class InboxPage extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => MessageChatPage(
-                                    adminId: chatAdminsList[index],
-                                    adminName : chatAdmins['administrators']
-                                [chatAdminsList[index]]
-                                  ),
+                                      adminId: chatAdminsList[index],
+                                      adminName: chatAdmins['administrators']
+                                          [chatAdminsList[index]]),
                                 ),
                               );
                             });
                             // Get.to(() => MessageChatPage(adminId: chatAdminsList[index],),
                             // );
                           },
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              backgroundImage: chatAdminsList[index] == "1"
-                                  ? AssetImage("assets/trusecurity.png")
-                                  : AssetImage(""),
+                          child: Obx(
+                            () => ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                backgroundImage: chatAdminsList[index] == "1"
+                                    ? AssetImage("assets/trusecurity.png")
+                                    : AssetImage(""),
+                              ),
+                              title: Text(chatAdmins['administrators']
+                                  [chatAdminsList[index]]),
+                              subtitle: Text("ID: " + chatAdminsList[index]),
+                              trailing: (controller.getNumberOfNotification >
+                                          0) &&
+                                      (chatAdminsList[index] == "1")
+                                  ? Container(
+                                      padding: const EdgeInsets.all(5.0),
+                                      constraints: const BoxConstraints(
+                                          minWidth: 25,
+                                          maxWidth: 25,
+                                          minHeight: 25,
+                                          maxHeight: 25),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      child: Text(
+                                        controller.getNumberOfNotification
+                                            .toString(),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    )
+                                  : null,
                             ),
-                            title: Text(chatAdmins['administrators']
-                                [chatAdminsList[index]]),
-                            subtitle: Text("ID: " + chatAdminsList[index]),
                           ),
                         );
                       },

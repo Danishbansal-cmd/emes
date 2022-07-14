@@ -9,7 +9,8 @@ import 'package:http/http.dart' as http;
 class MessageChatPage extends StatefulWidget {
   String adminId;
   String adminName;
-  MessageChatPage({Key? key, required this.adminId, required this.adminName}) : super(key: key);
+  MessageChatPage({Key? key, required this.adminId, required this.adminName})
+      : super(key: key);
 
   @override
   State<MessageChatPage> createState() => _MessageChatPageState();
@@ -30,16 +31,16 @@ class _MessageChatPageState extends State<MessageChatPage> {
         titleSpacing: 0.0,
         title: ListTile(
           contentPadding: EdgeInsets.zero,
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.grey[200],
-                              backgroundImage: widget.adminId == "1"
-                                  ? AssetImage("assets/trusecurity.png")
-                                  : AssetImage(""),
-                            ),
-                            
-                            title: Text(widget.adminName),
-                            // subtitle: Text("ID: " + chatAdminsList[index]),
-                          ),
+          leading: CircleAvatar(
+            backgroundColor: Colors.grey[200],
+            backgroundImage: widget.adminId == "1"
+                ? AssetImage("assets/trusecurity.png")
+                : AssetImage(""),
+          ),
+
+          title: Text(widget.adminName),
+          // subtitle: Text("ID: " + chatAdminsList[index]),
+        ),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -113,11 +114,15 @@ class _MessageChatPageState extends State<MessageChatPage> {
                                               : Colors.black87),
                                   children: <InlineSpan>[
                                     TextSpan(
-                                      text: "   " + (chatMessages['data']['messages']
-                                              [chatMessagesData[index]]
-                                          ['Message']['created']).substring(11,16),
+                                      text: "   " +
+                                          (chatMessages['data']['messages']
+                                                      [chatMessagesData[index]]
+                                                  ['Message']['created'])
+                                              .substring(11, 16),
                                       style: TextStyle(
-                                        fontFeatures: [FontFeature.subscripts()],
+                                        fontFeatures: [
+                                          FontFeature.subscripts()
+                                        ],
                                         fontSize: 10,
                                         color: chatMessages['data']['messages'][
                                                         chatMessagesData[index]]
@@ -181,9 +186,7 @@ class _MessageChatPageState extends State<MessageChatPage> {
                 } else if (sendMessageController.text.isNotEmpty) {
                   sendMessage(sendMessageController.text);
                   sendMessageController.clear();
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 }
               },
               child: Container(
@@ -211,8 +214,10 @@ class _MessageChatPageState extends State<MessageChatPage> {
 
   Future<Map> getChatMessages() async {
     var response = await http.get(
-      Uri.parse(
-          Constants.getChatMessages + Constants.getStaffID + "/" + widget.adminId),
+      Uri.parse(Constants.getChatMessages +
+          Constants.getStaffID +
+          "/" +
+          widget.adminId),
     );
     // print("this is the ahfasdf");
     // print(widget.adminId);
