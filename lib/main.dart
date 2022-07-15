@@ -43,10 +43,12 @@ void backgroundFetchHeadlessTask(HeadlessTask task) async {
     return;
   }
   final controller = Get.put(MainPageController());
+  String decodeData = sharedPreferences.getString("data") ?? "";
+  var data = jsonDecode(decodeData);
   print('[BackgroundFetch] Headless event received.');
   var response = await http.get(Uri.parse(
       "http://trusecurity.emesau.com/dev/api/get_new_message_noti/" +
-          Constants.getStaffID));
+          data['id']));
   var jsonResponse = jsonDecode(response.body);
   if (jsonResponse['data'] > 0) {
     NotificationApi.showNotification(
@@ -91,7 +93,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     NotificationApi.init();
     // initPlatformState();
-    mytimer = Timer.periodic(Duration(seconds: 5), (timer) async {
+    mytimer = Timer.periodic(Duration(minutes: 1), (timer) async {
       var response = await http.get(Uri.parse(
           "http://trusecurity.emesau.com/dev/api/get_new_message_noti/" +
               Constants.getStaffID));
@@ -108,12 +110,6 @@ class _MyAppState extends State<MyApp> {
         FlutterAppBadger.removeBadge();
       }
     });
-  }
-
-  @override
-  void dispose() {
-    mytimer!.cancel();
-    super.dispose();
   }
 
   // Future<void>

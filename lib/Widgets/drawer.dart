@@ -42,11 +42,6 @@ class _MyDrawerState extends State<MyDrawer> {
   //app level initializing mainPage controller
   final controller = Get.put(MainPageController());
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:emes/Utils/constants.dart';
+import 'package:emes/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +21,15 @@ class MessageChatPage extends StatefulWidget {
 class _MessageChatPageState extends State<MessageChatPage> {
   //intializing MessageChatPage getx controller
   TextEditingController sendMessageController = TextEditingController();
+  //app level initializing controller
+  final controller = Get.put(MainPageController());
+
+  @override
+  void initState() {
+    controller.setNumberOfNotification(0);
+    FlutterAppBadger.removeBadge();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

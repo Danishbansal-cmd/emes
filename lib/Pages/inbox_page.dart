@@ -20,11 +20,6 @@ class _InboxPageState extends State<InboxPage> {
   //app level initializing mainPage controller
   final controller = Get.put(MainPageController());
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
