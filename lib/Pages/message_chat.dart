@@ -26,13 +26,18 @@ class _MessageChatPageState extends State<MessageChatPage> {
 
   @override
   void initState() {
-    controller.setNumberOfNotification(0);
-    FlutterAppBadger.removeBadge();
     super.initState();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    controller.setNumberOfNotification(0);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    FlutterAppBadger.removeBadge();
     print("Asfdadsf");
     print("Asfdadsf");
     print("Asfdadsf");
