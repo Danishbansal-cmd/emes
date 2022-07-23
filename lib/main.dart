@@ -51,6 +51,7 @@ void backgroundFetchHeadlessTask(HeadlessTask task) async {
           data['id']));
   var jsonResponse = jsonDecode(response.body);
   if (jsonResponse['data'] > 0) {
+    NotificationApi.init();
     NotificationApi.showNotification(
         title: 'New Messages',
         body: '${jsonResponse["data"]}',
@@ -95,8 +96,10 @@ class _MyAppState extends State<MyApp> {
     // initPlatformState();
     mytimer = Timer.periodic(Duration(minutes: 1), (timer) async {
       var response = await http.get(Uri.parse(
-          "http://trusecurity.emesau.com/dev/api/get_new_message_noti/" +
-              Constants.getStaffID));
+          "http://trusecurity.emesau.com/dev/api/get_new_message_noti/8" 
+          // +
+          //     Constants.getStaffID
+              ));
       var jsonResponse = jsonDecode(response.body);
       if (jsonResponse['data'] > 0) {
         NotificationApi.showNotification(

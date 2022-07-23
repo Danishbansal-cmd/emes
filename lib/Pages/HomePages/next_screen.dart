@@ -590,7 +590,60 @@ class _ThirdScreenState extends State<ThirdScreen> {
                               onTap: () {
                                 print("decline");
                                 // print(controller.ifDeclinedShiftIsSelected.value);
-                                if (!controller.ifDeclinedShiftIsSelected
+                                if (controller.ifAcceptedShiftIsSelected
+                                    .contains(true)) {
+                                  //message dialog
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      TextEditingController
+                                          giveReasonController =
+                                          TextEditingController();
+                                      return Dialog(
+                                        backgroundColor: Colors.transparent,
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                          horizontal: 15)
+                                                      .copyWith(
+                                                top: 20.0,
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Constants
+                                                      .declineShiftPopupTopRow(
+                                                          context, "Message"),
+                                                  //Some Space
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  const Text(
+                                                      "Contact your manager as shift can no longer be declined."),
+                                                  //Some Space
+                                                  const SizedBox(
+                                                    height: 25,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                } else if (!controller.ifDeclinedShiftIsSelected
                                         .contains(true) &&
                                     controller
                                         .idOfSelectedItemsList.isNotEmpty) {
@@ -625,7 +678,8 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                 children: [
                                                   Constants
                                                       .declineShiftPopupTopRow(
-                                                          context),
+                                                          context,
+                                                          "Decline Shift"),
                                                   //Some Space
                                                   const SizedBox(
                                                     height: 10,

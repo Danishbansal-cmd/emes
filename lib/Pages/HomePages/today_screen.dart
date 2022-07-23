@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
-
 class SecondScreen extends StatefulWidget {
   SecondScreen({Key? key}) : super(key: key);
 
@@ -627,9 +626,9 @@ class _SecondScreenState extends State<SecondScreen> {
                       onTap: () {
                         print("decline");
                         // print(controller.ifDeclinedShiftIsSelected.value);
-                        if (!controller.ifDeclinedShiftIsSelected
-                                .contains(true) &&
-                            controller.idOfSelectedItemsList.isNotEmpty) {
+                        if (controller.ifAcceptedShiftIsSelected
+                            .contains(true)) {
+                              //message dialog
                           showDialog(
                             context: context,
                             builder: (context) {
@@ -657,7 +656,56 @@ class _SecondScreenState extends State<SecondScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Constants.declineShiftPopupTopRow(
-                                              context),
+                                              context,"Message"),
+                                          //Some Space
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          const Text("Contact your manager as shift can no longer be declined."),
+                                          //Some Space
+                                          const SizedBox(
+                                            height: 25,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        } else if (!controller.ifDeclinedShiftIsSelected
+                                .contains(true) &&
+                            controller.idOfSelectedItemsList.isNotEmpty) {
+                          //decline shift dialog
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              TextEditingController giveReasonController =
+                                  TextEditingController();
+                              return Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                              horizontal: 15)
+                                          .copyWith(
+                                        top: 20.0,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Constants.declineShiftPopupTopRow(
+                                              context,"Decline Shift"),
                                           //Some Space
                                           const SizedBox(
                                             height: 10,

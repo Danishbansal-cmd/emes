@@ -236,13 +236,13 @@ class Constants {
   }
 
   static Widget declineShiftPopupTopRow(
-    BuildContext context,
+    BuildContext context,String text
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          "Decline Shift",
+          text,
           style: Theme.of(context).textTheme.headline1,
         ),
         Material(
