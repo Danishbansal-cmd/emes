@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:emes/Utils/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -293,7 +294,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: 2,
             ),
           ),
-          child: TextField(
+          child: (true) ? CupertinoTextField(
+                  // prefix: Icon(CupertinoIcons.person),
+                  enableInteractiveSelection: true,
+                  // padding: EdgeInsets.only(left: 16.0,),
+                  controller: controller,
+                  keyboardType: text == "Email"
+                      ? TextInputType.emailAddress
+                      : text == "Mobile"
+                          ? TextInputType.phone
+                          : TextInputType.name,
+                  textInputAction: text == "Email"
+                      ? TextInputAction.done
+                      : TextInputAction.next,
+                  placeholder: "Enter Email",
+                  suffix: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: (){
+                      controller.clear();
+                    },
+                    child: Icon(CupertinoIcons.clear_circled_solid,color: CupertinoColors.activeBlue,),
+                  ),
+                  decoration: BoxDecoration(
+                    color: CupertinoColors.extraLightBackgroundGray,
+                    border: Border.all(
+                      color: CupertinoColors.lightBackgroundGray,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
+                    
+                  ),
+                  cursorColor: CupertinoColors.activeOrange,
+                ) : TextField(
             textAlignVertical: TextAlignVertical.center,
             cursorColor: Colors.grey,
             enableInteractiveSelection: false,

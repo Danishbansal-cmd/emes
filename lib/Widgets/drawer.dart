@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:io' show Platform;
 import 'package:emes/Themes/themes.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Routes/routes.dart';
@@ -42,6 +42,7 @@ class _MyDrawerState extends State<MyDrawer> {
   //app level initializing mainPage controller
   final controller = Get.put(MainPageController());
 
+  bool _isIOS = Platform.isIOS;
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +216,30 @@ class _MyDrawerState extends State<MyDrawer> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return Dialog(
+                    return (false) ? CupertinoAlertDialog(
+                        title: const Text("Logout"),
+                        content:
+                            const Text("Are you sure want to logout of this app?"),
+                        actions: [
+                          CupertinoDialogAction(
+                            child: const Text("ok"),
+                            onPressed: () async {
+                              SharedPreferences sharedPreferences =
+                                  await SharedPreferences.getInstance();
+                              sharedPreferences.clear();
+                              sharedPreferences.commit();
+                              Navigator.pushReplacementNamed(
+                                  context, MyRoutes.loginPageRoute);
+                            },
+                          ),
+                          CupertinoDialogAction(
+                            child: const Text("cancel"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      ) : Dialog(
                       backgroundColor: Colors.transparent,
                       child: Stack(
                         children: [

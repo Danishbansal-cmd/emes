@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'package:emes/Pages/HomePages/previous_screen.dart';
 import 'package:emes/Pages/HomePages/today_screen.dart';
 import 'package:emes/Pages/HomePages/next_screen.dart';
+import 'package:emes/Pages/apply_leave_page.dart';
+import 'package:emes/Pages/profile_page.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Themes/themes.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:emes/Widgets/drawer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocode/geocode.dart';
 import 'package:get/get.dart';
@@ -37,7 +40,12 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
     homeController.dispose();
   }
-ShiftData _shiftData = ShiftData();
+
+  ShiftData _shiftData = ShiftData();
+
+  final GlobalKey<NavigatorState> firstTabNavKey = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> secondTabNavKey = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> thirdTabNavKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
     //initializing homepagedates getx controller
@@ -49,134 +57,172 @@ ShiftData _shiftData = ShiftData();
     }
 
     final _colorScheme = Theme.of(context).colorScheme;
-    return DefaultTabController(
-      initialIndex: 1,
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Nu Force Security Group"),
-          actions: [
-            // Consumer<ThemeProvider>(
-            //   builder: (context, appLevelThemeProvider, _) {
-            //     return Switch.adaptive(
-            //       value: appLevelThemeProvider.themeMode == ThemeMode.dark,
-            //       onChanged: (value) {
-            //         final provider =
-            //             Provider.of<ThemeProvider>(context, listen: false);
-            //         provider.toggleTheme(value);
-            //       },
-            //     );
-            //   },
-            // ),
+    return (true)
+        ? CupertinoTabScaffold(
+            tabBar: CupertinoTabBar(
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Tab 1',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.map),
+                  label: 'Tab 2',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.account_circle),
+                  label: 'Tab 3',
+                ),
+              ],
+            ),
+            tabBuilder: (context, index) {
+              if (index == 0) {
+                return CupertinoTabView(
+                  navigatorKey: firstTabNavKey,
+                  builder: (BuildContext context) => SecondScreen(),
+                );
+              } else if (index == 1) {
+                return CupertinoTabView(
+                  navigatorKey: secondTabNavKey,
+                  builder: (BuildContext context) => ProfilePage(),
+                );
+              } else {
+                return CupertinoTabView(
+                  navigatorKey: thirdTabNavKey,
+                  builder: (BuildContext context) => ApplyLeavePage(),
+                );
+              }
+            },
+          )
+        : DefaultTabController(
+            initialIndex: 1,
+            length: 3,
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text("Nu Force Security Group"),
+                actions: [
+                  // Consumer<ThemeProvider>(
+                  //   builder: (context, appLevelThemeProvider, _) {
+                  //     return Switch.adaptive(
+                  //       value: appLevelThemeProvider.themeMode == ThemeMode.dark,
+                  //       onChanged: (value) {
+                  //         final provider =
+                  //             Provider.of<ThemeProvider>(context, listen: false);
+                  //         provider.toggleTheme(value);
+                  //       },
+                  //     );
+                  //   },
+                  // ),
 
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 3).copyWith(right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Constants.indicatorTracker(Colors.amber, 18),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 3),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 3)
+                        .copyWith(right: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Obx(
-                          () => Text(
-                            homepageDatesController.getStartDate,
-                            style: const TextStyle(
-                              color: Color.fromARGB(255, 90, 90, 90),
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
+                        Constants.indicatorTracker(Colors.amber, 18),
+                        const SizedBox(
+                          width: 12,
                         ),
-                        Obx(
-                          () => Text(
-                            homepageDatesController.getEndDate,
-                            style: const TextStyle(
-                              color: Color.fromARGB(255, 90, 90, 90),
-                              fontWeight: FontWeight.normal,
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Obx(
+                                () => Text(
+                                  homepageDatesController.getStartDate,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 90, 90, 90),
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                              Obx(
+                                () => Text(
+                                  homepageDatesController.getEndDate,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 90, 90, 90),
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
                 ],
+                bottom: TabBar(
+                  labelColor: _colorScheme.secondary,
+                  overlayColor: MaterialStateProperty.all(Colors.blue),
+                  labelStyle: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.8,
+                    fontSize: 15,
+                  ),
+                  onTap: (int) async {
+                    // print("do i printaasfdas");
+
+                    // void tryFunction(String value1, String value2) {
+                    //   // print("tryfunction real values $value1   $value2");
+                    //   date.setStartDate(value1);
+                    //   date.setEndDate(value2);
+                    // }
+
+                    //your code goes here
+                    SharedPreferences sharedPreferences =
+                        await SharedPreferences.getInstance();
+                    String decodeData =
+                        sharedPreferences.getString("data") ?? "";
+                    var data = jsonDecode(decodeData);
+                    final myFuture = http.post(
+                      Uri.parse(int == 0
+                          ? _shiftData.getPreUrl
+                          : int == 1
+                              ? Constants.getShiftUrl
+                              : _shiftData.getNextUrl),
+                      body: {
+                        "staff_id": data['id'],
+                      },
+                    );
+                    if (int == 0) {
+                      firstScreenController.setValueInt();
+                    }
+                    if (int == 2) {
+                      nextScreenController.setValueInt();
+                    }
+                    myFuture.then(
+                      (value) => setDateFunction(
+                          (jsonDecode(value.body))['data']['start_date'],
+                          (jsonDecode(value.body))['data']['end_date']),
+                      // print((jsonDecode(value.body))['data']['start_date']);
+                    );
+                    // setState(() {});
+                  },
+                  tabs: const [
+                    Tab(
+                      text: 'PREVIOUS',
+                    ),
+                    Tab(
+                      text: 'TODAY',
+                    ),
+                    Tab(
+                      text: 'NEXT',
+                    ),
+                  ],
+                ),
+              ),
+              drawer: const MyDrawer(),
+              body: TabBarView(
+                // to disable swiping tabs in TabBar flutter
+                physics: const NeverScrollableScrollPhysics(),
+                children: [FirstScreen(), SecondScreen(), ThirdScreen()],
               ),
             ),
-          ],
-          bottom: TabBar(
-            labelColor: _colorScheme.secondary,
-            overlayColor: MaterialStateProperty.all(Colors.blue),
-            labelStyle: const TextStyle(
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.8,
-              fontSize: 15,
-            ),
-            onTap: (int) async {
-              // print("do i printaasfdas");
-
-              // void tryFunction(String value1, String value2) {
-              //   // print("tryfunction real values $value1   $value2");
-              //   date.setStartDate(value1);
-              //   date.setEndDate(value2);
-              // }
-
-              //your code goes here
-              SharedPreferences sharedPreferences =
-                  await SharedPreferences.getInstance();
-              String decodeData = sharedPreferences.getString("data") ?? "";
-              var data = jsonDecode(decodeData);
-              final myFuture = http.post(
-                Uri.parse(int == 0
-                    ? _shiftData.getPreUrl
-                    : int == 1
-                        ? Constants.getShiftUrl
-                        : _shiftData.getNextUrl),
-                body: {
-                  "staff_id": data['id'],
-                },
-              );
-              if(int == 0){
-                firstScreenController.setValueInt();
-              }
-              if(int == 2){
-                nextScreenController.setValueInt();
-              }
-              myFuture.then(
-                (value) => setDateFunction(
-                    (jsonDecode(value.body))['data']['start_date'],
-                    (jsonDecode(value.body))['data']['end_date']),
-                // print((jsonDecode(value.body))['data']['start_date']);
-              );
-              // setState(() {});
-            },
-            tabs: const [
-              Tab(
-                text: 'PREVIOUS',
-              ),
-              Tab(
-                text: 'TODAY',
-              ),
-              Tab(
-                text: 'NEXT',
-              ),
-            ],
-          ),
-        ),
-        drawer: const MyDrawer(),
-        body: TabBarView(
-          // to disable swiping tabs in TabBar flutter
-          physics: const NeverScrollableScrollPhysics(),
-          children: [FirstScreen(), SecondScreen(), ThirdScreen()],
-        ),
-      ),
-    );
+          );
   }
 }
 
