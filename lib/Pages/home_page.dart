@@ -3,7 +3,9 @@ import 'package:emes/Pages/HomePages/previous_screen.dart';
 import 'package:emes/Pages/HomePages/today_screen.dart';
 import 'package:emes/Pages/HomePages/next_screen.dart';
 import 'package:emes/Pages/apply_leave_page.dart';
+import 'package:emes/Pages/inbox_page.dart';
 import 'package:emes/Pages/profile_page.dart';
+import 'package:emes/Pages/more_page.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Themes/themes.dart';
@@ -46,6 +48,9 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<NavigatorState> firstTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> secondTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> thirdTabNavKey = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> fourthTabNavKey = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> fifthTabNavKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     //initializing homepagedates getx controller
@@ -59,19 +64,29 @@ class _HomePageState extends State<HomePage> {
     final _colorScheme = Theme.of(context).colorScheme;
     return (true)
         ? CupertinoTabScaffold(
+
             tabBar: CupertinoTabBar(
+              activeColor: CupertinoColors.activeBlue,
               items: const [
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Tab 1',
+                  icon: Icon(CupertinoIcons.home),
+                  label: 'Roster',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.map),
-                  label: 'Tab 2',
+                  icon: Icon(CupertinoIcons.profile_circled),
+                  label: 'Profile',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle),
-                  label: 'Tab 3',
+                  icon: Icon(CupertinoIcons.add),
+                  label: 'Leave',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.bubble_left),
+                  label: 'Inbox',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.ellipsis),
+                  label: 'Settings',
                 ),
               ],
             ),
@@ -79,17 +94,147 @@ class _HomePageState extends State<HomePage> {
               if (index == 0) {
                 return CupertinoTabView(
                   navigatorKey: firstTabNavKey,
-                  builder: (BuildContext context) => SecondScreen(),
+                  builder: (BuildContext context) => DefaultTabController(
+                    initialIndex: 1,
+                    length: 3,
+                    child: Scaffold(
+                      appBar: AppBar(
+                        title: Text(
+                          "Nu Force Security Group",
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        actions: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 3)
+                                .copyWith(right: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Constants.indicatorTracker(Colors.amber, 18),
+                                const SizedBox(
+                                  width: 12,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 3),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Obx(
+                                        () => Text(
+                                          homepageDatesController.getStartDate,
+                                          style: const TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 90, 90, 90),
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                      Obx(
+                                        () => Text(
+                                          homepageDatesController.getEndDate,
+                                          style: const TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 90, 90, 90),
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        bottom: TabBar(
+                          labelColor: _colorScheme.secondary,
+                          overlayColor: MaterialStateProperty.all(Colors.blue),
+                          labelStyle: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.8,
+                            fontSize: 15,
+                          ),
+                          onTap: (int) async {
+                            //your code goes here
+                            SharedPreferences sharedPreferences =
+                                await SharedPreferences.getInstance();
+                            String decodeData =
+                                sharedPreferences.getString("data") ?? "";
+                            var data = jsonDecode(decodeData);
+                            final myFuture = http.post(
+                              Uri.parse(int == 0
+                                  ? _shiftData.getPreUrl
+                                  : int == 1
+                                      ? Constants.getShiftUrl
+                                      : _shiftData.getNextUrl),
+                              body: {
+                                "staff_id": data['id'],
+                              },
+                            );
+                            if (int == 0) {
+                              firstScreenController.setValueInt();
+                            }
+                            if (int == 2) {
+                              nextScreenController.setValueInt();
+                            }
+                            myFuture.then(
+                              (value) => setDateFunction(
+                                  (jsonDecode(value.body))['data']
+                                      ['start_date'],
+                                  (jsonDecode(value.body))['data']['end_date']),
+                              // print((jsonDecode(value.body))['data']['start_date']);
+                            );
+                            // setState(() {});
+                          },
+                          tabs: const [
+                            Tab(
+                              text: 'PREVIOUS',
+                            ),
+                            Tab(
+                              text: 'TODAY',
+                            ),
+                            Tab(
+                              text: 'NEXT',
+                            ),
+                          ],
+                        ),
+                      ), 
+                      body: TabBarView(
+                        // to disable swiping tabs in TabBar flutter
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          FirstScreen(),
+                          SecondScreen(),
+                          ThirdScreen()
+                        ],
+                      ),
+                    ),
+                  ),
                 );
               } else if (index == 1) {
                 return CupertinoTabView(
                   navigatorKey: secondTabNavKey,
                   builder: (BuildContext context) => ProfilePage(),
                 );
-              } else {
+              } else if (index == 2) {
                 return CupertinoTabView(
                   navigatorKey: thirdTabNavKey,
                   builder: (BuildContext context) => ApplyLeavePage(),
+                );
+              } else if (index == 3) {
+                return CupertinoTabView(
+                  navigatorKey: fourthTabNavKey,
+                  builder: (BuildContext context) => InboxPage(),
+                );
+              } else {
+                return CupertinoTabView(
+                  navigatorKey: fifthTabNavKey,
+                  builder: (BuildContext context) => MorePage(),
                 );
               }
             },

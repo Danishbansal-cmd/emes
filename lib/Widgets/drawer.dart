@@ -216,7 +216,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return (false) ? CupertinoAlertDialog(
+                    return (true) ? CupertinoAlertDialog(
                         title: const Text("Logout"),
                         content:
                             const Text("Are you sure want to logout of this app?"),
