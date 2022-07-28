@@ -20,7 +20,7 @@ class ShiftData {
     String decodeData = sharedPreferences.getString("data") ?? "";
     var data = jsonDecode(decodeData);
     var response = await http.post(Uri.parse(Constants.getShiftUrl), body: {
-      "staff_id": data['id']
+      "staff_id": Constants.getStaffID
     } // need to use Constants.getStaffID in place of "8"
         );
     var jsonData = jsonDecode(response.body);
@@ -36,7 +36,7 @@ class ShiftData {
     String decodeData = sharedPreferences.getString("data") ?? "";
     var data = jsonDecode(decodeData);
     var response = await http.post(Uri.parse(getPreUrl), body: {
-      "staff_id": data['id']
+      "staff_id": Constants.getStaffID
     } // need to use Constants.getStaffID in place of "8"
         );
     var jsonData = jsonDecode(response.body);
@@ -53,7 +53,7 @@ class ShiftData {
     String decodeData = sharedPreferences.getString("data") ?? "";
     var data = jsonDecode(decodeData);
     var response = await http.post(Uri.parse(getNextUrl), body: {
-      "staff_id": "8"
+      "staff_id": Constants.getStaffID
     } // need to use Constants.getStaffID in place of "8"
         );
     var jsonData = jsonDecode(response.body);

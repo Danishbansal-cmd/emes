@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:geocoding/geocoding.dart' as geocode;
+import 'package:geocoding/geocoding.dart' as geocoding;
 // import 'package:geocoder/geocoder.dart';
 import 'package:geocoder2/geocoder2.dart';
 // import 'package:geocoding_platform_interface/geocoding_platform_interface.dart';
@@ -44,11 +44,11 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
   //to get related information about uniform
   //whether it is required or not
   Future<void> getUniformInformation() async {
-    checkinCheckoutController.uniformData.value =
+    checkinCheckoutController.uniformAndOtherData.value =
         await checkinCheckoutController.getUniformInformation(
             (checkinCheckoutController.details[0])["client_id"]);
     print(
-        "this is the initsate ${checkinCheckoutController.uniformData.value}");
+        "this is the initsate ${checkinCheckoutController.uniformAndOtherData.value}");
   }
 
   bool isUniformDataAvailable = false;
@@ -65,335 +65,296 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
           children: [
             //upper screen
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Details(
-                          "Client Name",
-                          (checkinCheckoutController
-                              .details[0])["client_name"]),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Details("Client Id",
-                          (checkinCheckoutController.details[0])["client_id"]),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Details("Shift Id",
-                          (checkinCheckoutController.details[0])["shift_id"]),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Details("Work Date",
-                          (checkinCheckoutController.details[0])["work_date"]),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Details("Time On",
-                          (checkinCheckoutController.details[0])["time_on"]),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Details("Time Off",
-                          (checkinCheckoutController.details[0])["time_off"]),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Details("Task Id",
-                          (checkinCheckoutController.details[0])["task_id"]),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Details(
-                          "Acitvity Name",
-                          (checkinCheckoutController
-                              .details[0])["activity_name"]),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      //to show uniform information data
-                      //and (manager_to_report and supervisor_to_report) data
-                      Obx(
-                        () => checkinCheckoutController.uniformData.isNotEmpty
-                            ? Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Details(
+                            "Client Name",
+                            (checkinCheckoutController
+                                .details[0])["client_name"]),
+                        Details(
+                            "Client Id",
+                            (checkinCheckoutController
+                                .details[0])["client_id"]),
+                        Details("Shift Id",
+                            (checkinCheckoutController.details[0])["shift_id"]),
+                        Details(
+                            "Work Date",
+                            (checkinCheckoutController
+                                .details[0])["work_date"]),
+                        Details("Time On",
+                            (checkinCheckoutController.details[0])["time_on"]),
+                        Details("Time Off",
+                            (checkinCheckoutController.details[0])["time_off"]),
+                        Details("Task Id",
+                            (checkinCheckoutController.details[0])["task_id"]),
+                        Details(
+                            "Acitvity Name",
+                            (checkinCheckoutController
+                                .details[0])["activity_name"]),
+                        //to show Venue Information data
+                        Obx(
+                          () => checkinCheckoutController
+                                  .uniformAndOtherData.isNotEmpty
+                              ? Column(
+                                  children: [
+                                    //to show (manager_to_report and supervisor_to_report) data
+                                    Details(
+                                        "Manager To Report",
+                                        (checkinCheckoutController
+                                                    .uniformAndOtherData[4] ==
+                                                "")
+                                            ? "No Manager"
+                                            : checkinCheckoutController
+                                                .uniformAndOtherData[4]),
+                                    Details(
+                                        "Supervisor To Report",
+                                        (checkinCheckoutController
+                                                    .uniformAndOtherData[5] ==
+                                                "")
+                                            ? "No Supervisor"
+                                            : checkinCheckoutController
+                                                .uniformAndOtherData[5]),
+                                    Details(
+                                      "State",
+                                      checkinCheckoutController
+                                          .uniformAndOtherData[0],
                                     ),
+                                    Details(
+                                      "Suburb",
+                                      checkinCheckoutController
+                                          .uniformAndOtherData[1],
+                                    ),
+                                    Details(
+                                      "Street",
+                                      checkinCheckoutController
+                                          .uniformAndOtherData[2],
+                                    ),
+                                    Details(
+                                      "Postcode",
+                                      checkinCheckoutController
+                                          .uniformAndOtherData[3],
+                                    ),
+                                    //for uniform information data
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 5.0),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0,
+                                        vertical: 24.0,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.shade200,
+                                            offset: Offset(5.0, 5.0),
+                                            blurRadius: 5.0,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Uniform \nInformation",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5!
+                                                .copyWith(
+                                                  fontFamily: 'Ubuntu-Regular',
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                          ),
+                                          SizedBox(
+                                            width: 200,
+                                            child: Html(
+                                              data: checkinCheckoutController
+                                                              .uniformAndOtherData[
+                                                          6] ==
+                                                      "1"
+                                                  ? checkinCheckoutController
+                                                      .uniformAndOtherData[7]
+                                                  : 'No Uniform Required',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : CircularProgressIndicator(
+                                  color: Colors.blue,
+                                ),
+                        ),
+                      ],
+                    ),
+                    //to show checkin and checkout time containers
+                    Column(
+                      children: [
+                        //for checkin time
+                        Obx(
+                          () => Visibility(
+                            visible: checkinCheckoutController
+                                .showCheckInTimeContainer.value,
+                            child: Details("CheckIn Time:",
+                                checkinCheckoutController.checkInTime.value),
+                          ),
+                        ),
+                        //for checkout time
+                        Obx(
+                          () => Visibility(
+                            visible: checkinCheckoutController
+                                .showCheckOutTimeContainer.value,
+                            child: Details("CheckOut Time:",
+                                checkinCheckoutController.checkOutTime.value),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            //fixed google map
+            //under the bottom of the screen
+            Obx(
+              () => Visibility(
+                visible:
+                    !(checkinCheckoutController.checkInTime.value.isNotEmpty &&
+                        checkinCheckoutController.checkOutTime.value.isNotEmpty),
+                child: Column(
+                  children: [
+                    //will visible when map will get your location
+                    //after clicking checkin
+                    Obx(
+                      () => Visibility(
+                        visible:
+                            checkinCheckoutController.showAddressLocation.value,
+                        child: Container(
+                          height: 50,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: Row(
+                            children: [
+                              Material(
+                                color: Color.fromARGB(255, 218, 218, 218),
+                                child: InkWell(
+                                  onTap: () {
+                                    Future.delayed(
+                                        const Duration(milliseconds: 200), () {
+                                      checkinCheckoutController
+                                          .showAddressLocation.value = false;
+                                      checkinCheckoutController
+                                          .showCheckInTimeContainer
+                                          .value = true;
+                                      checkinCheckoutController
+                                              .checkInTime.value =
+                                          DateTime.now()
+                                              .toString()
+                                              .substring(0, 16);
+                                      Get.snackbar("Great! Location confirmed!",
+                                          "Shift Confirmed and timer starts.",
+                                          duration: const Duration(
+                                              milliseconds: 1700));
+                                    });
+                                  },
+                                  splashColor: Colors.blue,
+                                  child: Container(
+                                    height: 50,
+                                    decoration: const BoxDecoration(
+                                        // color: Color.fromARGB(255, 218, 218, 218),
+                                        ),
+                                    width: 120,
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Uniform Information",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline5!
-                                              .copyWith(
-                                                fontFamily: 'Ubuntu-Regular',
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                        ),
-                                        Html(
-                                          data: checkinCheckoutController
-                                                      .uniformData.value[0] ==
-                                                  "1"
-                                              ? checkinCheckoutController
-                                                  .uniformData.value[1]
-                                              : 'No Uniform Required',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 6,
-                                  ),
-                                  Details(
-                                      "Manager To Report",
-                                              (checkinCheckoutController
-                                                      .uniformData[2] ==
-                                                  "")
-                                          ? "No Manager"
-                                          : checkinCheckoutController
-                                              .uniformData[2]),
-                                  const SizedBox(
-                                    height: 6,
-                                  ),
-                                  Details(
-                                      "Supervisor To Report",
-                                      (checkinCheckoutController
-                                                      .uniformData[3] ==
-                                                  "") ? "No Supervisor" :
-                                      checkinCheckoutController
-                                          .uniformData[3]),
-                                  const SizedBox(
-                                    height: 6,
-                                  ),
-                                ],
-                              )
-                            : CircularProgressIndicator(
-                                color: Colors.blue,
-                              ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      // Container(
-                      //   // margin: const EdgeInsets.symmetric(horizontal: 20),
-                      //   padding: const EdgeInsets.symmetric(horizontal: 8),
-                      //   decoration: const BoxDecoration(
-                      //     color: Colors.white,
-                      //     // borderRadius: BorderRadius.circular(20),
-                      //   ),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       Text(
-                      //         "Timer:",
-                      //         style: Theme.of(context).textTheme.headline5,
-                      //       ),
-                      //       Text("00:00")
-                      //     ],
-                      //   ),
-                      // ),
-                      //some space
-                      // const SizedBox(
-                      //   height: 6,
-                      // ),
-                      //will show checkin time and container
-                      Obx(
-                        () => Visibility(
-                          visible: checkinCheckoutController
-                              .showCheckInTimeContainer.value,
-                          child: Container(
-                            // margin: const EdgeInsets.symmetric(horizontal: 20),
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              // borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "CheckIn Time:",
-                                  style: Theme.of(context).textTheme.headline5,
-                                ),
-                                Text(checkinCheckoutController
-                                    .checkInTime.value),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      //some space
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      //will show checkout time and container
-                      Obx(
-                        () => Visibility(
-                          visible: checkinCheckoutController
-                              .showCheckOutTimeContainer.value,
-                          child: Container(
-                            // margin: const EdgeInsets.symmetric(horizontal: 20),
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              // borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "CheckOut Time:",
-                                  style: Theme.of(context).textTheme.headline5,
-                                ),
-                                Text(checkinCheckoutController
-                                    .checkOutTime.value),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      //will visible when map will get your location
-                      //after clicking checkin
-                      Obx(
-                        () => Visibility(
-                          visible: checkinCheckoutController
-                              .showAddressLocation.value,
-                          child: Container(
-                            height: 50,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                            ),
-                            child: Row(
-                              children: [
-                                Material(
-                                  color: Color.fromARGB(255, 218, 218, 218),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Future.delayed(
-                                          const Duration(milliseconds: 200),
-                                          () {
-                                        checkinCheckoutController
-                                            .showAddressLocation.value = false;
-                                        checkinCheckoutController
-                                            .showCheckInTimeContainer
-                                            .value = true;
-                                        checkinCheckoutController
-                                                .checkInTime.value =
-                                            DateTime.now()
-                                                .toString()
-                                                .substring(0, 16);
-                                        Get.snackbar(
-                                            "Great! Location confirmed!",
-                                            "Shift Confirmed and timer starts.",
-                                            duration: const Duration(
-                                                milliseconds: 1700));
-                                      });
-                                    },
-                                    splashColor: Colors.blue,
-                                    child: Container(
-                                      height: 50,
-                                      decoration: const BoxDecoration(
-                                          // color: Color.fromARGB(255, 218, 218, 218),
-                                          ),
-                                      width: 120,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8),
-                                      child: const Center(
-                                        child: Text(
-                                          "        Confirm \nYour Location:",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                    child: const Center(
+                                      child: Text(
+                                        "        Confirm \nYour Location:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    child: Text(
-                                      checkinCheckoutController
-                                          .addressLocation.value,
-                                    ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text(
+                                    checkinCheckoutController
+                                        .addressLocation.value,
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      Stack(
-                        children: [
-                          //stacks first child
-                          Container(
-                            height: 250,
-                            width: Get.width,
-                            // decoration: BoxDecoration(
-                            //   color: Colors.red,
-                            //   borderRadius: BorderRadius.circular(40),
-                            // ),
-                            child: GoogleMap(
-                              mapType: MapType.normal,
-                              markers: {
-                                if (_firstMarker != null) _firstMarker!,
-                                if (_justMarker != null) _justMarker!,
-                              },
-                              //to get lat lng of some place
-                              onLongPress: addMarker,
-                              initialCameraPosition:
-                                  CheckinCheckoutPage._initialCameraPosition,
-                              zoomControlsEnabled: false,
-                              onMapCreated: (controller) =>
-                                  _googleMapController = controller,
-                            ),
+                    ),
+
+                    //to show google map
+                    //on the bottom of screen
+                    Stack(
+                      children: [
+                        //stacks first child
+                        Container(
+                          height: 250,
+                          width: Get.width,
+                          // decoration: BoxDecoration(
+                          //   color: Colors.red,
+                          //   borderRadius: BorderRadius.circular(40),
+                          // ),
+                          child: GoogleMap(
+                            mapType: MapType.normal,
+                            markers: {
+                              if (_firstMarker != null) _firstMarker!,
+                              if (_justMarker != null) _justMarker!,
+                            },
+                            //to get lat lng of some place
+                            onLongPress: addMarker,
+                            initialCameraPosition:
+                                CheckinCheckoutPage._initialCameraPosition,
+                            zoomControlsEnabled: false,
+                            onMapCreated: (controller) =>
+                                _googleMapController = controller,
                           ),
-                          //stacks second child
-                          //to show CircularProgressIndicator on map after
-                          //clikcing checkin button
-                          Obx(
-                            () => Visibility(
-                              visible: checkinCheckoutController
-                                  .showCircularProgressIndicator.value,
-                              child: Container(
-                                height: 250,
-                                width: Get.width,
-                                color: Color.fromARGB(89, 223, 223, 223),
-                                // color: Colors.red,
-                                // decoration: BoxDecoration(
-                                //   color: Colors.red,
-                                //   borderRadius: BorderRadius.circular(40),
-                                // ),
-                                child: const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
+                        ),
+                        //stacks second child
+                        //to show CircularProgressIndicator on map after
+                        //clikcing checkin button
+                        Obx(
+                          () => Visibility(
+                            visible: checkinCheckoutController
+                                .showCircularProgressIndicator.value,
+                            child: Container(
+                              height: 250,
+                              width: Get.width,
+                              color: Color.fromARGB(89, 223, 223, 223),
+                              // color: Colors.red,
+                              // decoration: BoxDecoration(
+                              //   color: Colors.red,
+                              //   borderRadius: BorderRadius.circular(40),
+                              // ),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             //
@@ -499,19 +460,22 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
                                   print("i am here");
                                   //if user is in the right place and right time
                                   //from geocoding
-                                  // List<geocode.Placemark> placemarks =
-                                  //     await geocode.placemarkFromCoordinates(
-                                  //         checkinCheckoutController
-                                  //             .locationData!.latitude!,
-                                  //         checkinCheckoutController
-                                  //             .locationData!.longitude!);
-                                  // print("placemarks $placemarks");
-                                  // geocode.Placemark place = placemarks[0];
-                                  // checkinCheckoutController
-                                  //         .addressLocation.value =
-                                  //     '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
-                                  // setState(()  {
-                                  // });
+                                  List<geocoding.Placemark> placemarks =
+                                      await geocoding.placemarkFromCoordinates(
+                                          checkinCheckoutController
+                                              .locationData!.latitude!,
+                                          checkinCheckoutController
+                                              .locationData!.longitude!);
+                                  print("placemarks $placemarks");
+                                  geocoding.Placemark place = placemarks[0];
+                                  print("place ${place}");
+                                  print("placemarks ${place.street}");
+                                  checkinCheckoutController
+                                          .addressLocation.value =
+                                      '${place.street} ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.administrativeArea}, ${place.country}';
+                                  print(
+                                      "this is the geocoding address ${checkinCheckoutController.addressLocation.value}");
+                                  // setState(() {});
                                   //from geocode
                                   // GeoCode geoCode = GeoCode();
                                   // Address address =
@@ -542,28 +506,28 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
                                   // print(
                                   //     "geocoder adresses ${newAddress.addressLine}");
                                   //from geocoder2
-                                  GeoData data =
-                                      await Geocoder2.getDataFromCoordinates(
-                                          latitude:
-                                              checkinCheckoutController
-                                                  .locationData!.latitude!,
-                                          longitude: checkinCheckoutController
-                                              .locationData!.longitude!,
-                                          googleMapApiKey:
-                                              "AIzaSyBE4FuOoF0qPuxlXyJeAiVThIMDX0iwx2I");
-                                  checkinCheckoutController
-                                          .addressLocation.value =
-                                      data.country +
-                                          " " +
-                                          data.state +
-                                          " " +
-                                          data.city +
-                                          " " +
-                                          data.postalCode +
-                                          " " +
-                                          data.address;
-                                  print(
-                                      "this is the geocoder2 address ${data.country + " " + data.state + " " + data.city + " " + data.postalCode + " " + data.address}");
+                                  // GeoData data =
+                                  //     await Geocoder2.getDataFromCoordinates(
+                                  //         latitude:
+                                  //             checkinCheckoutController
+                                  //                 .locationData!.latitude!,
+                                  //         longitude: checkinCheckoutController
+                                  //             .locationData!.longitude!,
+                                  //         googleMapApiKey:
+                                  //             "AIzaSyBE4FuOoF0qPuxlXyJeAiVThIMDX0iwx2I");
+                                  // checkinCheckoutController
+                                  //         .addressLocation.value =
+                                  //     data.country +
+                                  //         " " +
+                                  //         data.state +
+                                  //         " " +
+                                  //         data.city +
+                                  //         " " +
+                                  //         data.postalCode +
+                                  //         " " +
+                                  //         data.address;
+                                  // print(
+                                  //     "this is the geocoder2 address ${data.country + " " + data.state + " " + data.city + " " + data.postalCode + " " + data.address}");
                                   //resume previous function
                                   checkinCheckoutController
                                       .showAddressLocation.value = true;
@@ -847,11 +811,21 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
 
   Widget Details(String value, String value2) {
     return Container(
-      // margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: const BoxDecoration(
+      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8.0,
+        vertical: 24.0,
+      ),
+      decoration: BoxDecoration(
         color: Colors.white,
-        // borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade200,
+            offset: Offset(5.0, 5.0),
+            blurRadius: 5.0,
+          ),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -889,7 +863,7 @@ class CheckinCheckoutController extends GetxController {
   bool? serviceEnabled;
   PermissionStatus? _permissionGranted;
   var details = Get.arguments;
-  RxList<String> uniformData = <String>[].obs;
+  RxList<String> uniformAndOtherData = <String>[].obs;
 
   Future getLocation() async {
     serviceEnabled = await location.serviceEnabled();
@@ -1014,11 +988,18 @@ class CheckinCheckoutController extends GetxController {
 
     if (jsonData['status'] == 200) {
       print("messsage ${jsonData['message']}");
+      print(
+          "data ${jsonData['data']['ClientInformation']['uniform_description']}");
+
       return [
-        jsonData['data']['ClientInformation']['uniform_required'],
-        jsonData['data']['ClientInformation']['uniform_description'],
+        jsonData['data']['ClientInformation']['state'],
+        jsonData['data']['ClientInformation']['suburb'],
+        jsonData['data']['ClientInformation']['street'],
+        jsonData['data']['ClientInformation']['postcode'],
         jsonData['data']['ClientInformation']['manager_to_report'],
-        jsonData['data']['ClientInformation']['supervisor_to_report']
+        jsonData['data']['ClientInformation']['supervisor_to_report'],
+        jsonData['data']['ClientInformation']['uniform_required'],
+        jsonData['data']['ClientInformation']['uniform_description']
       ];
     }
 
