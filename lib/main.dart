@@ -143,7 +143,7 @@ class _MyAppState extends State<MyApp> {
               );
             },
             // navigatorObservers: [NavigationHistoryObserver()],
-            title: 'Flutter Demo',
+            title: 'EMES',
             theme: MyTheme.lightTheme(context),
             darkTheme: MyTheme.darkTheme(context),
             themeMode: appLevelThemeProvider.themeMode,

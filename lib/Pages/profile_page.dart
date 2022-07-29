@@ -29,45 +29,62 @@ class _ProfilePageState extends State<ProfilePage> {
         ? CupertinoPageScaffold(
             // backgroundColor: skyColors[_selectedSegment],
             navigationBar: CupertinoNavigationBar(
-
               // This Cupertino segmented control has the enum "Sky" as the type.
-              middle: Column(
-                children: [
-                  Text('My Profile'),
-                  CupertinoSlidingSegmentedControl<Sky>(
-                    backgroundColor: CupertinoColors.systemGrey2,
-                    thumbColor: skyColors[_selectedSegment]!,
-                    // This represents the currently selected segmented control.
-                    groupValue: _selectedSegment,
-                    // Callback that sets the selected segmented control.
-                    onValueChanged: (Sky? value) {
-                      if (value != null) {
-                        setState(() {
-                          _selectedSegment = value;
-                        });
-                      }
-                    },
-                    children: const <Sky, Widget>{
-                      Sky.ProfileScreen: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          'ProfileScreen',
-                          style: TextStyle(color: CupertinoColors.white),
-                        ),
-                      ),
-                      Sky.LicenseQualificationScreen: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          'LicenseQualificationScreen',
-                          style: TextStyle(color: CupertinoColors.white),
-                        ),
-                      ),
-                    },
-                  ),
-                ],
+              middle: Text(
+                'My Profile',
+                style: TextStyle(
+                  color: CupertinoColors.activeBlue,
+                ),
               ),
             ),
-            child: _selectedSegment == Sky.ProfileScreen ? ProfileScreen() : LicenseQualificationScreen()
+            child: Material(
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 50,
+                      child: CupertinoSlidingSegmentedControl<Sky>(
+                        backgroundColor: CupertinoColors.systemGrey5,
+                        thumbColor: CupertinoColors.white,
+                        // This represents the currently selected segmented control.
+                        groupValue: _selectedSegment,
+                        // Callback that sets the selected segmented control.
+                        onValueChanged: (Sky? value) {
+                          print("this is the value $value");
+                          if (value != null) {
+                            setState(() {
+                              _selectedSegment = value;
+                            });
+                          }
+                        },
+                        children: const <Sky, Widget>{
+                          Sky.ProfileScreen: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: Text(
+                              'Profile',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
+                          Sky.LicenseQualificationScreen: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: Text(
+                              'License/Qualification',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      // height: MediaQuery.of(context).size.height,
+                      child: _selectedSegment == Sky.ProfileScreen
+                          ? ProfileScreen()
+                          : LicenseQualificationScreen(),
+                    )
+                  ],
+                ),
+              ),
+            ),
           )
         : DefaultTabController(
             length: 2,

@@ -71,8 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         overScroll.disallowGlow();
         return true;
       },
-      child: Scaffold(
-        body: SingleChildScrollView(
+      child: SingleChildScrollView(
           child: ChangeNotifierProvider<ProfilePageFormProvider>(
             create: (_) => ProfilePageFormProvider(),
             child: Container(
@@ -160,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           false &&
                                       profilePageFormProvider.getEmailErrorBool ==
                                           false) {
-                                    showDialog(
+                                    showDialog<void>(
                                       barrierDismissible: true,
                                       context: context,
                                       builder: (BuildContext context) {
@@ -370,7 +369,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         ),
-      ),
+      
     );
   }
 

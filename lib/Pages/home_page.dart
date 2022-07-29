@@ -20,6 +20,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+enum Sky { FirstScreen, SecondScreen, ThirdScreen }
+
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
@@ -51,6 +53,7 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<NavigatorState> fourthTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> fifthTabNavKey = GlobalKey<NavigatorState>();
 
+  Sky _selectedSegment = Sky.SecondScreen;
   @override
   Widget build(BuildContext context) {
     //initializing homepagedates getx controller
@@ -62,9 +65,9 @@ class _HomePageState extends State<HomePage> {
     }
 
     final _colorScheme = Theme.of(context).colorScheme;
+
     return (true)
         ? CupertinoTabScaffold(
-
             tabBar: CupertinoTabBar(
               activeColor: CupertinoColors.activeBlue,
               items: const [
@@ -92,130 +95,224 @@ class _HomePageState extends State<HomePage> {
             ),
             tabBuilder: (context, index) {
               if (index == 0) {
-                return CupertinoTabView(
-                  navigatorKey: firstTabNavKey,
-                  builder: (BuildContext context) => DefaultTabController(
-                    initialIndex: 1,
-                    length: 3,
-                    child: Scaffold(
-                      appBar: AppBar(
-                        title: Text(
-                          "Nu Force Security Group",
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
+                return (true)
+                    ? CupertinoPageScaffold(
+                        // backgroundColor: skyColors[_selectedSegment],
+                        navigationBar: CupertinoNavigationBar(
+                          // This Cupertino segmented control has the enum "Sky" as the type.
+                          middle: Text(
+                            'Nu Force Security Group',
+                            style: TextStyle(
+                              color: CupertinoColors.activeBlue,
+                            ),
                           ),
                         ),
-                        actions: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 3)
-                                .copyWith(right: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                        child: Material(
+                          child: SafeArea(
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Constants.indicatorTracker(Colors.amber, 18),
-                                const SizedBox(
-                                  width: 12,
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 3),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Obx(
-                                        () => Text(
-                                          homepageDatesController.getStartDate,
-                                          style: const TextStyle(
-                                            color:
-                                                Color.fromARGB(255, 90, 90, 90),
-                                            fontWeight: FontWeight.normal,
-                                          ),
+                                SizedBox(
+                                  height: 50,
+                                  child: CupertinoSlidingSegmentedControl<Sky>(
+                                    backgroundColor:
+                                        CupertinoColors.systemGrey5,
+                                    thumbColor: CupertinoColors.white,
+                                    // This represents the currently selected segmented control.
+                                    groupValue: _selectedSegment,
+                                    // Callback that sets the selected segmented control.
+                                    onValueChanged: (Sky? value) {
+                                      print("this is the value $value");
+                                      if (value != null) {
+                                        if (value == Sky.FirstScreen) {
+                                          firstScreenController.setValueInt();
+                                          setState(() {
+                                            _selectedSegment = value;
+                                          });
+                                        } else if (value == Sky.ThirdScreen) {
+                                          nextScreenController.setValueInt();
+                                          setState(() {
+                                            _selectedSegment = value;
+                                          });
+                                        } else {
+                                          setState(() {
+                                            _selectedSegment = value;
+                                          });
+                                        }
+                                      }
+                                    },
+                                    children: const <Sky, Widget>{
+                                      Sky.FirstScreen: Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 8),
+                                        child: Text(
+                                          'PREVIOUS',
+                                          style: TextStyle(fontSize: 14),
                                         ),
                                       ),
-                                      Obx(
-                                        () => Text(
-                                          homepageDatesController.getEndDate,
-                                          style: const TextStyle(
-                                            color:
-                                                Color.fromARGB(255, 90, 90, 90),
-                                            fontWeight: FontWeight.normal,
-                                          ),
+                                      Sky.SecondScreen: Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 8),
+                                        child: Text(
+                                          'TODAY',
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                      ),
+                                      Sky.ThirdScreen: Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 8),
+                                        child: Text(
+                                          'NEXT',
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                      ),
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  // height: MediaQuery.of(context).size.height,
+                                  child: _selectedSegment == Sky.FirstScreen
+                                      ? FirstScreen()
+                                      : _selectedSegment == Sky.SecondScreen
+                                          ? SecondScreen()
+                                          : ThirdScreen(),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    : CupertinoTabView(
+                        navigatorKey: firstTabNavKey,
+                        builder: (BuildContext context) => DefaultTabController(
+                          initialIndex: 1,
+                          length: 3,
+                          child: Scaffold(
+                            appBar: AppBar(
+                              title: Text(
+                                "Nu Force Security Group",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              actions: [
+                                Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 3)
+                                          .copyWith(right: 20),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Constants.indicatorTracker(
+                                          Colors.amber, 18),
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 3),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Obx(
+                                              () => Text(
+                                                homepageDatesController
+                                                    .getStartDate,
+                                                style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 90, 90, 90),
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                            ),
+                                            Obx(
+                                              () => Text(
+                                                homepageDatesController
+                                                    .getEndDate,
+                                                style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 90, 90, 90),
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
                               ],
+                              bottom: TabBar(
+                                labelColor: _colorScheme.secondary,
+                                overlayColor:
+                                    MaterialStateProperty.all(Colors.blue),
+                                labelStyle: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.8,
+                                  fontSize: 15,
+                                ),
+                                onTap: (int) async {
+                                  //your code goes here
+                                  SharedPreferences sharedPreferences =
+                                      await SharedPreferences.getInstance();
+                                  String decodeData =
+                                      sharedPreferences.getString("data") ?? "";
+                                  var data = jsonDecode(decodeData);
+                                  final myFuture = http.post(
+                                    Uri.parse(int == 0
+                                        ? _shiftData.getPreUrl
+                                        : int == 1
+                                            ? Constants.getShiftUrl
+                                            : _shiftData.getNextUrl),
+                                    body: {
+                                      "staff_id": data['id'],
+                                    },
+                                  );
+                                  if (int == 0) {
+                                    firstScreenController.setValueInt();
+                                  }
+                                  if (int == 2) {
+                                    nextScreenController.setValueInt();
+                                  }
+                                  myFuture.then(
+                                    (value) => setDateFunction(
+                                        (jsonDecode(value.body))['data']
+                                            ['start_date'],
+                                        (jsonDecode(value.body))['data']
+                                            ['end_date']),
+                                    // print((jsonDecode(value.body))['data']['start_date']);
+                                  );
+                                  // setState(() {});
+                                },
+                                tabs: const [
+                                  Tab(
+                                    text: 'PREVIOUS',
+                                  ),
+                                  Tab(
+                                    text: 'TODAY',
+                                  ),
+                                  Tab(
+                                    text: 'NEXT',
+                                  ),
+                                ],
+                              ),
+                            ),
+                            body: TabBarView(
+                              // to disable swiping tabs in TabBar flutter
+                              physics: const NeverScrollableScrollPhysics(),
+                              children: [
+                                FirstScreen(),
+                                SecondScreen(),
+                                ThirdScreen()
+                              ],
                             ),
                           ),
-                        ],
-                        bottom: TabBar(
-                          labelColor: _colorScheme.secondary,
-                          overlayColor: MaterialStateProperty.all(Colors.blue),
-                          labelStyle: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.8,
-                            fontSize: 15,
-                          ),
-                          onTap: (int) async {
-                            //your code goes here
-                            SharedPreferences sharedPreferences =
-                                await SharedPreferences.getInstance();
-                            String decodeData =
-                                sharedPreferences.getString("data") ?? "";
-                            var data = jsonDecode(decodeData);
-                            final myFuture = http.post(
-                              Uri.parse(int == 0
-                                  ? _shiftData.getPreUrl
-                                  : int == 1
-                                      ? Constants.getShiftUrl
-                                      : _shiftData.getNextUrl),
-                              body: {
-                                "staff_id": data['id'],
-                              },
-                            );
-                            if (int == 0) {
-                              firstScreenController.setValueInt();
-                            }
-                            if (int == 2) {
-                              nextScreenController.setValueInt();
-                            }
-                            myFuture.then(
-                              (value) => setDateFunction(
-                                  (jsonDecode(value.body))['data']
-                                      ['start_date'],
-                                  (jsonDecode(value.body))['data']['end_date']),
-                              // print((jsonDecode(value.body))['data']['start_date']);
-                            );
-                            // setState(() {});
-                          },
-                          tabs: const [
-                            Tab(
-                              text: 'PREVIOUS',
-                            ),
-                            Tab(
-                              text: 'TODAY',
-                            ),
-                            Tab(
-                              text: 'NEXT',
-                            ),
-                          ],
                         ),
-                      ), 
-                      body: TabBarView(
-                        // to disable swiping tabs in TabBar flutter
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          FirstScreen(),
-                          SecondScreen(),
-                          ThirdScreen()
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                      );
               } else if (index == 1) {
                 return CupertinoTabView(
                   navigatorKey: secondTabNavKey,
