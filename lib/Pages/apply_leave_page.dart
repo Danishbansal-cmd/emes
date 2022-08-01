@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Widgets/drawer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -29,667 +30,1149 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
     print(
         "How many times does i run \n ///////////////////\n/////////////////\n ///////////////////\n ///////////////////");
 
-    return Scaffold(
-      appBar: AppBar(
-        // elevation: 0,
-        title: const Text("My Leave"),
-        actions: [
-          InkWell(
-            onTap: () {
-              fromDateController.text = "";
-              toDateController.text = "";
-              reasonController.text = "";
-              showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Dialog(
-                      backgroundColor: Colors.transparent,
-                      child: Stack(
-                        children: [
-                          NotificationListener<OverscrollIndicatorNotification>(
-                            onNotification:
-                                (OverscrollIndicatorNotification overScroll) {
-                              overScroll.disallowGlow();
-                              return true;
-                            },
-                            child: SingleChildScrollView(
-                              child: Container(
-                                // width: MediaQuery.of(context).size.width,
-                                // height: 410,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 20)
-                                    .copyWith(top: 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(
-                                      height: 10,
+    return (true)
+        ? Material(
+            child: CupertinoPageScaffold(
+              navigationBar: CupertinoNavigationBar(
+                middle: const Text(
+                  "My Leave",
+                  style: TextStyle(
+                    color: CupertinoColors.activeBlue,
+                  ),
+                ),
+                trailing: IconButton(
+                  onPressed: () {
+                    fromDateController.text = "";
+                    toDateController.text = "";
+                    reasonController.text = "";
+                    showCupertinoModalPopup<void>(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CupertinoAlertDialog(
+                            title: Text("Apply Leave"),
+                            content: Column(
+                              children: [
+                                CupertinoTextField(
+                                  // prefix: Icon(CupertinoIcons.person),
+                                  enableInteractiveSelection: true,
+                                  // padding: EdgeInsets.only(left: 16.0,),
+                                  controller: fromDateController,
+                                  keyboardType: TextInputType.datetime,
+                                  textInputAction: TextInputAction.next,
+                                  placeholder: "Enter From Date",
+                                  suffix: Material(child: applyLeaveFormButtonsRow(controller: fromDateController)),
+                                  decoration: BoxDecoration(
+                                    color: CupertinoColors
+                                        .extraLightBackgroundGray,
+                                    border: Border.all(
+                                      color:
+                                          CupertinoColors.lightBackgroundGray,
+                                      width: 1,
                                     ),
-                                    //
-                                    //Apply Leave Form First's Row
-                                    //and main heading Row
-                                    Row(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  cursorColor: CupertinoColors.activeOrange,
+                                ),
+                                CupertinoTextField(
+                                  // prefix: Icon(CupertinoIcons.person),
+                                  enableInteractiveSelection: true,
+                                  // padding: EdgeInsets.only(left: 16.0,),
+                                  controller: fromDateController,
+                                  keyboardType: TextInputType.datetime,
+                                  textInputAction: TextInputAction.next,
+                                  placeholder: "Enter To Date",
+                                  suffix: CupertinoButton(
+                                    padding: EdgeInsets.zero,
+                                    onPressed: () {
+                                      fromDateController.clear();
+                                    },
+                                    child: const Icon(
+                                      CupertinoIcons.clear_circled_solid,
+                                      color: CupertinoColors.activeBlue,
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: CupertinoColors
+                                        .extraLightBackgroundGray,
+                                    border: Border.all(
+                                      color:
+                                          CupertinoColors.lightBackgroundGray,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  cursorColor: CupertinoColors.activeOrange,
+                                ),
+                                CupertinoTextField(
+                                  // prefix: Icon(CupertinoIcons.person),
+                                  enableInteractiveSelection: true,
+                                  // padding: EdgeInsets.only(left: 16.0,),
+                                  controller: fromDateController,
+                                  keyboardType: TextInputType.datetime,
+                                  textInputAction: TextInputAction.next,
+                                  placeholder: "Enter Reason",
+                                  suffix: CupertinoButton(
+                                    padding: EdgeInsets.zero,
+                                    onPressed: () {
+                                      fromDateController.clear();
+                                    },
+                                    child: const Icon(
+                                      CupertinoIcons.clear_circled_solid,
+                                      color: CupertinoColors.activeBlue,
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: CupertinoColors
+                                        .extraLightBackgroundGray,
+                                    border: Border.all(
+                                      color:
+                                          CupertinoColors.lightBackgroundGray,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  cursorColor: CupertinoColors.activeOrange,
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              CupertinoDialogAction(
+                                child: const Text("cancel"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        });
+                  },
+                  icon: const Icon(CupertinoIcons.add),
+                ),
+              ),
+              child: Material(
+                child: SafeArea(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15)
+                        .copyWith(top: 5),
+                    child: FutureBuilder(
+                        future: AppliedLeavesProvider.getAppliedLeaves(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            if (snapshot.hasError) {
+                              return Center(
+                                child: Text(
+                                  '${snapshot.error} occured',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              );
+                            } else if (snapshot.hasData) {
+                              final appliedLeavesData = snapshot.data as Map;
+                              final appliedLeavesDataKeysList =
+                                  appliedLeavesData.keys.toList();
+
+                              return appliedLeavesData.isEmpty
+                                  ? Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          "Apply Leave",
-                                          style: _textTheme.headline1,
+                                        const Icon(
+                                          Icons.calendar_month_outlined,
+                                          size: 90,
+                                          color: Colors.blue,
                                         ),
-                                        Material(
-                                          color: Colors.transparent,
-                                          child: InkWell(
-                                            borderRadius:
-                                                BorderRadius.circular(25),
-                                            splashColor: Colors.grey,
+                                        const Text("No Leaves Found"),
+                                        Text(snapshot.data['message']),
+                                      ],
+                                    )
+                                  : NotificationListener<
+                                      OverscrollIndicatorNotification>(
+                                      onNotification:
+                                          (OverscrollIndicatorNotification
+                                              overScroll) {
+                                        overScroll.disallowGlow();
+                                        return true;
+                                      },
+                                      child: ListView.separated(
+                                        itemCount:
+                                            appliedLeavesDataKeysList.length,
+                                        itemBuilder: (context, index) {
+                                          return InkWell(
                                             onTap: () {
-                                              // Future.delayed(Duration(seconds: 2));
-                                              Navigator.pop(context);
+                                              openLeaveBarController
+                                                  .setBoolValueToggle(index);
+                                              openLeaveBarController
+                                                  .setTestingIndex(index);
                                             },
                                             child: Container(
+                                              //this represents apply leave box
                                               decoration: BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                  30,
-                                                ),
-                                                // color: Colors.amber,
+                                                    BorderRadius.circular(5),
+                                                border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onSecondary,
+                                                    width: 1.5),
                                               ),
-                                              width: 35,
-                                              height: 35,
-                                              child: Icon(
-                                                Icons.close_rounded,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    //
-                                    //
-                                    //From Date Field
-                                    const Text("From Date"),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                      ).copyWith(right: 0),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 2,
-                                        ),
-                                      ),
-                                      child: TextField(
-                                        cursorColor: Colors.grey,
-                                        textInputAction: TextInputAction.done,
-                                        onChanged: (value) {
-                                          applyLeavePageController
-                                              .setFromDateErrorText(value);
-                                        },
-                                        controller: fromDateController,
-                                        textAlignVertical:
-                                            TextAlignVertical.center,
-                                        decoration: InputDecoration(
-                                          hintText: "Select From Date",
-                                          border: InputBorder.none,
-                                          suffixIcon: applyLeaveFormButtonsRow(
-                                              controller: fromDateController),
-                                        ),
-                                      ),
-                                    ),
-                                    Obx(
-                                      () => Text(
-                                        applyLeavePageController
-                                            .getFromDateErrorText,
-                                        style: _textTheme.headline6,
-                                      ),
-                                    ),
-                                    //
-                                    //
-                                    //To Date Field
-                                    const Text("To Date"),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                      ).copyWith(right: 0),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 2,
-                                        ),
-                                      ),
-                                      child: TextField(
-                                        textInputAction: TextInputAction.done,
-                                        textAlignVertical:
-                                            TextAlignVertical.center,
-                                        cursorColor: Colors.grey,
-                                        onChanged: (value) {
-                                          applyLeavePageController
-                                              .setToDateErrorText(value);
-                                        },
-                                        controller: toDateController,
-                                        decoration: InputDecoration(
-                                          // labelText: "hello 1",
-                                          hintText: "Select To Date",
-                                          border: InputBorder.none,
-                                          suffixIcon: applyLeaveFormButtonsRow(
-                                              controller: toDateController),
-                                        ),
-                                      ),
-                                    ),
-                                    Obx(
-                                      () => Text(
-                                        applyLeavePageController
-                                            .getToDateErrorText,
-                                        style: _textTheme.headline6,
-                                      ),
-                                    ),
-                                    //
-                                    //
-                                    //Reason Field
-                                    const Text("Reason"),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      height: 100,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 2,
-                                        ),
-                                      ),
-                                      child: TextField(
-                                        cursorColor: Colors.grey,
-                                        textInputAction: TextInputAction.done,
-                                        maxLines: 5,
-                                        minLines: 1,
-                                        onChanged: (value) {
-                                          applyLeavePageController
-                                              .setReasonErrorText(
-                                            value,
-                                          );
-                                        },
-                                        controller: reasonController,
-                                        decoration: const InputDecoration(
-                                          // labelText: "hello 1",
-                                          hintText: "Type Reason Here...",
-                                          border: InputBorder.none,
-                                        ),
-                                      ),
-                                    ),
-                                    Obx(
-                                      () => Text(
-                                        applyLeavePageController
-                                            .getReasonErrorText,
-                                        style: _textTheme.headline6,
-                                      ),
-                                    ),
-                                    //
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    //
-                                    // Apply Leave Button
-                                    Material(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: InkWell(
-                                        // splashColor: Colors.white,
-                                        onTap: () {
-                                          applyLeavePageController
-                                              .validateApplyLeaveFormData(
-                                            fromDateController.text,
-                                            toDateController.text,
-                                            reasonController.text
-                                                .trim()
-                                                .replaceAll('  ', ' ')
-                                                .replaceAll('  ', ' '),
-                                            context,
-                                          );
-                                          // setState(() {});
-                                        },
-                                        child: Container(
-                                          width: double.infinity,
-                                          height: 35,
-                                          child: const Center(
-                                            child: Text(
-                                              "Apply Leave",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                letterSpacing: 1,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  });
-            },
-            child: Container(
-              width: 60,
-              child: Center(child: Icon(Icons.add_circle_outline_outlined)),
-            ),
-          ),
-        ],
-      ),
-      drawer: MyDrawer(),
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 5),
-          child: FutureBuilder(
-              future: AppliedLeavesProvider.getAppliedLeaves(),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        '${snapshot.error} occured',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    );
-                  } else if (snapshot.hasData) {
-                    final appliedLeavesData = snapshot.data as Map;
-                    final appliedLeavesDataKeysList =
-                        appliedLeavesData.keys.toList();
-
-                    return appliedLeavesData.isEmpty
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.calendar_month_outlined,
-                                size: 90,
-                                color: Colors.blue,
-                              ),
-                              const Text("No Leaves Found"),
-                              Text(snapshot.data['message']),
-                            ],
-                          )
-                        : NotificationListener<OverscrollIndicatorNotification>(
-                            onNotification:
-                                (OverscrollIndicatorNotification overScroll) {
-                              overScroll.disallowGlow();
-                              return true;
-                            },
-                            child: ListView.separated(
-                              itemCount: appliedLeavesDataKeysList.length,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    openLeaveBarController
-                                        .setBoolValueToggle(index);
-                                    openLeaveBarController
-                                        .setTestingIndex(index);
-                                  },
-                                  child: Container(
-                                    //this represents apply leave box
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSecondary,
-                                          width: 1.5),
-                                    ),
-                                    // height: (openLeaveBarProvider
-                                    //             .boolValue &&
-                                    //         openLeaveBarProvider
-                                    //                 .getIntTestingIndex ==
-                                    //             index)
-                                    //     ? 120
-                                    //     : 54,
-                                    width: double.infinity,
-                                    child: Column(
-                                      children: [
-                                        //upper row which is always visible to the user
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            //box to represent the dates
-                                            //and the indicator
-                                            Container(
-                                              // color: Colors.grey,
-                                              height: 50,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 4),
-                                              child: Row(
+                                              // height: (openLeaveBarProvider
+                                              //             .boolValue &&
+                                              //         openLeaveBarProvider
+                                              //                 .getIntTestingIndex ==
+                                              //             index)
+                                              //     ? 120
+                                              //     : 54,
+                                              width: double.infinity,
+                                              child: Column(
                                                 children: [
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  //this indicator with two dots on its top and bottom
-                                                  Constants.indicatorTracker(
-                                                      appliedLeavesData[appliedLeavesDataKeysList[
-                                                                          index]]
-                                                                      [
-                                                                      'ApplyForHoliday']
-                                                                  ['status'] ==
-                                                              "0"
-                                                          ? Colors.amber
-                                                          : appliedLeavesData[appliedLeavesDataKeysList[
-                                                                              index]]
-                                                                          [
-                                                                          'ApplyForHoliday']
-                                                                      [
-                                                                      'status'] ==
-                                                                  "1"
-                                                              ? Colors.green
-                                                              : Colors.red,
-                                                      12),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  //dates column of the box
-                                                  Column(
+                                                  //upper row which is always visible to the user
+                                                  Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
-                                                            .center,
+                                                            .spaceBetween,
                                                     children: [
-                                                      Text(appliedLeavesData[
-                                                                  appliedLeavesDataKeysList[
-                                                                      index]][
-                                                              'ApplyForHoliday']
-                                                          ['on_date']),
-                                                      Text(appliedLeavesData[
-                                                                  appliedLeavesDataKeysList[
-                                                                      index]][
-                                                              'ApplyForHoliday']
-                                                          ['to_date'])
+                                                      //box to represent the dates
+                                                      //and the indicator
+                                                      Container(
+                                                        // color: Colors.grey,
+                                                        height: 50,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 4),
+                                                        child: Row(
+                                                          children: [
+                                                            const SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            //this indicator with two dots on its top and bottom
+                                                            Constants.indicatorTracker(
+                                                                appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']['status'] == "0"
+                                                                    ? Colors.amber
+                                                                    : appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']['status'] == "1"
+                                                                        ? Colors.green
+                                                                        : Colors.red,
+                                                                12),
+                                                            const SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            //dates column of the box
+                                                            Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Text(appliedLeavesData[
+                                                                            appliedLeavesDataKeysList[index]]
+                                                                        [
+                                                                        'ApplyForHoliday']
+                                                                    [
+                                                                    'on_date']),
+                                                                Text(appliedLeavesData[
+                                                                            appliedLeavesDataKeysList[index]]
+                                                                        [
+                                                                        'ApplyForHoliday']
+                                                                    ['to_date'])
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+
+                                                      //second box
+                                                      //box to represent the status and the button on the right
+                                                      Container(
+                                                        height: 50,
+                                                        child: Row(
+                                                          children: [
+                                                            //status container
+                                                            Container(
+                                                              height: 30,
+                                                              width: 90,
+                                                              child: Center(
+                                                                child: Text(
+                                                                  appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']
+                                                                              [
+                                                                              'status'] ==
+                                                                          "0"
+                                                                      ? "Pending"
+                                                                      : appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']['status'] ==
+                                                                              "1"
+                                                                          ? "Accepted"
+                                                                          : "Decline",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white),
+                                                                ),
+                                                              ),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']
+                                                                            [
+                                                                            'status'] ==
+                                                                        "0"
+                                                                    ? Colors
+                                                                        .amber
+                                                                    : appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']['status'] ==
+                                                                            "1"
+                                                                        ? Colors
+                                                                            .green
+                                                                        : Colors
+                                                                            .red,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            50),
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            InkWell(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50),
+                                                              splashColor:
+                                                                  Colors.blue,
+                                                              onTap: () {
+                                                                print(appliedLeavesData[
+                                                                            appliedLeavesDataKeysList[index]]
+                                                                        [
+                                                                        'ApplyForHoliday']
+                                                                    ['reason']);
+                                                                openLeaveBarController
+                                                                    .setBoolValueToggle(
+                                                                        index);
+                                                                openLeaveBarController
+                                                                    .setTestingIndex(
+                                                                        index);
+                                                              },
+                                                              child: Obx(
+                                                                () => SizedBox(
+                                                                  width: 40,
+                                                                  height: 40,
+                                                                  child: (openLeaveBarController
+                                                                              .getBoolValue &&
+                                                                          openLeaveBarController.getIntTestingIndex ==
+                                                                              index)
+                                                                      ? const Icon(
+                                                                          Icons
+                                                                              .keyboard_arrow_down_rounded,
+                                                                          size:
+                                                                              24,
+                                                                        )
+                                                                      : const Icon(
+                                                                          Icons
+                                                                              .arrow_forward_ios_rounded,
+                                                                          size:
+                                                                              16,
+                                                                        ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  //second row
+                                                  //only visible on the tap of the upper box or row
+                                                  Row(
+                                                    children: [
+                                                      Obx(
+                                                        () => Visibility(
+                                                          visible: (openLeaveBarController
+                                                                      .getBoolValue &&
+                                                                  openLeaveBarController
+                                                                          .getIntTestingIndex ==
+                                                                      index)
+                                                              ? true
+                                                              : false,
+                                                          child: Expanded(
+                                                            child: Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  3,
+                                                                ),
+                                                                color: appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']
+                                                                            [
+                                                                            'status'] ==
+                                                                        "0"
+                                                                    ? Colors
+                                                                        .amber
+                                                                    : appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']['status'] ==
+                                                                            "1"
+                                                                        ? Colors
+                                                                            .green
+                                                                        : Colors
+                                                                            .red,
+                                                              ),
+                                                              // height: 67,
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                horizontal: 25,
+                                                                vertical: 5,
+                                                              ),
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text.rich(
+                                                                    TextSpan(
+                                                                        text:
+                                                                            'Reason:',
+                                                                        style: _textTheme
+                                                                            .headline2!
+                                                                            .copyWith(color: Colors.black),
+                                                                        children: <InlineSpan>[
+                                                                          const TextSpan(
+                                                                              text: "   "),
+                                                                          TextSpan(
+                                                                            text:
+                                                                                appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']['reason'],
+                                                                            style:
+                                                                                const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                                                                          )
+                                                                        ]),
+                                                                  ),
+                                                                  (appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']
+                                                                              [
+                                                                              'admin_msg'] ==
+                                                                          "")
+                                                                      ? SizedBox
+                                                                          .shrink()
+                                                                      : Text
+                                                                          .rich(
+                                                                          TextSpan(
+                                                                            text:
+                                                                                'Admin Reply:',
+                                                                            style:
+                                                                                _textTheme.headline2!.copyWith(color: Colors.black),
+                                                                            children: <InlineSpan>[
+                                                                              const TextSpan(text: "   "),
+                                                                              TextSpan(
+                                                                                text: appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']['admin_msg'],
+                                                                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ],
                                                   ),
                                                 ],
                                               ),
                                             ),
-
-                                            //second box
-                                            //box to represent the status and the button on the right
-                                            Container(
-                                              height: 50,
-                                              child: Row(
-                                                children: [
-                                                  //status container
-                                                  Container(
-                                                    height: 30,
-                                                    width: 90,
-                                                    child: Center(
-                                                      child: Text(
-                                                        appliedLeavesData[appliedLeavesDataKeysList[
-                                                                            index]]
-                                                                        [
-                                                                        'ApplyForHoliday']
-                                                                    [
-                                                                    'status'] ==
-                                                                "0"
-                                                            ? "Pending"
-                                                            : appliedLeavesData[
-                                                                                appliedLeavesDataKeysList[index]]
-                                                                            [
-                                                                            'ApplyForHoliday']
-                                                                        [
-                                                                        'status'] ==
-                                                                    "1"
-                                                                ? "Accepted"
-                                                                : "Decline",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: appliedLeavesData[
-                                                                          appliedLeavesDataKeysList[
-                                                                              index]]
-                                                                      [
-                                                                      'ApplyForHoliday']
-                                                                  ['status'] ==
-                                                              "0"
-                                                          ? Colors.amber
-                                                          : appliedLeavesData[appliedLeavesDataKeysList[
-                                                                              index]]
-                                                                          [
-                                                                          'ApplyForHoliday']
-                                                                      [
-                                                                      'status'] ==
-                                                                  "1"
-                                                              ? Colors.green
-                                                              : Colors.red,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  InkWell(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                    splashColor: Colors.blue,
-                                                    onTap: () {
-                                                      print(appliedLeavesData[
-                                                                  appliedLeavesDataKeysList[
-                                                                      index]][
-                                                              'ApplyForHoliday']
-                                                          ['reason']);
-                                                      openLeaveBarController
-                                                          .setBoolValueToggle(
-                                                              index);
-                                                      openLeaveBarController
-                                                          .setTestingIndex(
-                                                              index);
-                                                    },
-                                                    child: Obx(
-                                                      () => SizedBox(
-                                                        width: 40,
-                                                        height: 40,
-                                                        child: (openLeaveBarController
-                                                                    .getBoolValue &&
-                                                                openLeaveBarController
-                                                                        .getIntTestingIndex ==
-                                                                    index)
-                                                            ? const Icon(
-                                                                Icons
-                                                                    .keyboard_arrow_down_rounded,
-                                                                size: 24,
-                                                              )
-                                                            : const Icon(
-                                                                Icons
-                                                                    .arrow_forward_ios_rounded,
-                                                                size: 16,
-                                                              ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return const SizedBox(
+                                            height: 15,
+                                          );
+                                        },
+                                      ),
+                                    );
+                            }
+                          }
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.blue,
+                            ),
+                          );
+                        }),
+                  ),
+                ),
+              ),
+            ),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              // elevation: 0,
+              title: const Text("My Leave"),
+              actions: [
+                InkWell(
+                  onTap: () {
+                    fromDateController.text = "";
+                    toDateController.text = "";
+                    reasonController.text = "";
+                    showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            backgroundColor: Colors.transparent,
+                            child: Stack(
+                              children: [
+                                NotificationListener<
+                                    OverscrollIndicatorNotification>(
+                                  onNotification:
+                                      (OverscrollIndicatorNotification
+                                          overScroll) {
+                                    overScroll.disallowGlow();
+                                    return true;
+                                  },
+                                  child: SingleChildScrollView(
+                                    child: Container(
+                                      // width: MediaQuery.of(context).size.width,
+                                      // height: 410,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 20)
+                                          .copyWith(top: 0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          //
+                                          //Apply Leave Form First's Row
+                                          //and main heading Row
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Apply Leave",
+                                                style: _textTheme.headline1,
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                        //second row
-                                        //only visible on the tap of the upper box or row
-                                        Row(
-                                          children: [
-                                            Obx(
-                                              () => Visibility(
-                                                visible: (openLeaveBarController
-                                                            .getBoolValue &&
-                                                        openLeaveBarController
-                                                                .getIntTestingIndex ==
-                                                            index)
-                                                    ? true
-                                                    : false,
-                                                child: Expanded(
+                                              Material(
+                                                color: Colors.transparent,
+                                                child: InkWell(
+                                                  borderRadius:
+                                                      BorderRadius.circular(25),
+                                                  splashColor: Colors.grey,
+                                                  onTap: () {
+                                                    // Future.delayed(Duration(seconds: 2));
+                                                    Navigator.pop(context);
+                                                  },
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                        3,
+                                                        30,
                                                       ),
-                                                      color: appliedLeavesData[
-                                                                          appliedLeavesDataKeysList[
-                                                                              index]]
-                                                                      [
-                                                                      'ApplyForHoliday']
-                                                                  ['status'] ==
-                                                              "0"
-                                                          ? Colors.amber
-                                                          : appliedLeavesData[appliedLeavesDataKeysList[
-                                                                              index]]
-                                                                          [
-                                                                          'ApplyForHoliday']
-                                                                      [
-                                                                      'status'] ==
-                                                                  "1"
-                                                              ? Colors.green
-                                                              : Colors.red,
+                                                      // color: Colors.amber,
                                                     ),
-                                                    // height: 67,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 25,
-                                                      vertical: 5,
+                                                    width: 35,
+                                                    height: 35,
+                                                    child: Icon(
+                                                      Icons.close_rounded,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
                                                     ),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text.rich(
-                                                          TextSpan(
-                                                              text: 'Reason:',
-                                                              style: _textTheme
-                                                                  .headline2!
-                                                                  .copyWith(
-                                                                      color: Colors
-                                                                          .black),
-                                                              children: <
-                                                                  InlineSpan>[
-                                                                const TextSpan(
-                                                                    text:
-                                                                        "   "),
-                                                                TextSpan(
-                                                                  text: appliedLeavesData[
-                                                                              appliedLeavesDataKeysList[index]]
-                                                                          [
-                                                                          'ApplyForHoliday']
-                                                                      [
-                                                                      'reason'],
-                                                                  style: const TextStyle(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal),
-                                                                )
-                                                              ]),
-                                                        ),
-                                                        (appliedLeavesData[appliedLeavesDataKeysList[
-                                                                            index]]
-                                                                        [
-                                                                        'ApplyForHoliday']
-                                                                    [
-                                                                    'admin_msg'] ==
-                                                                "")
-                                                            ? SizedBox.shrink()
-                                                            : Text.rich(
-                                                                TextSpan(
-                                                                  text:
-                                                                      'Admin Reply:',
-                                                                  style: _textTheme
-                                                                      .headline2!
-                                                                      .copyWith(
-                                                                          color:
-                                                                              Colors.black),
-                                                                  children: <
-                                                                      InlineSpan>[
-                                                                    const TextSpan(
-                                                                        text:
-                                                                            "   "),
-                                                                    TextSpan(
-                                                                      text: appliedLeavesData[appliedLeavesDataKeysList[index]]
-                                                                              [
-                                                                              'ApplyForHoliday']
-                                                                          [
-                                                                          'admin_msg'],
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.normal),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                      ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          //
+                                          //
+                                          //From Date Field
+                                          const Text("From Date"),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 10,
+                                            ).copyWith(right: 0),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              border: Border.all(
+                                                color: Colors.grey,
+                                                width: 2,
+                                              ),
+                                            ),
+                                            child: TextField(
+                                              cursorColor: Colors.grey,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                              onChanged: (value) {
+                                                applyLeavePageController
+                                                    .setFromDateErrorText(
+                                                        value);
+                                              },
+                                              controller: fromDateController,
+                                              textAlignVertical:
+                                                  TextAlignVertical.center,
+                                              decoration: InputDecoration(
+                                                hintText: "Select From Date",
+                                                border: InputBorder.none,
+                                                suffixIcon:
+                                                    applyLeaveFormButtonsRow(
+                                                        controller:
+                                                            fromDateController),
+                                              ),
+                                            ),
+                                          ),
+                                          Obx(
+                                            () => Text(
+                                              applyLeavePageController
+                                                  .getFromDateErrorText,
+                                              style: _textTheme.headline6,
+                                            ),
+                                          ),
+                                          //
+                                          //
+                                          //To Date Field
+                                          const Text("To Date"),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 10,
+                                            ).copyWith(right: 0),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              border: Border.all(
+                                                color: Colors.grey,
+                                                width: 2,
+                                              ),
+                                            ),
+                                            child: TextField(
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                              textAlignVertical:
+                                                  TextAlignVertical.center,
+                                              cursorColor: Colors.grey,
+                                              onChanged: (value) {
+                                                applyLeavePageController
+                                                    .setToDateErrorText(value);
+                                              },
+                                              controller: toDateController,
+                                              decoration: InputDecoration(
+                                                // labelText: "hello 1",
+                                                hintText: "Select To Date",
+                                                border: InputBorder.none,
+                                                suffixIcon:
+                                                    applyLeaveFormButtonsRow(
+                                                        controller:
+                                                            toDateController),
+                                              ),
+                                            ),
+                                          ),
+                                          Obx(
+                                            () => Text(
+                                              applyLeavePageController
+                                                  .getToDateErrorText,
+                                              style: _textTheme.headline6,
+                                            ),
+                                          ),
+                                          //
+                                          //
+                                          //Reason Field
+                                          const Text("Reason"),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Container(
+                                            height: 100,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              border: Border.all(
+                                                color: Colors.grey,
+                                                width: 2,
+                                              ),
+                                            ),
+                                            child: TextField(
+                                              cursorColor: Colors.grey,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                              maxLines: 5,
+                                              minLines: 1,
+                                              onChanged: (value) {
+                                                applyLeavePageController
+                                                    .setReasonErrorText(
+                                                  value,
+                                                );
+                                              },
+                                              controller: reasonController,
+                                              decoration: const InputDecoration(
+                                                // labelText: "hello 1",
+                                                hintText: "Type Reason Here...",
+                                                border: InputBorder.none,
+                                              ),
+                                            ),
+                                          ),
+                                          Obx(
+                                            () => Text(
+                                              applyLeavePageController
+                                                  .getReasonErrorText,
+                                              style: _textTheme.headline6,
+                                            ),
+                                          ),
+                                          //
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          //
+                                          // Apply Leave Button
+                                          Material(
+                                            color: Colors.blue,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            child: InkWell(
+                                              // splashColor: Colors.white,
+                                              onTap: () {
+                                                applyLeavePageController
+                                                    .validateApplyLeaveFormData(
+                                                  fromDateController.text,
+                                                  toDateController.text,
+                                                  reasonController.text
+                                                      .trim()
+                                                      .replaceAll('  ', ' ')
+                                                      .replaceAll('  ', ' '),
+                                                  context,
+                                                );
+                                                // setState(() {});
+                                              },
+                                              child: Container(
+                                                width: double.infinity,
+                                                height: 35,
+                                                child: const Center(
+                                                  child: Text(
+                                                    "Apply Leave",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white,
+                                                      letterSpacing: 1,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return const SizedBox(
-                                  height: 15,
-                                );
-                              },
+                                ),
+                              ],
                             ),
                           );
-                  }
-                }
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.blue,
+                        });
+                  },
+                  child: Container(
+                    width: 60,
+                    child:
+                        Center(child: Icon(Icons.add_circle_outline_outlined)),
                   ),
-                );
-              }),
-        ),
-      ),
-    );
+                ),
+              ],
+            ),
+            drawer: MyDrawer(),
+            body: SafeArea(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 5),
+                child: FutureBuilder(
+                    future: AppliedLeavesProvider.getAppliedLeaves(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text(
+                              '${snapshot.error} occured',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          );
+                        } else if (snapshot.hasData) {
+                          final appliedLeavesData = snapshot.data as Map;
+                          final appliedLeavesDataKeysList =
+                              appliedLeavesData.keys.toList();
+
+                          return appliedLeavesData.isEmpty
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.calendar_month_outlined,
+                                      size: 90,
+                                      color: Colors.blue,
+                                    ),
+                                    const Text("No Leaves Found"),
+                                    Text(snapshot.data['message']),
+                                  ],
+                                )
+                              : NotificationListener<
+                                  OverscrollIndicatorNotification>(
+                                  onNotification:
+                                      (OverscrollIndicatorNotification
+                                          overScroll) {
+                                    overScroll.disallowGlow();
+                                    return true;
+                                  },
+                                  child: ListView.separated(
+                                    itemCount: appliedLeavesDataKeysList.length,
+                                    itemBuilder: (context, index) {
+                                      return InkWell(
+                                        onTap: () {
+                                          openLeaveBarController
+                                              .setBoolValueToggle(index);
+                                          openLeaveBarController
+                                              .setTestingIndex(index);
+                                        },
+                                        child: Container(
+                                          //this represents apply leave box
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSecondary,
+                                                width: 1.5),
+                                          ),
+                                          // height: (openLeaveBarProvider
+                                          //             .boolValue &&
+                                          //         openLeaveBarProvider
+                                          //                 .getIntTestingIndex ==
+                                          //             index)
+                                          //     ? 120
+                                          //     : 54,
+                                          width: double.infinity,
+                                          child: Column(
+                                            children: [
+                                              //upper row which is always visible to the user
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  //box to represent the dates
+                                                  //and the indicator
+                                                  Container(
+                                                    // color: Colors.grey,
+                                                    height: 50,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 4),
+                                                    child: Row(
+                                                      children: [
+                                                        const SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        //this indicator with two dots on its top and bottom
+                                                        Constants
+                                                            .indicatorTracker(
+                                                                appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']
+                                                                            [
+                                                                            'status'] ==
+                                                                        "0"
+                                                                    ? Colors
+                                                                        .amber
+                                                                    : appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']['status'] ==
+                                                                            "1"
+                                                                        ? Colors
+                                                                            .green
+                                                                        : Colors
+                                                                            .red,
+                                                                12),
+                                                        const SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        //dates column of the box
+                                                        Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(appliedLeavesData[
+                                                                        appliedLeavesDataKeysList[
+                                                                            index]]
+                                                                    [
+                                                                    'ApplyForHoliday']
+                                                                ['on_date']),
+                                                            Text(appliedLeavesData[
+                                                                        appliedLeavesDataKeysList[
+                                                                            index]]
+                                                                    [
+                                                                    'ApplyForHoliday']
+                                                                ['to_date'])
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  //second box
+                                                  //box to represent the status and the button on the right
+                                                  Container(
+                                                    height: 50,
+                                                    child: Row(
+                                                      children: [
+                                                        //status container
+                                                        Container(
+                                                          height: 30,
+                                                          width: 90,
+                                                          child: Center(
+                                                            child: Text(
+                                                              appliedLeavesData[appliedLeavesDataKeysList[index]]
+                                                                              [
+                                                                              'ApplyForHoliday']
+                                                                          [
+                                                                          'status'] ==
+                                                                      "0"
+                                                                  ? "Pending"
+                                                                  : appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']
+                                                                              [
+                                                                              'status'] ==
+                                                                          "1"
+                                                                      ? "Accepted"
+                                                                      : "Decline",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: appliedLeavesData[appliedLeavesDataKeysList[index]]
+                                                                            [
+                                                                            'ApplyForHoliday']
+                                                                        [
+                                                                        'status'] ==
+                                                                    "0"
+                                                                ? Colors.amber
+                                                                : appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']
+                                                                            [
+                                                                            'status'] ==
+                                                                        "1"
+                                                                    ? Colors
+                                                                        .green
+                                                                    : Colors
+                                                                        .red,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        InkWell(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(50),
+                                                          splashColor:
+                                                              Colors.blue,
+                                                          onTap: () {
+                                                            print(appliedLeavesData[
+                                                                        appliedLeavesDataKeysList[
+                                                                            index]]
+                                                                    [
+                                                                    'ApplyForHoliday']
+                                                                ['reason']);
+                                                            openLeaveBarController
+                                                                .setBoolValueToggle(
+                                                                    index);
+                                                            openLeaveBarController
+                                                                .setTestingIndex(
+                                                                    index);
+                                                          },
+                                                          child: Obx(
+                                                            () => SizedBox(
+                                                              width: 40,
+                                                              height: 40,
+                                                              child: (openLeaveBarController
+                                                                          .getBoolValue &&
+                                                                      openLeaveBarController
+                                                                              .getIntTestingIndex ==
+                                                                          index)
+                                                                  ? const Icon(
+                                                                      Icons
+                                                                          .keyboard_arrow_down_rounded,
+                                                                      size: 24,
+                                                                    )
+                                                                  : const Icon(
+                                                                      Icons
+                                                                          .arrow_forward_ios_rounded,
+                                                                      size: 16,
+                                                                    ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              //second row
+                                              //only visible on the tap of the upper box or row
+                                              Row(
+                                                children: [
+                                                  Obx(
+                                                    () => Visibility(
+                                                      visible: (openLeaveBarController
+                                                                  .getBoolValue &&
+                                                              openLeaveBarController
+                                                                      .getIntTestingIndex ==
+                                                                  index)
+                                                          ? true
+                                                          : false,
+                                                      child: Expanded(
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              3,
+                                                            ),
+                                                            color: appliedLeavesData[appliedLeavesDataKeysList[index]]
+                                                                            [
+                                                                            'ApplyForHoliday']
+                                                                        [
+                                                                        'status'] ==
+                                                                    "0"
+                                                                ? Colors.amber
+                                                                : appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']
+                                                                            [
+                                                                            'status'] ==
+                                                                        "1"
+                                                                    ? Colors
+                                                                        .green
+                                                                    : Colors
+                                                                        .red,
+                                                          ),
+                                                          // height: 67,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                            horizontal: 25,
+                                                            vertical: 5,
+                                                          ),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text.rich(
+                                                                TextSpan(
+                                                                    text:
+                                                                        'Reason:',
+                                                                    style: _textTheme
+                                                                        .headline2!
+                                                                        .copyWith(
+                                                                            color: Colors
+                                                                                .black),
+                                                                    children: <
+                                                                        InlineSpan>[
+                                                                      const TextSpan(
+                                                                          text:
+                                                                              "   "),
+                                                                      TextSpan(
+                                                                        text: appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']
+                                                                            [
+                                                                            'reason'],
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                16,
+                                                                            fontWeight:
+                                                                                FontWeight.normal),
+                                                                      )
+                                                                    ]),
+                                                              ),
+                                                              (appliedLeavesData[appliedLeavesDataKeysList[index]]
+                                                                              [
+                                                                              'ApplyForHoliday']
+                                                                          [
+                                                                          'admin_msg'] ==
+                                                                      "")
+                                                                  ? SizedBox
+                                                                      .shrink()
+                                                                  : Text.rich(
+                                                                      TextSpan(
+                                                                        text:
+                                                                            'Admin Reply:',
+                                                                        style: _textTheme
+                                                                            .headline2!
+                                                                            .copyWith(color: Colors.black),
+                                                                        children: <
+                                                                            InlineSpan>[
+                                                                          const TextSpan(
+                                                                              text: "   "),
+                                                                          TextSpan(
+                                                                            text:
+                                                                                appliedLeavesData[appliedLeavesDataKeysList[index]]['ApplyForHoliday']['admin_msg'],
+                                                                            style:
+                                                                                const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return const SizedBox(
+                                        height: 15,
+                                      );
+                                    },
+                                  ),
+                                );
+                        }
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.blue,
+                        ),
+                      );
+                    }),
+              ),
+            ),
+          );
   }
 
   Widget applyLeaveFormButtonsRow({required TextEditingController controller}) {

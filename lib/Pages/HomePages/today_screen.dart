@@ -1,15 +1,18 @@
 import 'dart:convert';
+import 'package:emes/Pages/api_testing_page.dart';
 import 'package:emes/Pages/checkin_checkout_page.dart';
 import 'package:emes/Pages/home_page.dart';
 import 'package:emes/Providers/accept_decline_provider.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/shift_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
+
 class SecondScreen extends StatefulWidget {
   SecondScreen({Key? key}) : super(key: key);
 
@@ -156,10 +159,10 @@ class _SecondScreenState extends State<SecondScreen> {
                               ],
                             )
                           : Material(
-                            child: NotificationListener<
-                                OverscrollIndicatorNotification>(
-                                onNotification:
-                                    (OverscrollIndicatorNotification overScroll) {
+                              child: NotificationListener<
+                                  OverscrollIndicatorNotification>(
+                                onNotification: (OverscrollIndicatorNotification
+                                    overScroll) {
                                   overScroll.disallowGlow();
                                   return true;
                                 },
@@ -180,9 +183,10 @@ class _SecondScreenState extends State<SecondScreen> {
                                     return Container(
                                       color: _colorScheme.background,
                                       // color: Colors.red,
-                                      height: (shiftContainerHeight * moreShifts +
-                                              16 * (moreShifts))
-                                          .toDouble(),
+                                      height:
+                                          (shiftContainerHeight * moreShifts +
+                                                  16 * (moreShifts))
+                                              .toDouble(),
                                       child: ListView.separated(
                                         //nested second list
                                         physics: ClampingScrollPhysics(),
@@ -216,7 +220,8 @@ class _SecondScreenState extends State<SecondScreen> {
                                             //     ),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 //checkbox button
                                                 Obx(
@@ -235,7 +240,8 @@ class _SecondScreenState extends State<SecondScreen> {
                                                               .addIdOfSelectedItemsList(
                                                                   "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
                                                           if (shiftData[keyList[
-                                                                          index]][
+                                                                          index]]
+                                                                      [
                                                                       insideKeyList
                                                                               .toList()[
                                                                           index2]]
@@ -246,14 +252,11 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                 .ifAcceptedShiftIsSelected
                                                                 .add(true);
                                                           } else if (shiftData[
-                                                                          keyList[
-                                                                              index]]
-                                                                      [
-                                                                      insideKeyList
-                                                                              .toList()[
-                                                                          index2]]
-                                                                  [
-                                                                  'confirmed_by_staff'] ==
+                                                                      keyList[
+                                                                          index]]
+                                                                  [insideKeyList
+                                                                          .toList()[
+                                                                      index2]]['confirmed_by_staff'] ==
                                                               "2") {
                                                             controller
                                                                 .ifDeclinedShiftIsSelected
@@ -274,7 +277,8 @@ class _SecondScreenState extends State<SecondScreen> {
                                                               .deleteIdOfSelectedItemsList(
                                                                   "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
                                                           if (shiftData[keyList[
-                                                                          index]][
+                                                                          index]]
+                                                                      [
                                                                       insideKeyList
                                                                               .toList()[
                                                                           index2]]
@@ -285,14 +289,11 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                 .ifAcceptedShiftIsSelected
                                                                 .remove(true);
                                                           } else if (shiftData[
-                                                                          keyList[
-                                                                              index]]
-                                                                      [
-                                                                      insideKeyList
-                                                                              .toList()[
-                                                                          index2]]
-                                                                  [
-                                                                  'confirmed_by_staff'] ==
+                                                                      keyList[
+                                                                          index]]
+                                                                  [insideKeyList
+                                                                          .toList()[
+                                                                      index2]]['confirmed_by_staff'] ==
                                                               "2") {
                                                             controller
                                                                 .ifDeclinedShiftIsSelected
@@ -308,11 +309,12 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           .selectedItemsList
                                                           .contains(
                                                               "$index$index2"),
-                                                      shape: const CircleBorder(),
+                                                      shape:
+                                                          const CircleBorder(),
                                                     ),
                                                   ),
                                                 ),
-                          
+
                                                 //data to be represented
                                                 Expanded(
                                                   child: InkWell(
@@ -335,7 +337,8 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                         index]][
                                                                     insideKeyList
                                                                             .toList()[
-                                                                        index2]][
+                                                                        index2]]
+                                                                [
                                                                 'confirmed_by_staff'] ==
                                                             "1") {
                                                           controller
@@ -347,7 +350,8 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                     [
                                                                     insideKeyList
                                                                             .toList()[
-                                                                        index2]][
+                                                                        index2]]
+                                                                [
                                                                 'confirmed_by_staff'] ==
                                                             "2") {
                                                           controller
@@ -377,7 +381,8 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                         index]][
                                                                     insideKeyList
                                                                             .toList()[
-                                                                        index2]][
+                                                                        index2]]
+                                                                [
                                                                 'confirmed_by_staff'] ==
                                                             "1") {
                                                           controller
@@ -389,7 +394,8 @@ class _SecondScreenState extends State<SecondScreen> {
                                                                     [
                                                                     insideKeyList
                                                                             .toList()[
-                                                                        index2]][
+                                                                        index2]]
+                                                                [
                                                                 'confirmed_by_staff'] ==
                                                             "2") {
                                                           controller
@@ -408,7 +414,8 @@ class _SecondScreenState extends State<SecondScreen> {
                                                     },
                                                     child: Container(
                                                       padding: const EdgeInsets
-                                                          .symmetric(vertical: 3),
+                                                              .symmetric(
+                                                          vertical: 3),
                                                       // color: Colors.green,
                                                       height:
                                                           shiftContainerHeight,
@@ -466,7 +473,8 @@ class _SecondScreenState extends State<SecondScreen> {
                                                               children: <
                                                                   InlineSpan>[
                                                                 const TextSpan(
-                                                                    text: " TO "),
+                                                                    text:
+                                                                        " TO "),
                                                                 TextSpan(
                                                                   text:
                                                                       '${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}',
@@ -481,14 +489,15 @@ class _SecondScreenState extends State<SecondScreen> {
                                                     ),
                                                   ),
                                                 ),
-                          
+
                                                 //button to next page
                                                 Material(
                                                   color: Colors.transparent,
                                                   child: InkWell(
                                                     splashColor: Colors.blue,
                                                     borderRadius:
-                                                        BorderRadius.circular(9),
+                                                        BorderRadius.circular(
+                                                            9),
                                                     onTap: () {
                                                       Future.delayed(
                                                         const Duration(
@@ -501,40 +510,112 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           //             [
                                                           //             'is_confirm'] ==
                                                           //         "1" &&
-                          
+
                                                           // if(shiftData[keyList[
                                                           //             index]][
                                                           //         insideKeyList
                                                           //                 .toList()[
                                                           //             index2]]['confirmed_by_staff'] ==
                                                           //     "1") {
-                                                          Get.to(
-                                                              () =>
-                                                                  CheckinCheckoutPage(),
-                                                              arguments: [
-                                                                {
-                                                                  "shift_id":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}",
-                                                                  "client_id":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_id']}",
-                                                                  "work_date":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}",
-                                                                  "time_on":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}",
-                                                                  "time_off":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}",
-                                                                  "task_id":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['task_id']}",
-                                                                  "client_name":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
-                                                                  "activity_name":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['activity_name']}",
-                                                                  "day_of_shift":
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift']}"
-                                                                }
-                                                              ]);
+                                                          // Get.to(
+                                                          //     () =>
+                                                          //         CheckinCheckoutPage(),
+                                                          //     arguments: [
+                                                          //       {
+                                                          //         "shift_id":
+                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}",
+                                                          //         "client_id":
+                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_id']}",
+                                                          //         "work_date":
+                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}",
+                                                          //         "time_on":
+                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}",
+                                                          //         "time_off":
+                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}",
+                                                          //         "task_id":
+                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['task_id']}",
+                                                          //         "client_name":
+                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
+                                                          //         "activity_name":
+                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['activity_name']}",
+                                                          //         "day_of_shift":
+                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift']}"
+                                                          //       }
+                                                          //     ]);
+                                                          Navigator.push(
+                                                            context,
+                                                            CupertinoPageRoute(
+                                                              builder: (context) =>
+                                                                  CheckinCheckoutPage(
+                                                                shiftId: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['shift_id'],
+                                                                clientId: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['client_id'],
+                                                                workDate: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['work_date'],
+                                                                timeOn: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['time_on'],
+                                                                timeOff: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['time_off'],
+                                                                taskId: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['task_id'],
+                                                                clientName: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['client_name'],
+                                                                activityName: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['activity_name'],
+                                                                dayOfShift: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['day_of_shift'],
+                                                              ),
+                                                            ),
+                                                          );
+
                                                           // }
-                          
+
                                                           // else if (shiftData[keyList[
                                                           //                 index]][insideKeyList
                                                           //                     .toList()[
@@ -602,7 +683,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                   },
                                 ),
                               ),
-                          );
+                            );
                     }
                   }
 
@@ -630,7 +711,7 @@ class _SecondScreenState extends State<SecondScreen> {
                         // print(controller.ifDeclinedShiftIsSelected.value);
                         if (controller.ifAcceptedShiftIsSelected
                             .contains(true)) {
-                              //message dialog
+                          //message dialog
                           showDialog(
                             context: context,
                             builder: (context) {
@@ -658,12 +739,13 @@ class _SecondScreenState extends State<SecondScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Constants.declineShiftPopupTopRow(
-                                              context,"Message"),
+                                              context, "Message"),
                                           //Some Space
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          const Text("Contact your manager as shift can no longer be declined."),
+                                          const Text(
+                                              "Contact your manager as shift can no longer be declined."),
                                           //Some Space
                                           const SizedBox(
                                             height: 25,
@@ -707,7 +789,7 @@ class _SecondScreenState extends State<SecondScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Constants.declineShiftPopupTopRow(
-                                              context,"Decline Shift"),
+                                              context, "Decline Shift"),
                                           //Some Space
                                           const SizedBox(
                                             height: 10,
