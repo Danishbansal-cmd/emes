@@ -230,7 +230,7 @@ class _MessageChatPageState extends State<MessageChatPage> {
 
   Future<Map> getChatMessages() async {
     var response = await http.get(
-      Uri.parse(Constants.getChatMessages +
+      Uri.parse(Constants.getCompanyURL + "/api/chat/" +
           Constants.getStaffID +
           "/" +
           widget.adminId),
@@ -249,7 +249,7 @@ class _MessageChatPageState extends State<MessageChatPage> {
   Future<Map> sendMessage(String text) async {
     var response = await http.post(
         Uri.parse(
-          Constants.getSendMessage,
+          Constants.getCompanyURL + "/api/send_msg",
         ),
         body: {
           "sender_id": Constants.getStaffID,

@@ -9,7 +9,7 @@ class GetLoggedInUserInformation {
   static getData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var response = await http.post(
-      Uri.parse('${Constants.getLoggedINUserInformationUrl}/${sharedPreferences.getString("staffID")}')
+      Uri.parse('${Constants.getCompanyURL}/api/get_loggedInUser/${sharedPreferences.getString("staffID")}')
     );
     var jsonData = jsonDecode(response.body);
     Constants.setFirstName(jsonData['data']['first_name']);

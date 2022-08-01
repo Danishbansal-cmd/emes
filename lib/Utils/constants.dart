@@ -12,26 +12,7 @@ class Constants {
   static late String _mobile;
   static late String _staffID;
   static late Map _dataLogIN;
-  static const String _shiftUrl =
-      "http://trusecurity.emesau.com/dev/api/getshift";
-  static const String _updateProfileUrl =
-      "http://trusecurity.emesau.com/dev/api/update_profile";
-  static const String _loggedINUserInformationUrl =
-      "http://trusecurity.emesau.com/dev/api/get_loggedInUser";
-  static const String _appliedLeavesUrl =
-      "http://trusecurity.emesau.com/dev/api/get_applied_leave";
-  static const String _applyLeaveUrl =
-      "http://trusecurity.emesau.com/dev/api/apply_leave";
-  static String _acceptShiftUrl =
-      "http://trusecurity.emesau.com/dev/api/confirm_roster";
-  static String _declineShiftUrl =
-      "http://trusecurity.emesau.com/dev/api/decline_roster";
-  static String _inboxPageUrl =
-      "http://trusecurity.emesau.com/dev/api/get_new_message_noti/";
-  static String _chatAdmins =
-      "http://trusecurity.emesau.com/dev/api/chat_admins/";
-  static String _chatMessages = "http://trusecurity.emesau.com/dev/api/chat/";
-  static String _sendMessage = "http://trusecurity.emesau.com/dev/api/send_msg";
+  static late String _companyURL;
 
   //
   //setters
@@ -57,6 +38,10 @@ class Constants {
 
   static setMobile(String value) {
     _mobile = value;
+  }
+
+  static setCompanyURL(String value) {
+    _companyURL = value;
   }
 
   //
@@ -85,53 +70,9 @@ class Constants {
     return _mobile;
   }
 
-  static get getShiftUrl {
-    return _shiftUrl;
+  static get getCompanyURL {
+    return _companyURL;
   }
-
-  static get getUpdateProfileUrl {
-    return _updateProfileUrl;
-  }
-
-  static get getLoggedINUserInformationUrl {
-    return _loggedINUserInformationUrl;
-  }
-
-  static get getAppliedLeavesUrl {
-    return _appliedLeavesUrl;
-  }
-
-  static get getApplyLeaveUrl {
-    return _applyLeaveUrl;
-  }
-
-  static get getAcceptShiftUrl {
-    return _acceptShiftUrl;
-  }
-
-  static get getDeclineShiftUrl {
-    return _declineShiftUrl;
-  }
-
-  static get getInboxPageUrl {
-    return _inboxPageUrl;
-  }
-
-  static get getChatAdmins {
-    return _chatAdmins;
-  }
-
-  static get getChatMessages {
-    return _chatMessages;
-  }
-
-  static get getSendMessage {
-    return _sendMessage;
-  }
-
-  // factory Constants() {
-  //   return _constants;
-  // }
 
   //
   //Day of Shifts
@@ -235,9 +176,7 @@ class Constants {
     );
   }
 
-  static Widget declineShiftPopupTopRow(
-    BuildContext context,String text
-  ) {
+  static Widget declineShiftPopupTopRow(BuildContext context, String text) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

@@ -136,7 +136,7 @@ ShiftData _shiftData = ShiftData();
                 Uri.parse(int == 0
                     ? _shiftData.getPreUrl
                     : int == 1
-                        ? Constants.getShiftUrl
+                        ? Constants.getCompanyURL + '/api/getshift'
                         : _shiftData.getNextUrl),
                 body: {
                   "staff_id": data['id'],

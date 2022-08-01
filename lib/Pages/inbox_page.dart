@@ -133,7 +133,7 @@ class _InboxPageState extends State<InboxPage> {
   Future<Map> getChatAdmins(BuildContext context) async {
     print("Afsasdfasdf");
     var response = await http.get(
-      Uri.parse(Constants.getChatAdmins + Constants.getStaffID),
+      Uri.parse(Constants.getCompanyURL + "/api/chat_admins/" + Constants.getStaffID),
     );
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -154,7 +154,7 @@ class _InboxPageState extends State<InboxPage> {
 
   Future<Map> getChatMessages() async {
     var response = await http.get(
-      Uri.parse(Constants.getChatMessages + Constants.getStaffID + "/" + "1"),
+      Uri.parse(Constants.getCompanyURL + "/api/chat/" + Constants.getStaffID + "/" + "1"),
     );
     print("this is the ahfasdf");
     // print(widget.adminId);
@@ -171,7 +171,7 @@ class _InboxPageState extends State<InboxPage> {
 class InboxPageDataProvider {
   static Future<String> getInboxData(BuildContext context) async {
     var response = await http.get(
-      Uri.parse(Constants.getInboxPageUrl + Constants.getStaffID),
+      Uri.parse(Constants.getCompanyURL + "/api/get_new_message_noti/" + Constants.getStaffID),
     );
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

@@ -71,7 +71,7 @@ class _SecondScreenState extends State<SecondScreen> {
       String decodeData = sharedPreferences.getString("data") ?? "";
       var data = jsonDecode(decodeData);
       final myFuture = http.post(
-        Uri.parse(Constants.getShiftUrl),
+        Uri.parse(Constants.getCompanyURL + '/api/getshift'),
         body: {
           "staff_id": data['id'],
         },

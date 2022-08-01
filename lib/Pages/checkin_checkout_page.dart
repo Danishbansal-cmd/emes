@@ -953,7 +953,7 @@ class CheckinCheckoutController extends GetxController {
     // ignore: prefer_typing_uninitialized_variables
     var jsonData;
     response = await http.post(Uri.parse(
-        'http://trusecurity.emesau.com/dev/api/get_venue/' + clientid));
+        Constants.getCompanyURL + '/api/get_venue/' + clientid));
 
     jsonData = jsonDecode(response.body);
     print(jsonData.runtimeType);
@@ -978,7 +978,7 @@ class CheckinCheckoutController extends GetxController {
     // ignore: prefer_typing_uninitialized_variables
     var jsonData;
     response = await http.post(Uri.parse(
-        'http://trusecurity.emesau.com/dev/api/get_venue/' + clientid));
+        Constants.getCompanyURL + '/api/get_venue/' + clientid));
 
     jsonData = jsonDecode(response.body);
     print(jsonData.runtimeType);
@@ -1014,7 +1014,7 @@ class CheckinCheckoutController extends GetxController {
     // ignore: prefer_typing_uninitialized_variables
     var jsonData;
     response = await http.post(
-        Uri.parse('http://trusecurity.emesau.com/dev/api/checkinoutTime'),
+        Uri.parse(Constants.getCompanyURL + '/api/checkinoutTime'),
         body: {
           'user_id': Constants.getStaffID,
           'user_allow_shift_id': userAllowShiftId,
@@ -1055,7 +1055,7 @@ class CheckinCheckoutController extends GetxController {
     http.Response response;
     // ignore: prefer_typing_uninitialized_variables
     response = await http.post(
-        Uri.parse('http://trusecurity.emesau.com/dev/api/checkin'),
+        Uri.parse(Constants.getCompanyURL + '/api/checkin'),
         body: {
           'user_id': Constants.getStaffID,
           'user_allow_shift_id': userAllowShiftId,
@@ -1073,7 +1073,7 @@ class CheckinCheckoutController extends GetxController {
     http.Response response;
     // ignore: prefer_typing_uninitialized_variables
     response = await http.post(
-        Uri.parse('http://trusecurity.emesau.com/dev/api/checkout'),
+        Uri.parse(Constants.getCompanyURL + '/api/checkout'),
         body: {
           'user_id': Constants.getStaffID,
           'user_allow_shift_id': userAllowShiftId,

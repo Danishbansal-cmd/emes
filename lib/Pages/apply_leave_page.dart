@@ -798,7 +798,7 @@ class AppliedLeavesProvider {
     // String decodeData = sharedPreferences.getString("data") ?? "";
     // var data = jsonDecode(decodeData);
     var response = await http.get(
-      Uri.parse(Constants.getAppliedLeavesUrl + "/" + Constants.getStaffID),
+      Uri.parse(Constants.getCompanyURL + "/api/get_applied_leave/" + Constants.getStaffID),
     );
     var jsonData = jsonDecode(response.body);
     Map data2 = jsonData['data'];
@@ -900,7 +900,7 @@ class ApplyLeavePageController extends GetxController {
   Future applyLeaveData(
       String value1, String value2, String value3, BuildContext context) async {
     var response = await http.post(
-      Uri.parse(Constants.getApplyLeaveUrl),
+      Uri.parse(Constants.getCompanyURL + "/api/apply_leave"),
       body: {
         "user_id": Constants.getStaffID,
         "on_date": value1,

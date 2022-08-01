@@ -22,7 +22,7 @@ class AcceptOrDeclineStatusController extends GetxController {
       for (var i = 0; i < value.length; i++) {
         print("i $i");
         print("am i here3");
-        await http.post(Uri.parse(Constants.getAcceptShiftUrl),
+        await http.post(Uri.parse(Constants.getCompanyURL + "/api/confirm_roster"),
             body: {"rosterInfo": value[i]}).then((value) {jsonData = jsonDecode(value.body);print("iamvalue ${jsonData}");});
         
         if (jsonData['status'] == 200) {
@@ -50,7 +50,7 @@ class AcceptOrDeclineStatusController extends GetxController {
     var jsonData;
     for (var i = 0; i < value.length; i++) {
       response = await http.post(
-        Uri.parse(Constants.getDeclineShiftUrl),
+        Uri.parse(Constants.getCompanyURL + "/api/decline_roster"),
         body: {
           "sval": jsonEncode(
             {

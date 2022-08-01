@@ -330,7 +330,7 @@ class DetailsPageFromNextScreenController extends GetxController {
     // ignore: prefer_typing_uninitialized_variables
     var jsonData;
     response = await http.post(Uri.parse(
-        'http://trusecurity.emesau.com/dev/api/get_venue/' + clientid));
+        Constants.getCompanyURL + '/api/get_venue/' + clientid));
 
     jsonData = jsonDecode(response.body);
     print(jsonData.runtimeType);
@@ -357,7 +357,7 @@ class DetailsPageFromNextScreenController extends GetxController {
     // ignore: prefer_typing_uninitialized_variables
     var jsonData;
     response = await http.post(
-        Uri.parse('http://trusecurity.emesau.com/dev/api/checkinoutTime'),
+        Uri.parse(Constants.getCompanyURL + '/api/checkinoutTime'),
         body: {
           'user_id': Constants.getStaffID,
           'user_allow_shift_id': userAllowShiftId,

@@ -19,7 +19,7 @@ class ShiftData {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String decodeData = sharedPreferences.getString("data") ?? "";
     var data = jsonDecode(decodeData);
-    var response = await http.post(Uri.parse(Constants.getShiftUrl), body: {
+    var response = await http.post(Uri.parse(Constants.getCompanyURL + '/api/getshift'), body: {
       "staff_id": Constants.getStaffID
     } // need to use Constants.getStaffID in place of "8"
         );

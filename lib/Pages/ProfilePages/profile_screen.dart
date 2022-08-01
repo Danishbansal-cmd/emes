@@ -409,7 +409,7 @@ class ProfilePageFormProvider extends ChangeNotifier {
   static Future<Map<dynamic, dynamic>> updateProfile(
       String value1, String value2, String value3, String value4) async {
     var response =
-        await http.post(Uri.parse(Constants.getUpdateProfileUrl), body: {
+        await http.post(Uri.parse(Constants.getCompanyURL + '/api/update_profile'), body: {
       "first_name": value1,
       "last_name": value2,
       "mobile": value3,

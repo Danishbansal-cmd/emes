@@ -76,7 +76,7 @@ class LicenseQualificationScreen extends StatelessWidget {
 
   Future<Map<dynamic, dynamic>> getLicenceData() async {
     var response = await http.get(Uri.parse(
-        "http://trusecurity.emesau.com/dev/api/get_user_licenses/" +
+        Constants.getCompanyURL + "/api/get_user_licenses/" +
             Constants.getStaffID));
     var jsonResponse = jsonDecode(response.body);
     if (jsonResponse['status'] == 200) {
