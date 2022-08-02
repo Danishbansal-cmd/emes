@@ -366,51 +366,81 @@ class LoginFormController extends GetxController {
     }
   }
 
+  //
   //some functions
+  Future<String> getDataAboutCompanyURL(
+      String paramCompanyURL, BuildContext context) async {
+    var response = await http.post(
+      Uri.parse('http://emesau.com/api/get_info'),
+      body: {"companyID": paramCompanyURL},
+    );
+    var jsonData = jsonDecode(response.body);
+    var companyURL = jsonData['companyURL'];
+    if (companyURL != false) {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      sharedPreferences.setString('sharedDataCompanyURL', companyURL);
+      Constants.setCompanyURL(companyURL);
+      return companyURL;
+    }
+    return "false";
+  }
+
   getData(
       String value1, String value2, String value3, BuildContext context) async {
-    var response = await http.post(
-      Uri.parse('http://trusecurity.emesau.com/dev/api/login'),
-      body: {
-        "email": value1,
-        "password": value2,
-        "companyID": value3,
-      },
-    );
-
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var jsonData = jsonDecode(response.body);
-    String sharedData = jsonEncode(jsonData['data']);
-    print("jsonData $jsonData");
-    if (jsonData['status'] == 200) {
-      print("Signed In Successfully.");
-      Constants.setFirstName(jsonData['data']['first_name']);
-      Constants.setLastName(jsonData['data']['last_name']);
-      Constants.setEmail(jsonData['data']['email']);
-      Constants.setStaffID(jsonData['data']['id']);
-      Constants.setData(jsonData['data']);
-      sharedPreferences.setString("token", jsonData['data']['token']);
-      sharedPreferences.setString("staffID", jsonData['data']['id']);
-      sharedPreferences.setString("data", sharedData);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute<void>(
-          builder: (context) => HomePage(),
-        ),
-      );
-      GetLoggedInUserInformation.getData();
-    }
-    if (jsonData['status'] == 401) {
-      print("Wrong Username or Password You entered.");
+    var companyURL = await getDataAboutCompanyURL(value3, context);
+    if (companyURL == "false") {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Wrong Username or Password You entered."),
+          content: Text("Wrong companyID"),
         ),
       );
+    } else {
+      var response = await http.post(
+        Uri.parse(companyURL + '/api/login'),
+        body: {
+          "email": value1,
+          "password": value2,
+          "companyID": value3,
+        },
+      );
+
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var jsonData = jsonDecode(response.body);
+      String sharedData = jsonEncode(jsonData['data']);
+      print("jsonData $jsonData");
+      if (jsonData['status'] == 200) {
+        print("Signed In Successfully.");
+        Constants.setFirstName(jsonData['data']['first_name']);
+        Constants.setLastName(jsonData['data']['last_name']);
+        Constants.setEmail(jsonData['data']['email']);
+        Constants.setStaffID(jsonData['data']['id']);
+        Constants.setData(jsonData['data']);
+        sharedPreferences.setString("token", jsonData['data']['token']);
+        sharedPreferences.setString("staffID", jsonData['data']['id']);
+        sharedPreferences.setString("sharedDataCompanyID", value3);
+        sharedPreferences.setString("data", sharedData);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute<void>(
+            builder: (context) => HomePage(),
+          ),
+        );
+        GetLoggedInUserInformation.getData();
+      }
+      if (jsonData['status'] == 401) {
+        print("Wrong Username or Password You entered.");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Wrong Username or Password You entered."),
+          ),
+        );
+      }
+      // else{
+      //   print("Something Went Wrong.");
+      // }
     }
-    // else{
-    //   print("Something Went Wrong.");
-    // }
   }
 
   validateApplyLeave(

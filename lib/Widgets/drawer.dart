@@ -25,7 +25,7 @@ class _MyDrawerState extends State<MyDrawer> {
   String lastName = "";
   String email = "";
 
-  ShiftData _shiftData = ShiftData();
+  final ShiftData _shiftData = ShiftData();
 
   // @override
   // void initState() async{
@@ -41,8 +41,6 @@ class _MyDrawerState extends State<MyDrawer> {
 
   //app level initializing mainPage controller
   final controller = Get.put(MainPageController());
-
-  bool _isIOS = Platform.isIOS;
 
   @override
   Widget build(BuildContext context) {
@@ -216,30 +214,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return (true) ? CupertinoAlertDialog(
-                        title: const Text("Logout"),
-                        content:
-                            const Text("Are you sure want to logout of this app?"),
-                        actions: [
-                          CupertinoDialogAction(
-                            child: const Text("ok"),
-                            onPressed: () async {
-                              SharedPreferences sharedPreferences =
-                                  await SharedPreferences.getInstance();
-                              sharedPreferences.clear();
-                              sharedPreferences.commit();
-                              Navigator.pushReplacementNamed(
-                                  context, MyRoutes.loginPageRoute);
-                            },
-                          ),
-                          CupertinoDialogAction(
-                            child: const Text("cancel"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      ) : Dialog(
+                    return Dialog(
                       backgroundColor: Colors.transparent,
                       child: Stack(
                         children: [

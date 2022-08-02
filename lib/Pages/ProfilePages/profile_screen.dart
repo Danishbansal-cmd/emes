@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:io' show Platform;
 import 'package:emes/Utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,12 +52,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   TextEditingController firstNameController = TextEditingController();
-
   TextEditingController lastNameController = TextEditingController();
-
   TextEditingController emailController = TextEditingController();
-
   TextEditingController mobileController = TextEditingController();
+  bool _isIos = Platform.isIOS;
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Consumer<ProfilePageFormProvider>(
                     builder: (context, profilePageFormProvider, _) {
-                      return (true)
+                      return (_isIos)
                           ? SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: CupertinoButton(
@@ -383,7 +381,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const SizedBox(
           height: 5,
         ),
-        (true)
+        (_isIos)
             ? CupertinoTextField(
                 // prefix: Icon(CupertinoIcons.person),
                 enableInteractiveSelection: true,
@@ -546,7 +544,7 @@ class ProfilePageFormProvider extends ChangeNotifier {
   static Future<Map<dynamic, dynamic>> updateProfile(
       String value1, String value2, String value3, String value4) async {
     var response =
-        await http.post(Uri.parse(Constants.getUpdateProfileUrl), body: {
+        await http.post(Uri.parse(Constants.getCompanyURL + '/api/update_profile'), body: {
       "first_name": value1,
       "last_name": value2,
       "mobile": value3,

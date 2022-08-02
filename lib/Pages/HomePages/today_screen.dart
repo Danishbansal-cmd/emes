@@ -74,7 +74,7 @@ class _SecondScreenState extends State<SecondScreen> {
       String decodeData = sharedPreferences.getString("data") ?? "";
       var data = jsonDecode(decodeData);
       final myFuture = http.post(
-        Uri.parse(Constants.getShiftUrl),
+        Uri.parse(Constants.getCompanyURL + '/api/getshift'),
         body: {
           "staff_id": data['id'],
         },
@@ -511,12 +511,12 @@ class _SecondScreenState extends State<SecondScreen> {
                                                           //             'is_confirm'] ==
                                                           //         "1" &&
 
-                                                          // if(shiftData[keyList[
-                                                          //             index]][
-                                                          //         insideKeyList
-                                                          //                 .toList()[
-                                                          //             index2]]['confirmed_by_staff'] ==
-                                                          //     "1") {
+                                                          if(shiftData[keyList[
+                                                                      index]][
+                                                                  insideKeyList
+                                                                          .toList()[
+                                                                      index2]]['confirmed_by_staff'] ==
+                                                              "1" ) {
                                                           // Get.to(
                                                           //     () =>
                                                           //         CheckinCheckoutPage(),
@@ -614,47 +614,47 @@ class _SecondScreenState extends State<SecondScreen> {
                                                             ),
                                                           );
 
-                                                          // }
+                                                          }
 
-                                                          // else if (shiftData[keyList[
-                                                          //                 index]][insideKeyList
-                                                          //                     .toList()[
-                                                          //                 index2]]
-                                                          //             [
-                                                          //             'is_confirm'] !=
-                                                          //         "1" &&
-                                                          //     shiftData[keyList[
-                                                          //                 index]][
-                                                          //             insideKeyList
-                                                          //                     .toList()[
-                                                          //                 index2]]['confirmed_by_staff'] ==
-                                                          //         "1") {
-                                                          //   Get.snackbar(
-                                                          //       'Message',
-                                                          //       'Shift is not confirmed from the backend.',
-                                                          //       duration:
-                                                          //           const Duration(
-                                                          //               milliseconds:
-                                                          //                   1200));
-                                                          // }
-                                                          // else if (shiftData[
-                                                          //                 keyList[
-                                                          //                     index]]
-                                                          //             [
-                                                          //             insideKeyList
-                                                          //                     .toList()[
-                                                          //                 index2]]
-                                                          //         [
-                                                          //         'confirmed_by_staff'] !=
-                                                          //     "1") {
-                                                          //   Get.snackbar(
-                                                          //       'Message',
-                                                          //       'You need to confirm the shift first.',
-                                                          //       duration:
-                                                          //           const Duration(
-                                                          //               milliseconds:
-                                                          //                   1200));
-                                                          // }
+                                                          else if (shiftData[keyList[
+                                                                          index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]
+                                                                      [
+                                                                      'is_confirm'] !=
+                                                                  "1" &&
+                                                              shiftData[keyList[
+                                                                          index]][
+                                                                      insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['confirmed_by_staff'] ==
+                                                                  "1") {
+                                                            Get.snackbar(
+                                                                'Message',
+                                                                'Shift is not confirmed from the backend.',
+                                                                duration:
+                                                                    const Duration(
+                                                                        milliseconds:
+                                                                            1200));
+                                                          }
+                                                          else if (shiftData[
+                                                                          keyList[
+                                                                              index]]
+                                                                      [
+                                                                      insideKeyList
+                                                                              .toList()[
+                                                                          index2]]
+                                                                  [
+                                                                  'confirmed_by_staff'] !=
+                                                              "1") {
+                                                            Get.snackbar(
+                                                                'Message',
+                                                                'You need to confirm the shift first.',
+                                                                duration:
+                                                                    const Duration(
+                                                                        milliseconds:
+                                                                            1200));
+                                                          }
                                                         },
                                                       );
                                                     },

@@ -40,45 +40,49 @@ class _MorePageState extends State<MorePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Log out"),
-                      CupertinoButton(
-                        color: CupertinoColors.activeGreen,
-                        child: Text(">"),
-                        onPressed: () {
-                          showCupertinoDialog(
-                            context: context,
-                            builder: (context) {
-                              return CupertinoAlertDialog(
-                                title: const Text("Log Out"),
-                                content: Text(
-                                    "Are you sure you want to logout of EMES?"),
-                                actions: [
-                                  CupertinoDialogAction(
-                                      child: const Text("Ok"),
-                                      onPressed: () async {
-                                        SharedPreferences sharedPreferences =
-                                            await SharedPreferences
-                                                .getInstance();
-                                        sharedPreferences.clear();
-                                        sharedPreferences.commit();
-                                        Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                              builder: (context) {
-                                            return LoginPage();
-                                          }),
-                                        );
-                                      }),
-                                  CupertinoDialogAction(
-                                    child: const Text("cancel"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
+                      SizedBox(
+                        child: CupertinoButton(
+                          
+                          color: CupertinoColors.activeGreen,
+                          child: Icon(CupertinoIcons.forward),
+                          onPressed: () {
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  title: const Text("Log Out"),
+                                  content: Text(
+                                      "Are you sure you want to logout of EMES?"),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      child: const Text("Cancel"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    CupertinoDialogAction(
+                                        child: const Text("Logout",style: TextStyle(color: CupertinoColors.destructiveRed),),
+                                        onPressed: () async {
+                                          SharedPreferences sharedPreferences =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          sharedPreferences.clear();
+                                          sharedPreferences.commit();
+                                          Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                                builder: (context) {
+                                              return LoginPage();
+                                            }),
+                                          );
+                                        }),
+                                    
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),

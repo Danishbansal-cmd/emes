@@ -4,6 +4,7 @@ import 'package:emes/Widgets/drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 
 enum Sky { ProfileScreen, LicenseQualificationScreen }
 
@@ -21,14 +22,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Sky _selectedSegment = Sky.ProfileScreen;
+  bool _isIos = Platform.isIOS;
 
   @override
   Widget build(BuildContext context) {
     final _colorScheme = Theme.of(context).colorScheme;
-    return (true)
+    return (_isIos)
         ? CupertinoPageScaffold(
-            // backgroundColor: skyColors[_selectedSegment],
-            navigationBar: CupertinoNavigationBar(
+            navigationBar: const CupertinoNavigationBar(
               // This Cupertino segmented control has the enum "Sky" as the type.
               middle: Text(
                 'My Profile',
@@ -79,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       // height: MediaQuery.of(context).size.height,
                       child: _selectedSegment == Sky.ProfileScreen
                           ? ProfileScreen()
-                          : LicenseQualificationScreen(),
+                          : const LicenseQualificationScreen(),
                     )
                   ],
                 ),
@@ -89,9 +90,11 @@ class _ProfilePageState extends State<ProfilePage> {
         : DefaultTabController(
             length: 2,
             child: Scaffold(
+              drawer: MyDrawer(),
               appBar: AppBar(
                 // backgroundColor: (true) ? CupertinoColors.systemGrey2 : null,
                 title: const Text("My Profile"),
+                
                 bottom: TabBar(
                   labelColor: _colorScheme.secondary,
                   dragStartBehavior: DragStartBehavior.down,

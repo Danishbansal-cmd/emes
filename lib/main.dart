@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'dart:io' show Platform;
 import 'package:emes/Pages/HomePages/previous_screen.dart';
 import 'package:emes/Pages/apply_leave_page.dart';
 import 'package:emes/Pages/form_testing_page.dart';
@@ -44,11 +44,11 @@ void backgroundFetchHeadlessTask(HeadlessTask task) async {
   }
   final controller = Get.put(MainPageController());
   String decodeData = sharedPreferences.getString("data") ?? "";
+  String companyURL = sharedPreferences.getString("sharedDataCompanyURL") ?? "";
   var data = jsonDecode(decodeData);
   print('[BackgroundFetch] Headless event received.');
-  var response = await http.get(Uri.parse(
-      "http://trusecurity.emesau.com/dev/api/get_new_message_noti/" +
-          data['id']));
+  var response = await http
+      .get(Uri.parse(companyURL + "/api/get_new_message_noti/" + data['id']));
   var jsonResponse = jsonDecode(response.body);
   if (jsonResponse['data'] > 0) {
     NotificationApi.init();
@@ -85,6 +85,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Timer? mytimer;
+  bool _isIos = Platform.isIOS;
 
   //app level initializing controller
   final controller = Get.put(MainPageController());
@@ -94,11 +95,13 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     NotificationApi.init();
     // initPlatformState();
+    String companyURL =
+        sharedPreferences.getString("sharedDataCompanyURL") ?? "";
     mytimer = Timer.periodic(Duration(minutes: 1), (timer) async {
-      var response = await http.get(Uri.parse(
-          "http://trusecurity.emesau.com/dev/api/get_new_message_noti/8" 
-          // +
-          //     Constants.getStaffID
+      var response =
+          await http.get(Uri.parse(companyURL + "/api/get_new_message_noti/8"
+              // +
+              //     Constants.getStaffID
               ));
       var jsonResponse = jsonDecode(response.body);
       if (jsonResponse['data'] > 0) {
@@ -177,10 +180,13 @@ class _MyAppState extends State<MyApp> {
 
   String homePageFunction() {
     String decodeData = sharedPreferences.getString("data") ?? "";
+    String companyURL =
+        sharedPreferences.getString("sharedDataCompanyURL") ?? "";
     var data = jsonDecode(decodeData);
     // Constants.setFirstName(data['first_name']);
     // Constants.setLastName(data['last_name']);
     // Constants.setEmail(data['email']);
+    Constants.setCompanyURL(companyURL);
     Constants.setStaffID(data['id']);
     GetLoggedInUserInformation.getData();
     return '/homePage';

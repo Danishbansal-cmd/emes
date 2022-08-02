@@ -3,6 +3,7 @@ import 'package:emes/Pages/details_page_from_next_screen.dart';
 import 'package:emes/Providers/accept_decline_provider.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/shift_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -467,75 +468,121 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                 //             'is_confirm'] ==
                                                                 //         "1" &&
 
-                                                                // if(shiftData[keyList[
-                                                                //             index]][
-                                                                //         insideKeyList
-                                                                //                 .toList()[
-                                                                //             index2]]['confirmed_by_staff'] ==
-                                                                //     "1") {
-                                                                Get.to(
-                                                                    () =>
-                                                                        DetailsPageFromNextScreen(),
-                                                                    arguments: [
-                                                                      {
-                                                                        "shift_id":
-                                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}",
-                                                                        "client_id":
-                                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_id']}",
-                                                                        "work_date":
-                                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}",
-                                                                        "time_on":
-                                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}",
-                                                                        "time_off":
-                                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}",
-                                                                        "task_id":
-                                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['task_id']}",
-                                                                        "client_name":
-                                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
-                                                                        "activity_name":
-                                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['activity_name']}",
-                                                                        "day_of_shift":
-                                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift']}"
-                                                                      }
-                                                                    ]);
-                                                                // }
-                                                                // else if (shiftData[keyList[
-                                                                //                 index]][insideKeyList
-                                                                //                     .toList()[
-                                                                //                 index2]]
-                                                                //             [
-                                                                //             'is_confirm'] !=
-                                                                //         "1" &&
-                                                                //     shiftData[keyList[
-                                                                //                 index]][
-                                                                //             insideKeyList
-                                                                //                     .toList()[
-                                                                //                 index2]]['confirmed_by_staff'] ==
-                                                                //         "1") {
-                                                                //   Get.snackbar(
-                                                                //       'Message',
-                                                                //       'Shift is not confirmed from the backend.',
-                                                                //       duration:
-                                                                //           const Duration(
-                                                                //               milliseconds:
-                                                                //                   1200));
-                                                                // }
-                                                                // else if (shiftData[keyList[
-                                                                //                 index]][
-                                                                //             insideKeyList
-                                                                //                     .toList()[
-                                                                //                 index2]]
-                                                                //         [
-                                                                //         'confirmed_by_staff'] !=
-                                                                //     "1") {
-                                                                //   Get.snackbar(
-                                                                //       'Message',
-                                                                //       'You need to confirm the shift first.',
-                                                                //       duration:
-                                                                //           const Duration(
-                                                                //               milliseconds:
-                                                                //                   1200));
-                                                                // }
+                                                                if(shiftData[keyList[
+                                                                            index]][
+                                                                        insideKeyList
+                                                                                .toList()[
+                                                                            index2]]['confirmed_by_staff'] ==
+                                                                    "1" ) {
+                                                                Navigator.push(
+                                                            context,
+                                                            CupertinoPageRoute(
+                                                              builder: (context) =>
+                                                                  CheckinCheckoutPage(
+                                                                shiftId: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['shift_id'],
+                                                                clientId: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['client_id'],
+                                                                workDate: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['work_date'],
+                                                                timeOn: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['time_on'],
+                                                                timeOff: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['time_off'],
+                                                                taskId: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['task_id'],
+                                                                clientName: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['client_name'],
+                                                                activityName: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['activity_name'],
+                                                                dayOfShift: shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['day_of_shift'],
+                                                              ),
+                                                            ),
+                                                          );
+                                                                }
+                                                                else if (shiftData[keyList[
+                                                                                index]][insideKeyList
+                                                                                    .toList()[
+                                                                                index2]]
+                                                                            [
+                                                                            'is_confirm'] !=
+                                                                        "1" &&
+                                                                    shiftData[keyList[
+                                                                                index]][
+                                                                            insideKeyList
+                                                                                    .toList()[
+                                                                                index2]]['confirmed_by_staff'] ==
+                                                                        "1") {
+                                                                  Get.snackbar(
+                                                                      'Message',
+                                                                      'Shift is not confirmed from the backend.',
+                                                                      duration:
+                                                                          const Duration(
+                                                                              milliseconds:
+                                                                                  1200));
+                                                                }
+                                                                else if (shiftData[keyList[
+                                                                                index]][
+                                                                            insideKeyList
+                                                                                    .toList()[
+                                                                                index2]]
+                                                                        [
+                                                                        'confirmed_by_staff'] !=
+                                                                    "1") {
+                                                                  Get.snackbar(
+                                                                      'Message',
+                                                                      'You need to confirm the shift first.',
+                                                                      duration:
+                                                                          const Duration(
+                                                                              milliseconds:
+                                                                                  1200));
+                                                                }
                                                               },
                                                             );
                                                           },

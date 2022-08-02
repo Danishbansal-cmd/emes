@@ -19,6 +19,7 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io' show Platform;
 
 enum Sky { firstScreen, secondScreen, thirdScreen }
 
@@ -37,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   final firstScreenController = Get.put(FirstScreenController());
   //initializing thirdscreen getx controller
   final nextScreenController = Get.put(NextScreenController());
+  bool _isIos = Platform.isIOS;
 
   @override
   void dispose() {
@@ -66,7 +68,7 @@ class _HomePageState extends State<HomePage> {
 
     final _colorScheme = Theme.of(context).colorScheme;
 
-    return (true)
+    return (_isIos)
         ? CupertinoTabScaffold(
             tabBar: CupertinoTabBar(
               activeColor: CupertinoColors.activeBlue,
@@ -109,73 +111,76 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: Material(
                       child: SafeArea(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 50,
-                              child: CupertinoSlidingSegmentedControl<Sky>(
-                                backgroundColor: CupertinoColors.systemGrey5,
-                                thumbColor: CupertinoColors.white,
-                                // This represents the currently selected segmented control.
-                                groupValue: _selectedSegment,
-                                // Callback that sets the selected segmented control.
-                                onValueChanged: (Sky? value) {
-                                  print("this is the value $value");
-                                  if (value != null) {
-                                    if (value == Sky.firstScreen) {
-                                      firstScreenController.setValueInt();
-                                      setState(() {
-                                        _selectedSegment = value;
-                                      });
-                                    } else if (value == Sky.thirdScreen) {
-                                      nextScreenController.setValueInt();
-                                      setState(() {
-                                        _selectedSegment = value;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        _selectedSegment = value;
-                                      });
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 50,
+                                child: CupertinoSlidingSegmentedControl<Sky>(
+                                  backgroundColor: CupertinoColors.systemGrey5,
+                                  thumbColor: CupertinoColors.white,
+                                  // This represents the currently selected segmented control.
+                                  groupValue: _selectedSegment,
+                                  // Callback that sets the selected segmented control.
+                                  onValueChanged: (Sky? value) {
+                                    print("this is the value $value");
+                                    if (value != null) {
+                                      if (value == Sky.firstScreen) {
+                                        firstScreenController.setValueInt();
+                                        setState(() {
+                                          _selectedSegment = value;
+                                        });
+                                      } else if (value == Sky.thirdScreen) {
+                                        nextScreenController.setValueInt();
+                                        setState(() {
+                                          _selectedSegment = value;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          _selectedSegment = value;
+                                        });
+                                      }
                                     }
-                                  }
-                                },
-                                children: const <Sky, Widget>{
-                                  Sky.firstScreen: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 8),
-                                    child: Text(
-                                      'PREVIOUS',
-                                      style: TextStyle(fontSize: 14),
+                                  },
+                                  children: const <Sky, Widget>{
+                                    Sky.firstScreen: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8),
+                                      child: Text(
+                                        'PREVIOUS',
+                                        style: TextStyle(fontSize: 14),
+                                      ),
                                     ),
-                                  ),
-                                  Sky.secondScreen: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 8),
-                                    child: Text(
-                                      'TODAY',
-                                      style: TextStyle(fontSize: 14),
+                                    Sky.secondScreen: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8),
+                                      child: Text(
+                                        'TODAY',
+                                        style: TextStyle(fontSize: 14),
+                                      ),
                                     ),
-                                  ),
-                                  Sky.thirdScreen: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 8),
-                                    child: Text(
-                                      'NEXT',
-                                      style: TextStyle(fontSize: 14),
+                                    Sky.thirdScreen: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8),
+                                      child: Text(
+                                        'NEXT',
+                                        style: TextStyle(fontSize: 14),
+                                      ),
                                     ),
-                                  ),
-                                },
+                                  },
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: _selectedSegment == Sky.firstScreen
-                                  ? const FirstScreen()
-                                  : _selectedSegment == Sky.secondScreen
-                                      ? SecondScreen()
-                                      : const ThirdScreen(),
-                            )
-                          ],
+                              Expanded(
+                                child: _selectedSegment == Sky.firstScreen
+                                    ? const FirstScreen()
+                                    : _selectedSegment == Sky.secondScreen
+                                        ? SecondScreen()
+                                        : const ThirdScreen(),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -292,7 +297,7 @@ class _HomePageState extends State<HomePage> {
                       Uri.parse(int == 0
                           ? _shiftData.getPreUrl
                           : int == 1
-                              ? Constants.getShiftUrl
+                              ? Constants.getCompanyURL + '/api/getshift'
                               : _shiftData.getNextUrl),
                       body: {
                         "staff_id": data['id'],

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:emes/Pages/apply_leave_ios_page.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Widgets/drawer.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io' show Platform;
 
 class ApplyLeavePage extends StatefulWidget {
   ApplyLeavePage({Key? key}) : super(key: key);
@@ -20,6 +22,8 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
   TextEditingController toDateController = TextEditingController();
   TextEditingController reasonController = TextEditingController();
 
+  bool _isIos = Platform.isIOS;
+
   @override
   Widget build(BuildContext context) {
     //intializing openleavebar getx controller
@@ -30,7 +34,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
     print(
         "How many times does i run \n ///////////////////\n/////////////////\n ///////////////////\n ///////////////////");
 
-    return (true)
+    return (_isIos)
         ? Material(
             child: CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
@@ -42,110 +46,118 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                 ),
                 trailing: IconButton(
                   onPressed: () {
-                    fromDateController.text = "";
-                    toDateController.text = "";
-                    reasonController.text = "";
-                    showCupertinoModalPopup<void>(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CupertinoAlertDialog(
-                            title: Text("Apply Leave"),
-                            content: Column(
-                              children: [
-                                CupertinoTextField(
-                                  // prefix: Icon(CupertinoIcons.person),
-                                  enableInteractiveSelection: true,
-                                  // padding: EdgeInsets.only(left: 16.0,),
-                                  controller: fromDateController,
-                                  keyboardType: TextInputType.datetime,
-                                  textInputAction: TextInputAction.next,
-                                  placeholder: "Enter From Date",
-                                  suffix: Material(child: applyLeaveFormButtonsRow(controller: fromDateController)),
-                                  decoration: BoxDecoration(
-                                    color: CupertinoColors
-                                        .extraLightBackgroundGray,
-                                    border: Border.all(
-                                      color:
-                                          CupertinoColors.lightBackgroundGray,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  cursorColor: CupertinoColors.activeOrange,
-                                ),
-                                CupertinoTextField(
-                                  // prefix: Icon(CupertinoIcons.person),
-                                  enableInteractiveSelection: true,
-                                  // padding: EdgeInsets.only(left: 16.0,),
-                                  controller: fromDateController,
-                                  keyboardType: TextInputType.datetime,
-                                  textInputAction: TextInputAction.next,
-                                  placeholder: "Enter To Date",
-                                  suffix: CupertinoButton(
-                                    padding: EdgeInsets.zero,
-                                    onPressed: () {
-                                      fromDateController.clear();
-                                    },
-                                    child: const Icon(
-                                      CupertinoIcons.clear_circled_solid,
-                                      color: CupertinoColors.activeBlue,
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: CupertinoColors
-                                        .extraLightBackgroundGray,
-                                    border: Border.all(
-                                      color:
-                                          CupertinoColors.lightBackgroundGray,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  cursorColor: CupertinoColors.activeOrange,
-                                ),
-                                CupertinoTextField(
-                                  // prefix: Icon(CupertinoIcons.person),
-                                  enableInteractiveSelection: true,
-                                  // padding: EdgeInsets.only(left: 16.0,),
-                                  controller: fromDateController,
-                                  keyboardType: TextInputType.datetime,
-                                  textInputAction: TextInputAction.next,
-                                  placeholder: "Enter Reason",
-                                  suffix: CupertinoButton(
-                                    padding: EdgeInsets.zero,
-                                    onPressed: () {
-                                      fromDateController.clear();
-                                    },
-                                    child: const Icon(
-                                      CupertinoIcons.clear_circled_solid,
-                                      color: CupertinoColors.activeBlue,
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: CupertinoColors
-                                        .extraLightBackgroundGray,
-                                    border: Border.all(
-                                      color:
-                                          CupertinoColors.lightBackgroundGray,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  cursorColor: CupertinoColors.activeOrange,
-                                ),
-                              ],
-                            ),
-                            actions: [
-                              CupertinoDialogAction(
-                                child: const Text("cancel"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        });
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) {
+                          return ApplyLeaveIosPage();
+                        },
+                      ),
+                    );
+                    // fromDateController.text = "";
+                    // toDateController.text = "";
+                    // reasonController.text = "";
+                    // showCupertinoModalPopup<void>(
+                    //     barrierDismissible: false,
+                    //     context: context,
+                    //     builder: (BuildContext context) {
+                    //       return CupertinoAlertDialog(
+                    //         title: Text("Apply Leave"),
+                    //         content: Column(
+                    //           children: [
+                    //             CupertinoTextField(
+                    //               // prefix: Icon(CupertinoIcons.person),
+                    //               enableInteractiveSelection: true,
+                    //               // padding: EdgeInsets.only(left: 16.0,),
+                    //               controller: fromDateController,
+                    //               keyboardType: TextInputType.datetime,
+                    //               textInputAction: TextInputAction.next,
+                    //               placeholder: "Enter From Date",
+                    //               suffix: Material(child: applyLeaveFormButtonsRow(controller: fromDateController)),
+                    //               decoration: BoxDecoration(
+                    //                 color: CupertinoColors
+                    //                     .extraLightBackgroundGray,
+                    //                 border: Border.all(
+                    //                   color:
+                    //                       CupertinoColors.lightBackgroundGray,
+                    //                   width: 1,
+                    //                 ),
+                    //                 borderRadius: BorderRadius.circular(10.0),
+                    //               ),
+                    //               cursorColor: CupertinoColors.activeOrange,
+                    //             ),
+                    //             CupertinoTextField(
+                    //               // prefix: Icon(CupertinoIcons.person),
+                    //               enableInteractiveSelection: true,
+                    //               // padding: EdgeInsets.only(left: 16.0,),
+                    //               controller: fromDateController,
+                    //               keyboardType: TextInputType.datetime,
+                    //               textInputAction: TextInputAction.next,
+                    //               placeholder: "Enter To Date",
+                    //               suffix: CupertinoButton(
+                    //                 padding: EdgeInsets.zero,
+                    //                 onPressed: () {
+                    //                   fromDateController.clear();
+                    //                 },
+                    //                 child: const Icon(
+                    //                   CupertinoIcons.clear_circled_solid,
+                    //                   color: CupertinoColors.activeBlue,
+                    //                 ),
+                    //               ),
+                    //               decoration: BoxDecoration(
+                    //                 color: CupertinoColors
+                    //                     .extraLightBackgroundGray,
+                    //                 border: Border.all(
+                    //                   color:
+                    //                       CupertinoColors.lightBackgroundGray,
+                    //                   width: 1,
+                    //                 ),
+                    //                 borderRadius: BorderRadius.circular(10.0),
+                    //               ),
+                    //               cursorColor: CupertinoColors.activeOrange,
+                    //             ),
+                    //             CupertinoTextField(
+                    //               // prefix: Icon(CupertinoIcons.person),
+                    //               enableInteractiveSelection: true,
+                    //               // padding: EdgeInsets.only(left: 16.0,),
+                    //               controller: fromDateController,
+                    //               keyboardType: TextInputType.datetime,
+                    //               textInputAction: TextInputAction.next,
+                    //               placeholder: "Enter Reason",
+                    //               suffix: CupertinoButton(
+                    //                 padding: EdgeInsets.zero,
+                    //                 onPressed: () {
+                    //                   fromDateController.clear();
+                    //                 },
+                    //                 child: const Icon(
+                    //                   CupertinoIcons.clear_circled_solid,
+                    //                   color: CupertinoColors.activeBlue,
+                    //                 ),
+                    //               ),
+                    //               decoration: BoxDecoration(
+                    //                 color: CupertinoColors
+                    //                     .extraLightBackgroundGray,
+                    //                 border: Border.all(
+                    //                   color:
+                    //                       CupertinoColors.lightBackgroundGray,
+                    //                   width: 1,
+                    //                 ),
+                    //                 borderRadius: BorderRadius.circular(10.0),
+                    //               ),
+                    //               cursorColor: CupertinoColors.activeOrange,
+                    //             ),
+                    //           ],
+                    //         ),
+                    //         actions: [
+                    //           CupertinoDialogAction(
+                    //             child: const Text("Cancel"),
+                    //             onPressed: () {
+                    //               Navigator.of(context).pop();
+                    //             },
+                    //           ),
+                    //         ],
+                    //       );
+                    //     });
                   },
                   icon: const Icon(CupertinoIcons.add),
                 ),
@@ -1281,7 +1293,9 @@ class AppliedLeavesProvider {
     // String decodeData = sharedPreferences.getString("data") ?? "";
     // var data = jsonDecode(decodeData);
     var response = await http.get(
-      Uri.parse(Constants.getAppliedLeavesUrl + "/" + Constants.getStaffID),
+      Uri.parse(Constants.getCompanyURL +
+          "/api/get_applied_leave/" +
+          Constants.getStaffID),
     );
     var jsonData = jsonDecode(response.body);
     Map data2 = jsonData['data'];
@@ -1383,7 +1397,7 @@ class ApplyLeavePageController extends GetxController {
   Future applyLeaveData(
       String value1, String value2, String value3, BuildContext context) async {
     var response = await http.post(
-      Uri.parse(Constants.getApplyLeaveUrl),
+      Uri.parse(Constants.getCompanyURL + "/api/apply_leave"),
       body: {
         "user_id": Constants.getStaffID,
         "on_date": value1,
