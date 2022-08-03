@@ -1,15 +1,19 @@
 import 'dart:convert';
+import 'package:emes/Utils/configure_platform.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:emes/Utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class LicenseQualificationScreen extends StatelessWidget {
-  const LicenseQualificationScreen({Key? key}) : super(key: key);
+  LicenseQualificationScreen({Key? key}) : super(key: key);
+  final ConfigurePlatform _configurePlatform = ConfigurePlatform();
 
   @override
   Widget build(BuildContext context) {
     final _textTheme = Theme.of(context).textTheme;
     final _colorScheme = Theme.of(context).colorScheme;
+    bool _isIos = _configurePlatform.getConfigurePlatformBool;
     return Container(
       child: FutureBuilder(
           future: getLicenceData(),
@@ -65,9 +69,12 @@ class LicenseQualificationScreen extends StatelessWidget {
             // Displaying LoadingSpinner to indicate waiting state
             //on fetching data from the server or link or api
             return Center(
-              child: CircularProgressIndicator(
-                color: _colorScheme.onSecondary,
-              ),
+              child: (_isIos)
+                    ? const CupertinoActivityIndicator(
+                        radius: 20.0, color: Colors.black)
+                    : const CircularProgressIndicator(
+                        color: Colors.blue,
+                      ),
             );
           }),
     );

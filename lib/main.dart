@@ -12,6 +12,7 @@ import 'package:emes/Pages/signup_page.dart';
 import 'package:emes/Providers/accept_decline_provider.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Themes/themes.dart';
+import 'package:emes/Utils/configure_platform.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/get_logged_in_information.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Timer? mytimer;
-  bool _isIos = Platform.isIOS;
+  ConfigurePlatform _configurePlatform = ConfigurePlatform();
 
   //app level initializing controller
   final controller = Get.put(MainPageController());
@@ -122,6 +123,8 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    //to set globally the value of variable
+    _configurePlatform.setConfigurePlatformBool(true);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);

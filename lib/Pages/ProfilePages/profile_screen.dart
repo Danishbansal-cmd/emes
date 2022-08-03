@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io' show Platform;
+import 'package:emes/Utils/configure_platform.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
-  bool _isIos = Platform.isIOS;
+  ConfigurePlatform _configurePlatform = ConfigurePlatform();
 
   @override
   Widget build(BuildContext context) {
@@ -64,320 +64,325 @@ class _ProfileScreenState extends State<ProfileScreen> {
     emailController.text = Constants.getEmail;
     mobileController.text = Constants.getMobile;
     final _textTheme = Theme.of(context).textTheme;
+    bool _isIos = _configurePlatform.getConfigurePlatformBool;
     return NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (OverscrollIndicatorNotification overScroll) {
         overScroll.disallowGlow();
         return true;
       },
       child: SingleChildScrollView(
-          child: ChangeNotifierProvider<ProfilePageFormProvider>(
-            create: (_) => ProfilePageFormProvider(),
-            child: Container(
-              // color: CupertinoColors.systemGrey2,
-              padding: EdgeInsets.zero,
-              margin: const EdgeInsets.all(16).copyWith(bottom: 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //
-                  //First Name row
-                  Consumer<ProfilePageFormProvider>(
-                    builder: (context, profilePageFormProvider, _) {
-                      return returnFormRow(
-                          "First Name",
-                          firstNameController,
-                          profilePageFormProvider.setFirstNameError,
-                          profilePageFormProvider.getFirstNameError,
-                          context);
-                    },
-                  ),
-                  //
-                  //Last Name row
-                  Consumer<ProfilePageFormProvider>(
-                    builder: (context, profilePageFormProvider, _) {
-                      return returnFormRow(
-                          "Last Name",
-                          lastNameController,
-                          profilePageFormProvider.setLastNameError,
-                          profilePageFormProvider.getLastNameError,
-                          context);
-                    },
-                  ),
-                  //
-                  //Mobile row
-                  Consumer<ProfilePageFormProvider>(
-                    builder: (context, profilePageFormProvider, _) {
-                      return returnFormRow(
-                          "Mobile",
-                          mobileController,
-                          profilePageFormProvider.setMobileError,
-                          profilePageFormProvider.getMobileError,
-                          context);
-                    },
-                  ),
-                  //
-                  //Email row
-                  Consumer<ProfilePageFormProvider>(
-                    builder: (context, profilePageFormProvider, _) {
-                      return returnFormRow(
-                          "Email",
-                          emailController,
-                          profilePageFormProvider.setEmailError,
-                          profilePageFormProvider.getEmailError,
-                          context);
-                    },
-                  ),
-                  //
-                  //Update Button
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Consumer<ProfilePageFormProvider>(
-                    builder: (context, profilePageFormProvider, _) {
-                      return (_isIos)
-                          ? SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: CupertinoButton(
-                                color: CupertinoColors.activeBlue,
-                                onPressed: () {
-                                  profilePageFormProvider.setFirstNameError(
-                                      firstNameController.text);
-                                  profilePageFormProvider
-                                      .setLastNameError(lastNameController.text);
-                                  profilePageFormProvider
-                                      .setMobileError(mobileController.text);
-                                  profilePageFormProvider
-                                      .setEmailError(emailController.text);
-      
-                                  if (firstNameController.text.isNotEmpty &&
-                                      lastNameController.text.isNotEmpty &&
-                                      profilePageFormProvider
-                                              .getMobileErrorBool ==
-                                          false &&
-                                      profilePageFormProvider.getEmailErrorBool ==
-                                          false) {
-                                    showDialog<void>(
-                                      barrierDismissible: true,
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return CupertinoAlertDialog(
-                                          title: const Text("Update"),
-                                          content: FutureBuilder(
-                                            future: ProfilePageFormProvider
-                                                .updateProfile(
-                                              firstNameController.text,
-                                              lastNameController.text,
-                                              mobileController.text,
-                                              emailController.text,
-                                            ),
-                                            builder: (context,
-                                                AsyncSnapshot snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.done) {
-                                                if (snapshot.hasError) {
-                                                  return const Text(
-                                                      'Error occured');
-                                                } else if (snapshot.hasData) {
-                                                  final data =
-                                                      snapshot.data as Map;
-                                                  if (data['status'] == 200) {
-                                                    Constants.setFirstName(
-                                                        firstNameController.text);
-                                                    Constants.setLastName(
-                                                        lastNameController.text);
-                                                    Constants.setMobile(
-                                                        mobileController.text);
-                                                    Constants.setEmail(
-                                                        emailController.text);
-                                                  }
-                                                  return const Text(
-                                                      "User Profile Updated");
+        child: ChangeNotifierProvider<ProfilePageFormProvider>(
+          create: (_) => ProfilePageFormProvider(),
+          child: Container(
+            // color: CupertinoColors.systemGrey2,
+            padding: EdgeInsets.zero,
+            margin: const EdgeInsets.all(16).copyWith(bottom: 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //
+                //First Name row
+                Consumer<ProfilePageFormProvider>(
+                  builder: (context, profilePageFormProvider, _) {
+                    return returnFormRow(
+                        "First Name",
+                        firstNameController,
+                        profilePageFormProvider.setFirstNameError,
+                        profilePageFormProvider.getFirstNameError,
+                        context);
+                  },
+                ),
+                //
+                //Last Name row
+                Consumer<ProfilePageFormProvider>(
+                  builder: (context, profilePageFormProvider, _) {
+                    return returnFormRow(
+                        "Last Name",
+                        lastNameController,
+                        profilePageFormProvider.setLastNameError,
+                        profilePageFormProvider.getLastNameError,
+                        context);
+                  },
+                ),
+                //
+                //Mobile row
+                Consumer<ProfilePageFormProvider>(
+                  builder: (context, profilePageFormProvider, _) {
+                    return returnFormRow(
+                        "Mobile",
+                        mobileController,
+                        profilePageFormProvider.setMobileError,
+                        profilePageFormProvider.getMobileError,
+                        context);
+                  },
+                ),
+                //
+                //Email row
+                Consumer<ProfilePageFormProvider>(
+                  builder: (context, profilePageFormProvider, _) {
+                    return returnFormRow(
+                        "Email",
+                        emailController,
+                        profilePageFormProvider.setEmailError,
+                        profilePageFormProvider.getEmailError,
+                        context);
+                  },
+                ),
+                //
+                //Update Button
+                const SizedBox(
+                  height: 15,
+                ),
+                Consumer<ProfilePageFormProvider>(
+                  builder: (context, profilePageFormProvider, _) {
+                    return (_isIos)
+                        ? SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: CupertinoButton(
+                              color: CupertinoColors.activeBlue,
+                              onPressed: () {
+                                profilePageFormProvider.setFirstNameError(
+                                    firstNameController.text);
+                                profilePageFormProvider
+                                    .setLastNameError(lastNameController.text);
+                                profilePageFormProvider
+                                    .setMobileError(mobileController.text);
+                                profilePageFormProvider
+                                    .setEmailError(emailController.text);
+
+                                if (firstNameController.text.isNotEmpty &&
+                                    lastNameController.text.isNotEmpty &&
+                                    profilePageFormProvider
+                                            .getMobileErrorBool ==
+                                        false &&
+                                    profilePageFormProvider.getEmailErrorBool ==
+                                        false) {
+                                  showDialog<void>(
+                                    barrierDismissible: true,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return CupertinoAlertDialog(
+                                        title: const Text("Update"),
+                                        content: FutureBuilder(
+                                          future: ProfilePageFormProvider
+                                              .updateProfile(
+                                            firstNameController.text,
+                                            lastNameController.text,
+                                            mobileController.text,
+                                            emailController.text,
+                                          ),
+                                          builder: (context,
+                                              AsyncSnapshot snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.done) {
+                                              if (snapshot.hasError) {
+                                                return const Text(
+                                                    'Error occured');
+                                              } else if (snapshot.hasData) {
+                                                final data =
+                                                    snapshot.data as Map;
+                                                if (data['status'] == 200) {
+                                                  Constants.setFirstName(
+                                                      firstNameController.text);
+                                                  Constants.setLastName(
+                                                      lastNameController.text);
+                                                  Constants.setMobile(
+                                                      mobileController.text);
+                                                  Constants.setEmail(
+                                                      emailController.text);
                                                 }
+                                                return const Text(
+                                                    "User Profile Updated");
                                               }
-                                              return const CupertinoActivityIndicator();
+                                            }
+                                            return const CupertinoActivityIndicator();
+                                          },
+                                        ),
+                                        actions: [
+                                          CupertinoDialogAction(
+                                            child: const Text("cancel"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
                                             },
                                           ),
-                                          actions: [
-                                            CupertinoDialogAction(
-                                              child: const Text("cancel"),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              child: const Text('Update'),
+                            ),
+                          )
+                        : Material(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(50),
+                            child: InkWell(
+                              // splashColor: Colors.white,
+                              onTap: () {
+                                profilePageFormProvider.setFirstNameError(
+                                    firstNameController.text);
+                                profilePageFormProvider
+                                    .setLastNameError(lastNameController.text);
+                                profilePageFormProvider
+                                    .setMobileError(mobileController.text);
+                                profilePageFormProvider
+                                    .setEmailError(emailController.text);
+
+                                if (firstNameController.text.isNotEmpty &&
+                                    lastNameController.text.isNotEmpty &&
+                                    profilePageFormProvider
+                                            .getMobileErrorBool ==
+                                        false &&
+                                    profilePageFormProvider.getEmailErrorBool ==
+                                        false) {
+                                  showDialog(
+                                    barrierDismissible: true,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+                                        backgroundColor: Colors.transparent,
+                                        elevation: 0,
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 30),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 15,
+                                                      vertical: 20),
+                                              height: 80,
+                                              child: FutureBuilder(
+                                                future: ProfilePageFormProvider
+                                                    .updateProfile(
+                                                  firstNameController.text,
+                                                  lastNameController.text,
+                                                  mobileController.text,
+                                                  emailController.text,
+                                                ),
+                                                builder: (context,
+                                                    AsyncSnapshot snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.done) {
+                                                    if (snapshot.hasError) {
+                                                      Future.delayed(
+                                                          const Duration(
+                                                            milliseconds: 500,
+                                                          ), () {
+                                                        Navigator.of(context)
+                                                            .pop(true);
+                                                      });
+                                                      return const SingleChildScrollView(
+                                                        child: Text(
+                                                          'Error occured',
+                                                          style: TextStyle(
+                                                              fontSize: 18),
+                                                        ),
+                                                      );
+                                                    } else if (snapshot
+                                                        .hasData) {
+                                                      Future.delayed(
+                                                          const Duration(
+                                                            milliseconds: 1000,
+                                                          ), () {
+                                                        Navigator.of(context)
+                                                            .pop(true);
+                                                      });
+
+                                                      final data =
+                                                          snapshot.data as Map;
+                                                      if (data['status'] ==
+                                                          200) {
+                                                        Constants.setFirstName(
+                                                            firstNameController
+                                                                .text);
+                                                        Constants.setLastName(
+                                                            lastNameController
+                                                                .text);
+                                                        Constants.setMobile(
+                                                            mobileController
+                                                                .text);
+                                                        Constants.setEmail(
+                                                            emailController
+                                                                .text);
+                                                      }
+                                                      // print(Constants.getMobile);
+                                                      return const Center(
+                                                        child: Text(
+                                                          "User Profile Updated",
+                                                          style: TextStyle(
+                                                              // fontWeight: FontWeight.bold,
+                                                              fontSize: 18),
+                                                        ),
+                                                      );
+                                                    }
+                                                  }
+                                                  return Center(
+                                                    child: (_isIos)
+                                                        ? const CupertinoActivityIndicator(
+                                                            radius: 20.0,
+                                                            color: Colors.black)
+                                                        : const CircularProgressIndicator(
+                                                            color: Colors.blue,
+                                                          ),
+                                                  );
+                                                },
+                                              ),
                                             ),
                                           ],
-                                        );
-                                      },
-                                    );
-                                    // validatingCredentials();
-                                  }
-                                },
-                                child: const Text('Update'),
-                              ),
-                            )
-                          : Material(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(50),
-                              child: InkWell(
-                                // splashColor: Colors.white,
-                                onTap: () {
-                                  profilePageFormProvider.setFirstNameError(
-                                      firstNameController.text);
-                                  profilePageFormProvider
-                                      .setLastNameError(lastNameController.text);
-                                  profilePageFormProvider
-                                      .setMobileError(mobileController.text);
-                                  profilePageFormProvider
-                                      .setEmailError(emailController.text);
-      
-                                  if (firstNameController.text.isNotEmpty &&
-                                      lastNameController.text.isNotEmpty &&
-                                      profilePageFormProvider
-                                              .getMobileErrorBool ==
-                                          false &&
-                                      profilePageFormProvider.getEmailErrorBool ==
-                                          false) {
-                                    showDialog(
-                                      barrierDismissible: true,
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Dialog(
-                                          backgroundColor: Colors.transparent,
-                                          elevation: 0,
-                                          child: Stack(
-                                            children: [
-                                              Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 30),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 15,
-                                                        vertical: 20),
-                                                // .copyWith(top: 0),
-                                                height: 80,
-                                                // width: double.infinity,
-                                                child: FutureBuilder(
-                                                  future: ProfilePageFormProvider
-                                                      .updateProfile(
-                                                    firstNameController.text,
-                                                    lastNameController.text,
-                                                    mobileController.text,
-                                                    emailController.text,
-                                                  ),
-                                                  builder: (context,
-                                                      AsyncSnapshot snapshot) {
-                                                    if (snapshot
-                                                            .connectionState ==
-                                                        ConnectionState.done) {
-                                                      if (snapshot.hasError) {
-                                                        Future.delayed(
-                                                            Duration(
-                                                              milliseconds: 500,
-                                                            ), () {
-                                                          Navigator.of(context)
-                                                              .pop(true);
-                                                        });
-                                                        return const SingleChildScrollView(
-                                                          child: Text(
-                                                            'Error occured',
-                                                            style: TextStyle(
-                                                                fontSize: 18),
-                                                          ),
-                                                        );
-                                                      } else if (snapshot
-                                                          .hasData) {
-                                                        Future.delayed(
-                                                            const Duration(
-                                                              milliseconds: 1000,
-                                                            ), () {
-                                                          Navigator.of(context)
-                                                              .pop(true);
-                                                        });
-      
-                                                        final data =
-                                                            snapshot.data as Map;
-                                                        if (data['status'] ==
-                                                            200) {
-                                                          Constants.setFirstName(
-                                                              firstNameController
-                                                                  .text);
-                                                          Constants.setLastName(
-                                                              lastNameController
-                                                                  .text);
-                                                          Constants.setMobile(
-                                                              mobileController
-                                                                  .text);
-                                                          Constants.setEmail(
-                                                              emailController
-                                                                  .text);
-                                                        }
-                                                        // print(Constants.getMobile);
-                                                        return const Center(
-                                                          child: Text(
-                                                            "User Profile Updated",
-                                                            style: TextStyle(
-                                                                // fontWeight: FontWeight.bold,
-                                                                fontSize: 18),
-                                                          ),
-                                                        );
-                                                      }
-                                                    }
-                                                    return Center(
-                                                      child:
-                                                          CircularProgressIndicator(),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                    // validatingCredentials();
-                                  }
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 35,
-                                  child: const Center(
-                                    child: Text(
-                                      "Update",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        letterSpacing: 1,
-                                      ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              child: const SizedBox(
+                                width: double.infinity,
+                                height: 35,
+                                child: Center(
+                                  child: Text(
+                                    "Update",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      letterSpacing: 1,
                                     ),
                                   ),
                                 ),
                               ),
-                            );
-                    },
-                  ),
-                ],
-              ),
+                            ),
+                          );
+                  },
+                ),
+              ],
             ),
           ),
         ),
-      
+      ),
     );
   }
 
   Widget returnFormRow(String text, TextEditingController controller,
       Function setfunction, String getfunction, BuildContext context) {
     final _textTheme = Theme.of(context).textTheme;
+    bool _isIos = _configurePlatform.getConfigurePlatformBool;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(text,style: TextStyle(fontSize: 16),),
+        Text(
+          text,
+          style: TextStyle(fontSize: 16),
+        ),
         const SizedBox(
           height: 5,
         ),
@@ -543,15 +548,16 @@ class ProfilePageFormProvider extends ChangeNotifier {
   //Update Profile function
   static Future<Map<dynamic, dynamic>> updateProfile(
       String value1, String value2, String value3, String value4) async {
-    var response =
-        await http.post(Uri.parse(Constants.getCompanyURL + '/api/update_profile'), body: {
-      "first_name": value1,
-      "last_name": value2,
-      "mobile": value3,
-      "email": value4,
-      "id": Constants.getStaffID
-    } // need to use Constants.getStaffID in place of "8"
-            );
+    var response = await http.post(
+        Uri.parse(Constants.getCompanyURL + '/api/update_profile'),
+        body: {
+          "first_name": value1,
+          "last_name": value2,
+          "mobile": value3,
+          "email": value4,
+          "id": Constants.getStaffID
+        } // need to use Constants.getStaffID in place of "8"
+        );
     var jsonData = jsonDecode(response.body);
     return jsonData;
   }

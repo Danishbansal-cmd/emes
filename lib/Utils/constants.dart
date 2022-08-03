@@ -1,4 +1,5 @@
 import 'package:emes/Providers/accept_decline_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -285,6 +286,26 @@ class Constants {
           ),
         ),
       ),
+    );
+  }
+
+  static Future  showCupertinoAlertDialog({required Widget child, required BuildContext context}) {
+    return showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text("Note"),
+          content: child,
+          actions: [
+            CupertinoDialogAction(
+              child: Text("Ok"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

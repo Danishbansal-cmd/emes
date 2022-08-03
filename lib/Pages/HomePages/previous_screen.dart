@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:emes/Providers/accept_decline_provider.dart';
+import 'package:emes/Utils/configure_platform.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/shift_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -19,14 +21,15 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
   TextEditingController declineShiftReasonController = TextEditingController();
   double shiftContainerHeight = 75;
-  ShiftData _shiftData = ShiftData();
-
+  final ShiftData _shiftData = ShiftData();
+  final ConfigurePlatform _configurePlatform = ConfigurePlatform();
   @override
   Widget build(BuildContext context) {
     //initializing fisrstscreen getx controller
     final firstScreenController = Get.put(FirstScreenController());
     final _textTheme = Theme.of(context).textTheme;
     final _colorScheme = Theme.of(context).colorScheme;
+    bool _isIos = _configurePlatform.getConfigurePlatformBool;
     return Obx(
       () => firstScreenController.getValueInt > 0
           ? Container(
@@ -86,12 +89,12 @@ class _FirstScreenState extends State<FirstScreen> {
                                   return true;
                                 },
                                 child: ListView.separated(
+                                  physics: (_isIos)
+                                      ? const BouncingScrollPhysics()
+                                      : const AlwaysScrollableScrollPhysics(),
                                   //first list and if data is not empty
-                                  // shrinkWrap: true,
                                   separatorBuilder: (context, index) {
-                                    return const SizedBox.shrink(
-                                        // height: 15,
-                                        );
+                                    return const SizedBox.shrink();
                                   },
                                   itemCount: keyList.length,
                                   itemBuilder: (context, index) {
@@ -106,12 +109,9 @@ class _FirstScreenState extends State<FirstScreen> {
                                                   16 * (moreShifts))
                                               .toDouble(),
                                       child: ListView.separated(
-                                        physics: ClampingScrollPhysics(),
-                                        // shrinkWrap: true,
+                                        physics: const ClampingScrollPhysics(),
                                         separatorBuilder: (context, index) {
-                                          return const SizedBox.shrink(
-                                              // height: 15,
-                                              );
+                                          return const SizedBox.shrink();
                                         },
                                         itemBuilder: (context, index2) {
                                           return Container(
@@ -129,10 +129,8 @@ class _FirstScreenState extends State<FirstScreen> {
                                               ),
                                               color: _colorScheme.primary,
                                             ),
-                                            padding: const EdgeInsets.symmetric(
-                                                // horizontal: 15,
-                                                // vertical: 15,
-                                                ),
+                                            padding:
+                                                const EdgeInsets.symmetric(),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -234,15 +232,23 @@ class _FirstScreenState extends State<FirstScreen> {
 
                     // Displaying LoadingSpinner to indicate waiting state
                     return Center(
-                      child: CircularProgressIndicator(
-                        color: _colorScheme.onSecondary,
-                      ),
+                      child: (_isIos)
+                          ? const CupertinoActivityIndicator(
+                              radius: 20.0, color: Colors.black)
+                          : const CircularProgressIndicator(
+                              color: Colors.blue,
+                            ),
                     );
                   },
                 ),
               ),
             )
-          : SizedBox.shrink(),
+          : (_isIos)
+              ? const CupertinoActivityIndicator(
+                  radius: 20.0, color: Colors.black)
+              : const CircularProgressIndicator(
+                  color: Colors.blue,
+                ),
     );
   }
 }

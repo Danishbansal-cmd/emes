@@ -3,6 +3,7 @@ import 'package:emes/Pages/api_testing_page.dart';
 import 'package:emes/Pages/checkin_checkout_page.dart';
 import 'package:emes/Pages/home_page.dart';
 import 'package:emes/Providers/accept_decline_provider.dart';
+import 'package:emes/Utils/configure_platform.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,7 +29,8 @@ class _SecondScreenState extends State<SecondScreen> {
   //applevel controller initialize
   final controller = Get.put(AcceptDeclineController());
 
-  ShiftData _shiftData = ShiftData();
+  final ShiftData _shiftData = ShiftData();
+  final ConfigurePlatform _configurePlatform = ConfigurePlatform();
 
   //function of callback
   //need to call from another page
@@ -89,6 +91,8 @@ class _SecondScreenState extends State<SecondScreen> {
     final _textTheme = Theme.of(context).textTheme;
     final _colorScheme = Theme.of(context).colorScheme;
 
+    bool _isIos = _configurePlatform.getConfigurePlatformBool;
+
     return Container(
       // padding: const EdgeInsets.symmetric(horizontal: 10).copyWith(top: 5),
       color: _colorScheme.background,
@@ -134,12 +138,6 @@ class _SecondScreenState extends State<SecondScreen> {
                       final keyList = shiftData.keys.toList();
                       startDate = snapshot.data['start_date'];
                       endDate = snapshot.data['end_date'];
-                      // print("start_date ${snapshot.data['start_date']}");
-                      // print("end_date ${snapshot.data['end_date']}");
-                      // tryFunction(
-                      //     snapshot.data['start_date'], snapshot.data['end_date']);
-                      // date.setStartDate(snapshot.data['start_date']);
-                      // date.setEndDate(snapshot.data['end_date']);
 
                       return shiftData.isEmpty
                           ? Column(
@@ -159,174 +157,65 @@ class _SecondScreenState extends State<SecondScreen> {
                               ],
                             )
                           : Material(
-                              child: NotificationListener<
-                                  OverscrollIndicatorNotification>(
-                                onNotification: (OverscrollIndicatorNotification
-                                    overScroll) {
-                                  overScroll.disallowGlow();
-                                  return true;
+                              child: ListView.separated(
+                                physics: (_isIos)
+                                    ? const BouncingScrollPhysics()
+                                    : const AlwaysScrollableScrollPhysics(),
+                                //first list and if data is not empty
+                                // shrinkWrap: true,
+                                separatorBuilder: (context, index) {
+                                  return const SizedBox.shrink();
                                 },
-                                child: ListView.separated(
-                                  //first list and if data is not empty
-                                  // shrinkWrap: true,
-                                  separatorBuilder: (context, index) {
-                                    return const SizedBox.shrink(
-                                        // height: 15,
-                                        );
-                                  },
-                                  itemCount: keyList.length,
-                                  itemBuilder: (context, index) {
-                                    var moreShifts =
-                                        shiftData[keyList[index]].length;
-                                    var insideKeyList =
-                                        shiftData[keyList[index]].keys;
-                                    return Container(
-                                      color: _colorScheme.background,
-                                      // color: Colors.red,
-                                      height:
-                                          (shiftContainerHeight * moreShifts +
-                                                  16 * (moreShifts))
-                                              .toDouble(),
-                                      child: ListView.separated(
-                                        //nested second list
-                                        physics: ClampingScrollPhysics(),
-                                        // shrinkWrap: true,
-                                        separatorBuilder: (context, index) {
-                                          return const SizedBox.shrink(
-                                              // height: 15,
-                                              );
-                                        },
-                                        itemBuilder: (context, index2) {
-                                          //main box of the shift
-                                          return Container(
-                                            margin: const EdgeInsets.symmetric(
-                                              vertical: 8,
+                                itemCount: keyList.length,
+                                itemBuilder: (context, index) {
+                                  var moreShifts =
+                                      shiftData[keyList[index]].length;
+                                  var insideKeyList =
+                                      shiftData[keyList[index]].keys;
+                                  return Container(
+                                    color: _colorScheme.background,
+                                    height: (shiftContainerHeight * moreShifts +
+                                            16 * (moreShifts))
+                                        .toDouble(),
+                                    child: ListView.separated(
+                                      //nested second list
+                                      physics: const ClampingScrollPhysics(),
+                                      separatorBuilder: (context, index) {
+                                        return const SizedBox.shrink();
+                                      },
+                                      itemBuilder: (context, index2) {
+                                        //main box of the shift
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 8,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: _colorScheme.primary,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                              width: 1.5,
                                             ),
-                                            decoration: BoxDecoration(
-                                              color: _colorScheme.primary,
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              border: Border.all(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary,
-                                                width: 1.5,
-                                              ),
-                                            ),
-                                            height: shiftContainerHeight,
-                                            // padding: const EdgeInsets.symmetric(
-                                            //     // horizontal: 15,
-                                            //     // vertical: 15,
-                                            //     ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                //checkbox button
-                                                Obx(
-                                                  () => Container(
-                                                    width: 35,
-                                                    child: Checkbox(
-                                                      onChanged: (value) {
-                                                        if (!controller
-                                                            .selectedItemsList
-                                                            .contains(
-                                                                "$index$index2")) {
-                                                          controller
-                                                              .addSelectedItemsList(
-                                                                  "$index$index2");
-                                                          controller
-                                                              .addIdOfSelectedItemsList(
-                                                                  "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
-                                                          if (shiftData[keyList[
-                                                                          index]]
-                                                                      [
-                                                                      insideKeyList
-                                                                              .toList()[
-                                                                          index2]]
-                                                                  [
-                                                                  'confirmed_by_staff'] ==
-                                                              "1") {
-                                                            controller
-                                                                .ifAcceptedShiftIsSelected
-                                                                .add(true);
-                                                          } else if (shiftData[
-                                                                      keyList[
-                                                                          index]]
-                                                                  [insideKeyList
-                                                                          .toList()[
-                                                                      index2]]['confirmed_by_staff'] ==
-                                                              "2") {
-                                                            controller
-                                                                .ifDeclinedShiftIsSelected
-                                                                .add(true);
-                                                          }
-                                                          print(
-                                                              "acceptedshiftisseleceted ${controller.ifAcceptedShiftIsSelected}");
-                                                          print(
-                                                              "edclinedshiftisseleceted ${controller.ifDeclinedShiftIsSelected}");
-                                                        } else if (controller
-                                                            .selectedItemsList
-                                                            .contains(
-                                                                "$index$index2")) {
-                                                          controller
-                                                              .deleteSelectedItemsList(
-                                                                  "$index$index2");
-                                                          controller
-                                                              .deleteIdOfSelectedItemsList(
-                                                                  "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
-                                                          if (shiftData[keyList[
-                                                                          index]]
-                                                                      [
-                                                                      insideKeyList
-                                                                              .toList()[
-                                                                          index2]]
-                                                                  [
-                                                                  'confirmed_by_staff'] ==
-                                                              "1") {
-                                                            controller
-                                                                .ifAcceptedShiftIsSelected
-                                                                .remove(true);
-                                                          } else if (shiftData[
-                                                                      keyList[
-                                                                          index]]
-                                                                  [insideKeyList
-                                                                          .toList()[
-                                                                      index2]]['confirmed_by_staff'] ==
-                                                              "2") {
-                                                            controller
-                                                                .ifDeclinedShiftIsSelected
-                                                                .remove(true);
-                                                          }
-                                                          print(
-                                                              "acceptedshiftisseleceted ${controller.ifAcceptedShiftIsSelected}");
-                                                          print(
-                                                              "edclinedshiftisseleceted ${controller.ifDeclinedShiftIsSelected}");
-                                                        }
-                                                      },
-                                                      value: controller
-                                                          .selectedItemsList
-                                                          .contains(
-                                                              "$index$index2"),
-                                                      shape:
-                                                          const CircleBorder(),
-                                                    ),
-                                                  ),
-                                                ),
-
-                                                //data to be represented
-                                                Expanded(
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      // controller.clickedItemValue
-                                                      //     .value = index;
+                                          ),
+                                          height: shiftContainerHeight,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              //
+                                              //checkbox button
+                                              Obx(
+                                                () => SizedBox(
+                                                  width: 35,
+                                                  child: Checkbox(
+                                                    onChanged: (value) {
                                                       if (!controller
                                                           .selectedItemsList
                                                           .contains(
                                                               "$index$index2")) {
-                                                        print("does i work ");
-                                                        print(index);
                                                         controller
                                                             .addSelectedItemsList(
                                                                 "$index$index2");
@@ -358,15 +247,6 @@ class _SecondScreenState extends State<SecondScreen> {
                                                               .ifDeclinedShiftIsSelected
                                                               .add(true);
                                                         }
-                                                        print(
-                                                            "acceptedshiftisseleceted ${controller.ifAcceptedShiftIsSelected}");
-                                                        print(
-                                                            "edclinedshiftisseleceted ${controller.ifDeclinedShiftIsSelected}");
-                                                        // controller.forDeletionOfSelectedItemsList["$index$index2"] = [snapshot.data['start_date'], snapshot.data['end_date'],];
-                                                        print(
-                                                            "addsil ${controller.selectedItemsList}");
-                                                        print(
-                                                            "addiosil ${controller.idOfSelectedItemsList}");
                                                       } else if (controller
                                                           .selectedItemsList
                                                           .contains(
@@ -402,286 +282,348 @@ class _SecondScreenState extends State<SecondScreen> {
                                                               .ifDeclinedShiftIsSelected
                                                               .remove(true);
                                                         }
-                                                        print(
-                                                            "acceptedshiftisseleceted ${controller.ifAcceptedShiftIsSelected}");
-                                                        print(
-                                                            "edclinedshiftisseleceted ${controller.ifDeclinedShiftIsSelected}");
-                                                        print(
-                                                            "delsil ${controller.selectedItemsList}");
-                                                        print(
-                                                            "deliosil ${controller.idOfSelectedItemsList}");
                                                       }
                                                     },
-                                                    child: Container(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 3),
-                                                      // color: Colors.green,
-                                                      height:
-                                                          shiftContainerHeight,
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          //shift date
-                                                          Text(
-                                                            "${Constants.nameOfDayOfShift(shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift'])} ${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(8, 10)}/${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(5, 7)}/${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(0, 4)}",
-                                                            style: _textTheme
-                                                                .headline3!
-                                                                .copyWith(
-                                                              color: shiftData[keyList[index]]
-                                                                              [insideKeyList.toList()[index2]]
-                                                                          [
-                                                                          'confirmed_by_staff'] ==
-                                                                      "1"
-                                                                  ? const Color.fromARGB(
-                                                                      255,
-                                                                      54,
-                                                                      192,
-                                                                      59)
-                                                                  : shiftData[keyList[index]][insideKeyList.toList()[index2]]['confirmed_by_staff'] ==
-                                                                          "2"
-                                                                      ? const Color.fromARGB(
-                                                                          255,
-                                                                          194,
-                                                                          48,
-                                                                          48)
-                                                                      : const Color.fromARGB(
-                                                                          255,
-                                                                          34,
-                                                                          34,
-                                                                          34),
-                                                            ),
-                                                          ),
-                                                          //shift's client name
-                                                          Text(
-                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
-                                                            style: _textTheme
-                                                                .headline4,
-                                                          ),
-                                                          //shift time
-                                                          Text.rich(
-                                                            TextSpan(
-                                                              text:
-                                                                  '${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}',
-                                                              style: _textTheme
-                                                                  .headline4,
-                                                              children: <
-                                                                  InlineSpan>[
-                                                                const TextSpan(
-                                                                    text:
-                                                                        " TO "),
-                                                                TextSpan(
-                                                                  text:
-                                                                      '${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}',
-                                                                  style: _textTheme
-                                                                      .headline4,
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
+                                                    value: controller
+                                                        .selectedItemsList
+                                                        .contains(
+                                                            "$index$index2"),
+                                                    shape: const CircleBorder(),
                                                   ),
                                                 ),
+                                              ),
 
-                                                //button to next page
-                                                Material(
-                                                  color: Colors.transparent,
-                                                  child: InkWell(
-                                                    splashColor: Colors.blue,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            9),
-                                                    onTap: () {
-                                                      Future.delayed(
-                                                        const Duration(
-                                                            milliseconds: 200),
-                                                        () {
-                                                          // if (shiftData[keyList[
-                                                          //                 index]][insideKeyList
-                                                          //                     .toList()[
-                                                          //                 index2]]
-                                                          //             [
-                                                          //             'is_confirm'] ==
-                                                          //         "1" &&
-
-                                                          if(shiftData[keyList[
+                                              //
+                                              //data to be represented
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    // controller.clickedItemValue
+                                                    //     .value = index;
+                                                    if (!controller
+                                                        .selectedItemsList
+                                                        .contains(
+                                                            "$index$index2")) {
+                                                      controller
+                                                          .addSelectedItemsList(
+                                                              "$index$index2");
+                                                      controller
+                                                          .addIdOfSelectedItemsList(
+                                                              "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
+                                                      if (shiftData[keyList[
                                                                       index]][
                                                                   insideKeyList
                                                                           .toList()[
-                                                                      index2]]['confirmed_by_staff'] ==
-                                                              "1" ) {
-                                                          // Get.to(
-                                                          //     () =>
-                                                          //         CheckinCheckoutPage(),
-                                                          //     arguments: [
-                                                          //       {
-                                                          //         "shift_id":
-                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}",
-                                                          //         "client_id":
-                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_id']}",
-                                                          //         "work_date":
-                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}",
-                                                          //         "time_on":
-                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}",
-                                                          //         "time_off":
-                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}",
-                                                          //         "task_id":
-                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['task_id']}",
-                                                          //         "client_name":
-                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
-                                                          //         "activity_name":
-                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['activity_name']}",
-                                                          //         "day_of_shift":
-                                                          //             "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift']}"
-                                                          //       }
-                                                          //     ]);
+                                                                      index2]][
+                                                              'confirmed_by_staff'] ==
+                                                          "1") {
+                                                        controller
+                                                            .ifAcceptedShiftIsSelected
+                                                            .add(true);
+                                                      } else if (shiftData[
+                                                                      keyList[
+                                                                          index]]
+                                                                  [
+                                                                  insideKeyList
+                                                                          .toList()[
+                                                                      index2]][
+                                                              'confirmed_by_staff'] ==
+                                                          "2") {
+                                                        controller
+                                                            .ifDeclinedShiftIsSelected
+                                                            .add(true);
+                                                      }
+                                                    } else if (controller
+                                                        .selectedItemsList
+                                                        .contains(
+                                                            "$index$index2")) {
+                                                      controller
+                                                          .deleteSelectedItemsList(
+                                                              "$index$index2");
+                                                      controller
+                                                          .deleteIdOfSelectedItemsList(
+                                                              "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
+                                                      if (shiftData[keyList[
+                                                                      index]][
+                                                                  insideKeyList
+                                                                          .toList()[
+                                                                      index2]][
+                                                              'confirmed_by_staff'] ==
+                                                          "1") {
+                                                        controller
+                                                            .ifAcceptedShiftIsSelected
+                                                            .remove(true);
+                                                      } else if (shiftData[
+                                                                      keyList[
+                                                                          index]]
+                                                                  [
+                                                                  insideKeyList
+                                                                          .toList()[
+                                                                      index2]][
+                                                              'confirmed_by_staff'] ==
+                                                          "2") {
+                                                        controller
+                                                            .ifDeclinedShiftIsSelected
+                                                            .remove(true);
+                                                      }
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 3),
+                                                    height:
+                                                        shiftContainerHeight,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        //shift date
+                                                        Text(
+                                                          "${Constants.nameOfDayOfShift(shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift'])} ${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(8, 10)}/${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(5, 7)}/${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(0, 4)}",
+                                                          style: _textTheme
+                                                              .headline3!
+                                                              .copyWith(
+                                                            color: shiftData[keyList[index]]
+                                                                            [insideKeyList.toList()[index2]]
+                                                                        [
+                                                                        'confirmed_by_staff'] ==
+                                                                    "1"
+                                                                ? const Color.fromARGB(
+                                                                    255,
+                                                                    54,
+                                                                    192,
+                                                                    59)
+                                                                : shiftData[keyList[index]][insideKeyList.toList()[index2]]['confirmed_by_staff'] ==
+                                                                        "2"
+                                                                    ? const Color.fromARGB(
+                                                                        255,
+                                                                        194,
+                                                                        48,
+                                                                        48)
+                                                                    : const Color.fromARGB(
+                                                                        255,
+                                                                        34,
+                                                                        34,
+                                                                        34),
+                                                          ),
+                                                        ),
+                                                        //shift's client name
+                                                        Text(
+                                                          "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
+                                                          style: _textTheme
+                                                              .headline4,
+                                                        ),
+                                                        //shift time
+                                                        Text.rich(
+                                                          TextSpan(
+                                                            text:
+                                                                '${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}',
+                                                            style: _textTheme
+                                                                .headline4,
+                                                            children: <
+                                                                InlineSpan>[
+                                                              const TextSpan(
+                                                                  text: " TO "),
+                                                              TextSpan(
+                                                                text:
+                                                                    '${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}',
+                                                                style: _textTheme
+                                                                    .headline4,
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+
+                                              //
+                                              //button to next page
+                                              Material(
+                                                color: Colors.transparent,
+                                                child: InkWell(
+                                                  splashColor: Colors.blue,
+                                                  borderRadius:
+                                                      BorderRadius.circular(9),
+                                                  onTap: () {
+                                                    Future.delayed(
+                                                      const Duration(
+                                                          milliseconds: 200),
+                                                      () {
+                                                        // if (shiftData[keyList[
+                                                        //                 index]][insideKeyList
+                                                        //                     .toList()[
+                                                        //                 index2]]
+                                                        //             [
+                                                        //             'is_confirm'] ==
+                                                        //         "1" &&
+
+                                                        if (shiftData[keyList[
+                                                                        index]][
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]
+                                                                [
+                                                                'confirmed_by_staff'] ==
+                                                            "1") {
                                                           Navigator.push(
                                                             context,
-                                                            CupertinoPageRoute(
-                                                              builder: (context) =>
-                                                                  CheckinCheckoutPage(
-                                                                shiftId: shiftData[
-                                                                        keyList[
-                                                                            index]]
-                                                                    [
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['shift_id'],
-                                                                clientId: shiftData[
-                                                                        keyList[
-                                                                            index]]
-                                                                    [
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['client_id'],
-                                                                workDate: shiftData[
-                                                                        keyList[
-                                                                            index]]
-                                                                    [
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['work_date'],
-                                                                timeOn: shiftData[
-                                                                        keyList[
-                                                                            index]]
-                                                                    [
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['time_on'],
-                                                                timeOff: shiftData[
-                                                                        keyList[
-                                                                            index]]
-                                                                    [
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['time_off'],
-                                                                taskId: shiftData[
-                                                                        keyList[
-                                                                            index]]
-                                                                    [
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['task_id'],
-                                                                clientName: shiftData[
-                                                                        keyList[
-                                                                            index]]
-                                                                    [
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['client_name'],
-                                                                activityName: shiftData[
-                                                                        keyList[
-                                                                            index]]
-                                                                    [
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['activity_name'],
-                                                                dayOfShift: shiftData[
-                                                                        keyList[
-                                                                            index]]
-                                                                    [
-                                                                    insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['day_of_shift'],
-                                                              ),
-                                                            ),
+                                                            (_isIos)
+                                                                ? CupertinoPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            CheckinCheckoutPage(
+                                                                      shiftId: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['shift_id'],
+                                                                      clientId: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['client_id'],
+                                                                      workDate: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['work_date'],
+                                                                      timeOn: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['time_on'],
+                                                                      timeOff: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['time_off'],
+                                                                      taskId: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['task_id'],
+                                                                      clientName: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['client_name'],
+                                                                      activityName: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['activity_name'],
+                                                                      dayOfShift: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['day_of_shift'],
+                                                                    ),
+                                                                  )
+                                                                : MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            CheckinCheckoutPage(
+                                                                      shiftId: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['shift_id'],
+                                                                      clientId: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['client_id'],
+                                                                      workDate: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['work_date'],
+                                                                      timeOn: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['time_on'],
+                                                                      timeOff: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['time_off'],
+                                                                      taskId: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['task_id'],
+                                                                      clientName: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['client_name'],
+                                                                      activityName: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['activity_name'],
+                                                                      dayOfShift: shiftData[
+                                                                          keyList[index]][insideKeyList
+                                                                              .toList()[
+                                                                          index2]]['day_of_shift'],
+                                                                    ),
+                                                                  ),
                                                           );
-
-                                                          }
-
-                                                          else if (shiftData[keyList[
-                                                                          index]][insideKeyList
-                                                                              .toList()[
-                                                                          index2]]
-                                                                      [
-                                                                      'is_confirm'] !=
-                                                                  "1" &&
-                                                              shiftData[keyList[
-                                                                          index]][
-                                                                      insideKeyList
-                                                                              .toList()[
-                                                                          index2]]['confirmed_by_staff'] ==
-                                                                  "1") {
-                                                            Get.snackbar(
-                                                                'Message',
-                                                                'Shift is not confirmed from the backend.',
-                                                                duration:
-                                                                    const Duration(
-                                                                        milliseconds:
-                                                                            1200));
-                                                          }
-                                                          else if (shiftData[
-                                                                          keyList[
-                                                                              index]]
-                                                                      [
-                                                                      insideKeyList
-                                                                              .toList()[
-                                                                          index2]]
-                                                                  [
-                                                                  'confirmed_by_staff'] !=
-                                                              "1") {
-                                                            Get.snackbar(
-                                                                'Message',
-                                                                'You need to confirm the shift first.',
-                                                                duration:
-                                                                    const Duration(
-                                                                        milliseconds:
-                                                                            1200));
-                                                          }
-                                                        },
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      // color: Colors.amber,
-                                                      height: 40,
-                                                      width: 40,
-                                                      child: const Center(
-                                                        child: FaIcon(
-                                                          FontAwesomeIcons
-                                                              .arrowUpRightFromSquare,
-                                                          size: 18,
-                                                          color: Colors.blue,
-                                                        ),
+                                                        } else if (shiftData[keyList[
+                                                                        index]][insideKeyList
+                                                                            .toList()[
+                                                                        index2]]
+                                                                    [
+                                                                    'is_confirm'] !=
+                                                                "1" &&
+                                                            shiftData[keyList[
+                                                                        index]][
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]['confirmed_by_staff'] ==
+                                                                "1") {
+                                                          Get.snackbar(
+                                                              'Message',
+                                                              'Shift is not confirmed from the backend.',
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          1200));
+                                                        } else if (shiftData[
+                                                                        keyList[
+                                                                            index]]
+                                                                    [
+                                                                    insideKeyList
+                                                                            .toList()[
+                                                                        index2]]
+                                                                [
+                                                                'confirmed_by_staff'] !=
+                                                            "1") {
+                                                          Get.snackbar(
+                                                              'Message',
+                                                              'You need to confirm the shift first.',
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          1200));
+                                                        }
+                                                      },
+                                                    );
+                                                  },
+                                                  child: const SizedBox(
+                                                    // color: Colors.amber,
+                                                    height: 40,
+                                                    width: 40,
+                                                    child: Center(
+                                                      child: FaIcon(
+                                                        FontAwesomeIcons
+                                                            .arrowUpRightFromSquare,
+                                                        size: 18,
+                                                        color: Colors.blue,
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                        itemCount: moreShifts,
-                                      ),
-                                    );
-                                  },
-                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                      itemCount: moreShifts,
+                                    ),
+                                  );
+                                },
                               ),
                             );
                     }
@@ -690,9 +632,12 @@ class _SecondScreenState extends State<SecondScreen> {
                   // Displaying LoadingSpinner to indicate waiting state
                   //on fetching data from the server or link or api
                   return Center(
-                    child: CircularProgressIndicator(
-                      color: _colorScheme.onSecondary,
-                    ),
+                    child: (_isIos)
+                        ? const CupertinoActivityIndicator(
+                            radius: 20.0, color: Colors.black)
+                        : const CircularProgressIndicator(
+                            color: Colors.blue,
+                          ),
                   );
                 },
               ),
@@ -700,229 +645,203 @@ class _SecondScreenState extends State<SecondScreen> {
           ),
           //bottom accept or decline buttons
           Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15.0,),
             child: Row(
               children: [
-                Expanded(
-                  child: Material(
-                    color: Color.fromARGB(255, 252, 39, 24),
-                    child: InkWell(
-                      onTap: () {
-                        print("decline");
-                        // print(controller.ifDeclinedShiftIsSelected.value);
-                        if (controller.ifAcceptedShiftIsSelected
-                            .contains(true)) {
-                          //message dialog
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              TextEditingController giveReasonController =
-                                  TextEditingController();
-                              return Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                              horizontal: 15)
+                Container(
+                  height: 50,
+                  width: (MediaQuery.of(context).size.width - 50.0)/2,
+                  margin: const EdgeInsets.symmetric(horizontal: 5.0,),
+                  child: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    color: CupertinoColors.destructiveRed,
+                    child: const Text("DECLINE",style: TextStyle(fontWeight: FontWeight.bold,),),
+                    onPressed: () {
+                      if (controller.ifAcceptedShiftIsSelected.contains(true)) {
+                        //message dialog
+                        (_isIos)
+                            ? Constants.showCupertinoAlertDialog(
+                                child: const Text(
+                                    "Contact your manager as shift can no longer be declined."),
+                                context: context,
+                              )
+                            : showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      "Message",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline5!
                                           .copyWith(
-                                        top: 20.0,
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Constants.declineShiftPopupTopRow(
-                                              context, "Message"),
-                                          //Some Space
-                                          const SizedBox(
-                                            height: 10,
+                                            fontSize: 18,
                                           ),
-                                          const Text(
-                                              "Contact your manager as shift can no longer be declined."),
-                                          //Some Space
-                                          const SizedBox(
-                                            height: 25,
-                                          ),
-                                        ],
-                                      ),
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                        } else if (!controller.ifDeclinedShiftIsSelected
-                                .contains(true) &&
-                            controller.idOfSelectedItemsList.isNotEmpty) {
-                          //decline shift dialog
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              TextEditingController giveReasonController =
-                                  TextEditingController();
-                              return Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                              horizontal: 15)
-                                          .copyWith(
-                                        top: 20.0,
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Constants.declineShiftPopupTopRow(
-                                              context, "Decline Shift"),
-                                          //Some Space
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Constants
-                                              .textfieldWithCancelSuffixButton(
-                                                  controller.setReasonErrorText,
-                                                  giveReasonController),
-                                          //
-                                          Obx(
-                                            () => Text(
-                                              controller
-                                                  .getReasonErrorText.value,
-                                              style: _textTheme.headline6,
+                                    content: const Text(
+                                        "Contact your manager as shift can no longer be declined."),
+                                    actions: [
+                                      Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          splashColor: const Color.fromARGB(
+                                              255, 30, 89, 137),
+                                          onTap: () {
+                                            Get.back();
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12, horizontal: 20),
+                                            child: const Text(
+                                              "Ok",
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 64, 160, 239)),
                                             ),
                                           ),
-                                          //
-                                          //Decline Shift Button
-                                          Constants.materialRoundedButton(
-                                              baseColor: const Color.fromARGB(
-                                                  255, 252, 39, 24),
-                                              highlightColor: Colors.amber,
-                                              splashColor: const Color.fromARGB(
-                                                  255, 126, 19, 19),
-                                              onTapFunction: () {
-                                                if (giveReasonController
-                                                    .text.isEmpty) {
-                                                  controller.setReasonErrorText(
-                                                      giveReasonController
-                                                          .text);
-                                                } else {
-                                                  Navigator.of(context).pop();
-                                                  acceptOrDeclineStatusController.declineShift(
-                                                      controller
-                                                          .idOfSelectedItemsList,
-                                                      startDate,
-                                                      endDate,
-                                                      giveReasonController.text,
-                                                      callback,
-                                                      context);
-                                                }
-                                              },
-                                              buttonText: "Decline Shift"),
-                                          //Some Space
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
+                                    ],
+                                  );
+                                },
                               );
-                            },
-                          );
-                        } else if (controller.idOfSelectedItemsList.isEmpty) {
-                          Get.snackbar('Message', 'Please select some values.',
-                              duration: const Duration(milliseconds: 1200));
-                        } else {
-                          Get.snackbar('Message',
-                              'Declined shift cannot be declined again.',
-                              duration: const Duration(milliseconds: 1200));
-                        }
-                        // controller.idOfSelectedItemsList.clear();
-                        // controller.selectedItemsList.clear();
-                      },
-                      highlightColor: Colors.amber,
-                      splashColor: const Color.fromARGB(255, 126, 19, 19),
-                      child: Container(
-                        height: 40,
-                        decoration: const BoxDecoration(
-                            // color: Color.fromARGB(255, 252, 39, 24),
-                            ),
-                        child: const Center(
-                          child: Text(
-                            "DECLINE",
-                            style: TextStyle(
-                              color: Colors.white,
-                              letterSpacing: 1.5,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                      } else if (!controller.ifDeclinedShiftIsSelected
+                              .contains(true) &&
+                          controller.idOfSelectedItemsList.isNotEmpty) {
+                        //decline shift dialog
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            TextEditingController giveReasonController =
+                                TextEditingController();
+                            return Dialog(
+                              backgroundColor: Colors.transparent,
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    padding:
+                                        const EdgeInsets.symmetric(horizontal: 15)
+                                            .copyWith(
+                                      top: 20.0,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Constants.declineShiftPopupTopRow(
+                                            context, "Decline Shift"),
+                                        //Some Space
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Constants.textfieldWithCancelSuffixButton(
+                                            controller.setReasonErrorText,
+                                            giveReasonController),
+                                        //
+                                        Obx(
+                                          () => Text(
+                                            controller.getReasonErrorText.value,
+                                            style: _textTheme.headline6,
+                                          ),
+                                        ),
+                                        //
+                                        //Decline Shift Button
+                                        Constants.materialRoundedButton(
+                                            baseColor: const Color.fromARGB(
+                                                255, 252, 39, 24),
+                                            highlightColor: Colors.amber,
+                                            splashColor: const Color.fromARGB(
+                                                255, 126, 19, 19),
+                                            onTapFunction: () {
+                                              if (giveReasonController
+                                                  .text.isEmpty) {
+                                                controller.setReasonErrorText(
+                                                    giveReasonController.text);
+                                              } else {
+                                                Navigator.of(context).pop();
+                                                acceptOrDeclineStatusController
+                                                    .declineShift(
+                                                        controller
+                                                            .idOfSelectedItemsList,
+                                                        startDate,
+                                                        endDate,
+                                                        giveReasonController.text,
+                                                        callback,
+                                                        context);
+                                              }
+                                            },
+                                            buttonText: "Decline Shift"),
+                                        //Some Space
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      } else if (controller.idOfSelectedItemsList.isEmpty) {
+                        (_isIos)
+                            ? Constants.showCupertinoAlertDialog(
+                                child: const Text("Please select some values."),
+                                context: context)
+                            : Get.snackbar(
+                                'Message', 'Please select some values.',
+                                duration: const Duration(milliseconds: 1200));
+                      } else {
+                        (_isIos)
+                            ? Constants.showCupertinoAlertDialog(
+                                child: const Text(
+                                    "Declined shift cannot be declined again."),
+                                context: context)
+                            : Get.snackbar('Message',
+                                'Declined shift cannot be declined again.',
+                                duration: const Duration(milliseconds: 1200));
+                      }
+                    },
                   ),
                 ),
-                Expanded(
-                  child: Material(
-                    color: Color.fromARGB(255, 31, 224, 37),
-                    child: InkWell(
-                      onTap: () {
-                        print("accept");
-                        if (!controller.ifAcceptedShiftIsSelected
-                                .contains(true) &&
-                            controller.idOfSelectedItemsList.isNotEmpty) {
-                          print("first");
-                          acceptOrDeclineStatusController.acceptShift(
-                              controller.idOfSelectedItemsList,
-                              callback,
-                              context);
-                        } else if (controller.idOfSelectedItemsList.isEmpty) {
-                          Get.snackbar('Message', 'Please select some values.',
-                              duration: const Duration(milliseconds: 1200));
-                        } else {
-                          Get.snackbar('Message',
-                              'Accepted shift cannot be accepted again.',
-                              duration: const Duration(milliseconds: 1200));
-                        }
-
-                        // if (controller.selectedItemsList.isNotEmpty) {
-                        //   setState(() {});
-                        // }
-                      },
-                      splashColor: Color.fromARGB(255, 27, 126, 30),
-                      highlightColor: Colors.amber,
-                      child: Container(
-                        height: 40,
-                        decoration: const BoxDecoration(
-                            // color: Color.fromARGB(255, 36, 255, 43),
-                            ),
-                        child: const Center(
-                          child: Text(
-                            "ACCEPT",
-                            style: TextStyle(
-                              color: Colors.white,
-                              letterSpacing: 1.5,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                Container(
+                  height: 50,
+                  width: (MediaQuery.of(context).size.width - 50.0)/2,
+                  margin: const EdgeInsets.symmetric(horizontal: 5.0,),
+                  child: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    color: const Color.fromARGB(255, 31, 224, 37),
+                    child: const Text("ACCEPT",style: TextStyle(fontWeight: FontWeight.bold,),),
+                    onPressed: () {
+                      if (!controller.ifAcceptedShiftIsSelected.contains(true) &&
+                          controller.idOfSelectedItemsList.isNotEmpty) {
+                        acceptOrDeclineStatusController.acceptShift(
+                            controller.idOfSelectedItemsList, callback, context);
+                      } else if (controller.idOfSelectedItemsList.isEmpty) {
+                        (_isIos)
+                            ? Constants.showCupertinoAlertDialog(
+                                child: const Text("Please select some values."),
+                                context: context)
+                            : Get.snackbar(
+                                'Message', 'Please select some values.',
+                                duration: const Duration(milliseconds: 1200));
+                      } else {
+                        (_isIos)
+                            ? Constants.showCupertinoAlertDialog(
+                                child: const Text(
+                                    "Accepted shift cannot be accepted again."),
+                                context: context)
+                            : Get.snackbar('Message',
+                                'Accepted shift cannot be accepted again.',
+                                duration: const Duration(milliseconds: 1200));
+                      }
+                    },
                   ),
                 ),
               ],
@@ -968,5 +887,12 @@ class AcceptDeclineController extends GetxController {
 
   get getReasonErrorText {
     return reasonErrorText;
+  }
+
+  RxInt _preventFromRefreshInt = 1.obs;
+
+  //getters
+  get getPreventFromRefreshInt {
+    return _preventFromRefreshInt;
   }
 }

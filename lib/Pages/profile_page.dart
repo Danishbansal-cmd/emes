@@ -1,10 +1,10 @@
 import 'package:emes/Pages/ProfilePages/license_qualification_screen.dart';
 import 'package:emes/Pages/ProfilePages/profile_screen.dart';
+import 'package:emes/Utils/configure_platform.dart';
 import 'package:emes/Widgets/drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'dart:io' show Platform;
 
 enum Sky { ProfileScreen, LicenseQualificationScreen }
 
@@ -22,11 +22,12 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Sky _selectedSegment = Sky.ProfileScreen;
-  bool _isIos = Platform.isIOS;
+  final ConfigurePlatform _configurePlatform = ConfigurePlatform();
 
   @override
   Widget build(BuildContext context) {
     final _colorScheme = Theme.of(context).colorScheme;
+    bool _isIos = _configurePlatform.getConfigurePlatformBool;
     return (_isIos)
         ? CupertinoPageScaffold(
             navigationBar: const CupertinoNavigationBar(
@@ -42,8 +43,10 @@ class _ProfilePageState extends State<ProfilePage> {
               child: SafeArea(
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 50,
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 15.0,),
+                                height: 50,
+                                width: MediaQuery.of(context).size.width,
                       child: CupertinoSlidingSegmentedControl<Sky>(
                         backgroundColor: CupertinoColors.systemGrey5,
                         thumbColor: CupertinoColors.white,
@@ -51,7 +54,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         groupValue: _selectedSegment,
                         // Callback that sets the selected segmented control.
                         onValueChanged: (Sky? value) {
-                          print("this is the value $value");
                           if (value != null) {
                             setState(() {
                               _selectedSegment = value;
@@ -60,14 +62,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         },
                         children: const <Sky, Widget>{
                           Sky.ProfileScreen: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 10.0,),
                             child: Text(
                               'Profile',
                               style: TextStyle(fontSize: 14),
                             ),
                           ),
                           Sky.LicenseQualificationScreen: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 10.0,),
                             child: Text(
                               'License/Qualification',
                               style: TextStyle(fontSize: 14),
@@ -80,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       // height: MediaQuery.of(context).size.height,
                       child: _selectedSegment == Sky.ProfileScreen
                           ? ProfileScreen()
-                          : const LicenseQualificationScreen(),
+                          : LicenseQualificationScreen(),
                     )
                   ],
                 ),
@@ -90,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
         : DefaultTabController(
             length: 2,
             child: Scaffold(
-              drawer: MyDrawer(),
+              drawer: const MyDrawer(),
               appBar: AppBar(
                 // backgroundColor: (true) ? CupertinoColors.systemGrey2 : null,
                 title: const Text("My Profile"),
@@ -117,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               body: SafeArea(
                 child: TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   children: [ProfileScreen(), LicenseQualificationScreen()],
                 ),
               ),

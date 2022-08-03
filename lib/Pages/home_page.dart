@@ -7,6 +7,7 @@ import 'package:emes/Pages/inbox_page.dart';
 import 'package:emes/Pages/profile_page.dart';
 import 'package:emes/Pages/more_page.dart';
 import 'package:emes/Routes/routes.dart';
+import 'package:emes/Utils/configure_platform.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Themes/themes.dart';
 import 'package:emes/Utils/shift_data.dart';
@@ -19,7 +20,6 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io' show Platform;
 
 enum Sky { firstScreen, secondScreen, thirdScreen }
 
@@ -38,7 +38,6 @@ class _HomePageState extends State<HomePage> {
   final firstScreenController = Get.put(FirstScreenController());
   //initializing thirdscreen getx controller
   final nextScreenController = Get.put(NextScreenController());
-  bool _isIos = Platform.isIOS;
 
   @override
   void dispose() {
@@ -47,7 +46,8 @@ class _HomePageState extends State<HomePage> {
     homeController.dispose();
   }
 
-  ShiftData _shiftData = ShiftData();
+  final ShiftData _shiftData = ShiftData();
+  final ConfigurePlatform _configurePlatform = ConfigurePlatform();
 
   final GlobalKey<NavigatorState> firstTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> secondTabNavKey = GlobalKey<NavigatorState>();
@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     final _colorScheme = Theme.of(context).colorScheme;
-
+    bool _isIos = _configurePlatform.getConfigurePlatformBool;
     return (_isIos)
         ? CupertinoTabScaffold(
             tabBar: CupertinoTabBar(
@@ -116,8 +116,10 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SizedBox(
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 15.0,),
                                 height: 50,
+                                width: MediaQuery.of(context).size.width,
                                 child: CupertinoSlidingSegmentedControl<Sky>(
                                   backgroundColor: CupertinoColors.systemGrey5,
                                   thumbColor: CupertinoColors.white,
@@ -125,7 +127,6 @@ class _HomePageState extends State<HomePage> {
                                   groupValue: _selectedSegment,
                                   // Callback that sets the selected segmented control.
                                   onValueChanged: (Sky? value) {
-                                    print("this is the value $value");
                                     if (value != null) {
                                       if (value == Sky.firstScreen) {
                                         firstScreenController.setValueInt();
@@ -147,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                                   children: const <Sky, Widget>{
                                     Sky.firstScreen: Padding(
                                       padding:
-                                          EdgeInsets.symmetric(horizontal: 8),
+                                          EdgeInsets.symmetric(horizontal: 8.0,vertical: 10.0,),
                                       child: Text(
                                         'PREVIOUS',
                                         style: TextStyle(fontSize: 14),
@@ -155,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     Sky.secondScreen: Padding(
                                       padding:
-                                          EdgeInsets.symmetric(horizontal: 8),
+                                          EdgeInsets.symmetric(horizontal: 8,vertical: 10.0,),
                                       child: Text(
                                         'TODAY',
                                         style: TextStyle(fontSize: 14),
@@ -163,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     Sky.thirdScreen: Padding(
                                       padding:
-                                          EdgeInsets.symmetric(horizontal: 8),
+                                          EdgeInsets.symmetric(horizontal: 8,vertical: 10.0,),
                                       child: Text(
                                         'NEXT',
                                         style: TextStyle(fontSize: 14),
@@ -214,7 +215,7 @@ class _HomePageState extends State<HomePage> {
             length: 3,
             child: Scaffold(
               appBar: AppBar(
-                title: Text("Nu Force Security Group"),
+                title: const Text("Nu Force Security Group"),
                 actions: [
                   // Consumer<ThemeProvider>(
                   //   builder: (context, appLevelThemeProvider, _) {
@@ -279,14 +280,6 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 15,
                   ),
                   onTap: (int) async {
-                    // print("do i printaasfdas");
-
-                    // void tryFunction(String value1, String value2) {
-                    //   // print("tryfunction real values $value1   $value2");
-                    //   date.setStartDate(value1);
-                    //   date.setEndDate(value2);
-                    // }
-
                     //your code goes here
                     SharedPreferences sharedPreferences =
                         await SharedPreferences.getInstance();
@@ -313,9 +306,7 @@ class _HomePageState extends State<HomePage> {
                       (value) => setDateFunction(
                           (jsonDecode(value.body))['data']['start_date'],
                           (jsonDecode(value.body))['data']['end_date']),
-                      // print((jsonDecode(value.body))['data']['start_date']);
                     );
-                    // setState(() {});
                   },
                   tabs: const [
                     Tab(
@@ -334,7 +325,11 @@ class _HomePageState extends State<HomePage> {
               body: TabBarView(
                 // to disable swiping tabs in TabBar flutter
                 physics: const NeverScrollableScrollPhysics(),
-                children: [FirstScreen(), SecondScreen(), ThirdScreen()],
+                children: [
+                  const FirstScreen(),
+                  SecondScreen(),
+                  const ThirdScreen()
+                ],
               ),
             ),
           );

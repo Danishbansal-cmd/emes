@@ -1,10 +1,7 @@
 import 'dart:convert';
-
 import 'package:emes/Utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
 
 class ApplyLeaveIosPage extends StatefulWidget {
@@ -23,20 +20,31 @@ class _ApplyLeaveIosPageState extends State<ApplyLeaveIosPage> {
 
   @override
   Widget build(BuildContext context) {
-    final maxlines = 3;
+    const maxlines = 3;
     return Material(
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
-          middle: Text("Apply Leave"),
+          leading: Material(
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(
+                CupertinoIcons.back,
+                color: CupertinoColors.activeBlue,
+              ),
+            ),
+          ),
+          middle: const Text("Apply Leave"),
         ),
         child: SafeArea(
-          child: Container(
+          child: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
                 _DatePickerItem(
                   children: <Widget>[
-                    Text("From Date"),
+                    const Text("From Date"),
                     CupertinoButton(
                       child: Text(
                         '${fromDate.day}/${fromDate.month}/${fromDate.year}',
@@ -68,7 +76,7 @@ class _ApplyLeaveIosPageState extends State<ApplyLeaveIosPage> {
                 ),
                 _DatePickerItem(
                   children: <Widget>[
-                    Text("To Date"),
+                    const Text("To Date"),
                     CupertinoButton(
                       child: Text(
                         '${toDate.day}/${toDate.month}/${toDate.year}',
@@ -113,7 +121,7 @@ class _ApplyLeaveIosPageState extends State<ApplyLeaveIosPage> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Container(
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         vertical: 10.0,
                       ),
                       height: maxlines * 24.0 + 30,
@@ -151,23 +159,24 @@ class _ApplyLeaveIosPageState extends State<ApplyLeaveIosPage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(
+                  margin: const EdgeInsets.symmetric(
                     horizontal: 10.0,
                     vertical: 10.0,
                   ),
                   width: double.infinity,
                   child: CupertinoButton(
-                    child: Text("Apply Leave"),
+                    child: const Text("Apply Leave"),
                     onPressed: () {
-                      if (fromDate == toDate) {
-                        _showCupertinoAlertDialog(
+                      if (fromDate.day == toDate.day && fromDate.month == toDate.month && fromDate.year == toDate.year) {
+                        Constants.showCupertinoAlertDialog(
                           child: const Text("Both dates cannot be same"),
+                          context: context,
                         );
                       } else if (fromDate.isAfter(toDate)) {
-                        _showCupertinoAlertDialog(
-                          child:
-                              const Text("From date cannot be after to date"),
-                        );
+                        Constants.showCupertinoAlertDialog(
+                            child:
+                                const Text("From date cannot be after to date"),
+                            context: context);
                       } else if (applyLeaveReasonController.text.isNotEmpty) {
                         applyLeaveData(
                             (fromDate.day.toString().length == 1
@@ -223,26 +232,6 @@ class _ApplyLeaveIosPageState extends State<ApplyLeaveIosPage> {
     );
   }
 
-  void _showCupertinoAlertDialog({required Widget child}) {
-    showCupertinoDialog(
-      context: context,
-      builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text("Note"),
-          content: child,
-          actions: [
-            CupertinoDialogAction(
-              child: Text("Ok"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Future applyLeaveData(
       String value1, String value2, String value3, BuildContext context) async {
     var response = await http.post(
@@ -261,10 +250,12 @@ class _ApplyLeaveIosPageState extends State<ApplyLeaveIosPage> {
     print(Constants.getStaffID);
     print("message ${jsonData['message']}");
     if (jsonData['status'] == 200) {
-      _showCupertinoAlertDialog(child: Text(jsonData['message']));
+      Constants.showCupertinoAlertDialog(
+          child: Text(jsonData['message']), context: context);
     }
     if (jsonData['status'] == 401) {
-      _showCupertinoAlertDialog(child: Text(jsonData['message']));
+      Constants.showCupertinoAlertDialog(
+          child: Text(jsonData['message']), context: context);
     }
   }
 }

@@ -15,7 +15,7 @@ class _MorePageState extends State<MorePage> {
   Widget build(BuildContext context) {
     return Material(
       child: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
+        navigationBar: const CupertinoNavigationBar(
           middle: Text('More'),
         ),
         child: SafeArea(
@@ -39,19 +39,18 @@ class _MorePageState extends State<MorePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Log out"),
+                      const Text("Log out"),
                       SizedBox(
-                        child: CupertinoButton(
-                          
+                        child: IconButton(
                           color: CupertinoColors.activeGreen,
-                          child: Icon(CupertinoIcons.forward),
+                          icon: const Icon(CupertinoIcons.forward,size: 24.0,),
                           onPressed: () {
                             showCupertinoDialog(
                               context: context,
                               builder: (context) {
                                 return CupertinoAlertDialog(
                                   title: const Text("Log Out"),
-                                  content: Text(
+                                  content: const Text(
                                       "Are you sure you want to logout of EMES?"),
                                   actions: [
                                     CupertinoDialogAction(
@@ -61,7 +60,12 @@ class _MorePageState extends State<MorePage> {
                                       },
                                     ),
                                     CupertinoDialogAction(
-                                        child: const Text("Logout",style: TextStyle(color: CupertinoColors.destructiveRed),),
+                                        child: const Text(
+                                          "Logout",
+                                          style: TextStyle(
+                                              color: CupertinoColors
+                                                  .destructiveRed),
+                                        ),
                                         onPressed: () async {
                                           SharedPreferences sharedPreferences =
                                               await SharedPreferences
@@ -76,7 +80,6 @@ class _MorePageState extends State<MorePage> {
                                             }),
                                           );
                                         }),
-                                    
                                   ],
                                 );
                               },
