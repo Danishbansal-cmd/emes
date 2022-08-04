@@ -3,10 +3,8 @@ import 'package:emes/Pages/home_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Utils/constants.dart';
-import 'package:emes/Utils/get_logged_in_information.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
@@ -427,7 +425,6 @@ class LoginFormController extends GetxController {
             builder: (context) => HomePage(),
           ),
         );
-        GetLoggedInUserInformation.getData();
       }
       if (jsonData['status'] == 401) {
         print("Wrong Username or Password You entered.");

@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'package:emes/Providers/accept_decline_provider.dart';
+
 import 'package:emes/Utils/configure_platform.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Utils/shift_data.dart';
@@ -7,9 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({Key? key}) : super(key: key);
@@ -50,12 +46,17 @@ class _FirstScreenState extends State<FirstScreen> {
                             FaIcon(
                               FontAwesomeIcons.calendarDays,
                               size: 70,
-                              color: Colors.blue,
+                              color: CupertinoColors.activeGreen,
                             ),
                             SizedBox(
                               height: 5,
                             ),
-                            Text("No Shifts Found"),
+                            Text(
+                              "No Connection Found",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         );
 
@@ -66,19 +67,31 @@ class _FirstScreenState extends State<FirstScreen> {
                         final keyList = shiftData.keys.toList();
 
                         return shiftData.isEmpty
-                            ? Column(
+                            ?
+                            //if data is empty
+                            Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const FaIcon(
                                     FontAwesomeIcons.calendarDays,
                                     size: 70,
-                                    color: Colors.blue,
+                                    color: CupertinoColors.activeGreen,
                                   ),
                                   const SizedBox(
                                     height: 5,
                                   ),
-                                  const Text("No Shifts Found"),
-                                  Text(snapshot.data['shift_title']),
+                                  const Text(
+                                    "No Shifts Found",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    snapshot.data['shift_title'],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ],
                               )
                             : NotificationListener<
@@ -114,6 +127,9 @@ class _FirstScreenState extends State<FirstScreen> {
                                           return const SizedBox.shrink();
                                         },
                                         itemBuilder: (context, index2) {
+                                          var tempVar = shiftData[
+                                                  keyList[index]]
+                                              [insideKeyList.toList()[index2]];
                                           return Container(
                                             margin: const EdgeInsets.symmetric(
                                                 vertical: 8),
@@ -144,7 +160,6 @@ class _FirstScreenState extends State<FirstScreen> {
                                                               .symmetric(
                                                           vertical: 3,
                                                           horizontal: 10),
-                                                      // color: Colors.green,
                                                       height:
                                                           shiftContainerHeight,
                                                       child: Column(
@@ -155,14 +170,12 @@ class _FirstScreenState extends State<FirstScreen> {
                                                             CrossAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          // const Icon(Icons.ad_units),
                                                           Text(
-                                                            "${Constants.nameOfDayOfShift(shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift'])} ${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(8, 10)}/${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(5, 7)}/${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(0, 4)}",
+                                                            "${Constants.nameOfDayOfShift(tempVar['day_of_shift'])} ${tempVar['work_date'].substring(8, 10)}/${tempVar['work_date'].substring(5, 7)}/${tempVar['work_date'].substring(0, 4)}",
                                                             style: _textTheme
                                                                 .headline3!
                                                                 .copyWith(
-                                                              color: shiftData[keyList[index]]
-                                                                              [insideKeyList.toList()[index2]]
+                                                              color: tempVar
                                                                           [
                                                                           'confirmed_by_staff'] ==
                                                                       "1"
@@ -171,7 +184,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                                                       54,
                                                                       192,
                                                                       59)
-                                                                  : shiftData[keyList[index]][insideKeyList.toList()[index2]]['confirmed_by_staff'] ==
+                                                                  : tempVar['confirmed_by_staff'] ==
                                                                           "2"
                                                                       ? const Color.fromARGB(
                                                                           255,
@@ -187,7 +200,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                                           ),
                                                           //shift's client name
                                                           Text(
-                                                            "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
+                                                            "${tempVar['client_name']}",
                                                             style: _textTheme
                                                                 .headline4,
                                                           ),
@@ -195,7 +208,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                                           Text.rich(
                                                             TextSpan(
                                                               text:
-                                                                  '${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}',
+                                                                  '${tempVar['time_on']}',
                                                               style: _textTheme
                                                                   .headline4,
                                                               children: <
@@ -205,7 +218,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                                                         " TO "),
                                                                 TextSpan(
                                                                   text:
-                                                                      '${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}',
+                                                                      '${tempVar['time_off']}',
                                                                   style: _textTheme
                                                                       .headline4,
                                                                 )

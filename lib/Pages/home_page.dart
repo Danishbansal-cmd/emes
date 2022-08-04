@@ -6,10 +6,8 @@ import 'package:emes/Pages/apply_leave_page.dart';
 import 'package:emes/Pages/inbox_page.dart';
 import 'package:emes/Pages/profile_page.dart';
 import 'package:emes/Pages/more_page.dart';
-import 'package:emes/Routes/routes.dart';
 import 'package:emes/Utils/configure_platform.dart';
 import 'package:emes/Utils/constants.dart';
-import 'package:emes/Themes/themes.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:emes/Widgets/drawer.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:geocode/geocode.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -117,7 +114,9 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 15.0,),
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 15.0,
+                                ),
                                 height: 50,
                                 width: MediaQuery.of(context).size.width,
                                 child: CupertinoSlidingSegmentedControl<Sky>(
@@ -147,24 +146,30 @@ class _HomePageState extends State<HomePage> {
                                   },
                                   children: const <Sky, Widget>{
                                     Sky.firstScreen: Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 8.0,vertical: 10.0,),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8.0,
+                                        vertical: 10.0,
+                                      ),
                                       child: Text(
                                         'PREVIOUS',
                                         style: TextStyle(fontSize: 14),
                                       ),
                                     ),
                                     Sky.secondScreen: Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 8,vertical: 10.0,),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 10.0,
+                                      ),
                                       child: Text(
                                         'TODAY',
                                         style: TextStyle(fontSize: 14),
                                       ),
                                     ),
                                     Sky.thirdScreen: Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 8,vertical: 10.0,),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 10.0,
+                                      ),
                                       child: Text(
                                         'NEXT',
                                         style: TextStyle(fontSize: 14),
@@ -217,19 +222,6 @@ class _HomePageState extends State<HomePage> {
               appBar: AppBar(
                 title: const Text("Nu Force Security Group"),
                 actions: [
-                  // Consumer<ThemeProvider>(
-                  //   builder: (context, appLevelThemeProvider, _) {
-                  //     return Switch.adaptive(
-                  //       value: appLevelThemeProvider.themeMode == ThemeMode.dark,
-                  //       onChanged: (value) {
-                  //         final provider =
-                  //             Provider.of<ThemeProvider>(context, listen: false);
-                  //         provider.toggleTheme(value);
-                  //       },
-                  //     );
-                  //   },
-                  // ),
-
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 3)
                         .copyWith(right: 20),
@@ -322,28 +314,15 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               drawer: const MyDrawer(),
-              body: TabBarView(
+              body: const TabBarView(
                 // to disable swiping tabs in TabBar flutter
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  const FirstScreen(),
-                  SecondScreen(),
-                  const ThirdScreen()
-                ],
+                physics: NeverScrollableScrollPhysics(),
+                children: [FirstScreen(), SecondScreen(), ThirdScreen()],
               ),
             ),
           );
   }
 }
-
-// class HomePageArguments {
-//   String firstName = "";
-//   String lastName = "";
-//   String email = "";
-//   String staffID ="";
-
-//   HomePageArguments(this.firstName, this.lastName, this.email, this.staffID);
-// }
 
 class HomeController extends GetxController {
   var location = new Location();
@@ -353,14 +332,9 @@ class HomeController extends GetxController {
   LocationData? coordinates;
   @override
   void onInit() {
-    // secureScreen();
     // TODO: implement onInit
     super.onInit();
     getLocation();
-    // .then((value) {
-    //   LocationData? location = value;
-    //   getAddress(location!.latitude!, location.longitude);
-    // });
   }
 
   Future<LocationData?> getLocation() async {
@@ -393,7 +367,6 @@ class HomeController extends GetxController {
         await geoCode.reverseGeocoding(latitude: lat, longitude: long);
     realAddress =
         "this is the address ${address.countryName} ${address.city} ${address.streetAddress}";
-    print("realAddress ${realAddress}");
     return realAddress;
   }
 }

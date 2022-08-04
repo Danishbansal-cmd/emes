@@ -129,7 +129,7 @@ class _ApplyLeaveIosPageState extends State<ApplyLeaveIosPage> {
                       child: CupertinoTextField(
                         textInputAction: TextInputAction.done,
                         maxLines: maxlines,
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 20.0,
                         ),
                         enableInteractiveSelection: false,
@@ -148,10 +148,6 @@ class _ApplyLeaveIosPageState extends State<ApplyLeaveIosPage> {
                         ),
                         decoration: BoxDecoration(
                           color: CupertinoColors.white,
-                          // border: Border.all(
-                          //   color: CupertinoColors.lightBackgroundGray,
-                          //   width: 2,
-                          // ),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
@@ -245,10 +241,6 @@ class _ApplyLeaveIosPageState extends State<ApplyLeaveIosPage> {
     );
 
     var jsonData = jsonDecode(response.body);
-    print("ondate $value1");
-    print("todate $value2");
-    print(Constants.getStaffID);
-    print("message ${jsonData['message']}");
     if (jsonData['status'] == 200) {
       Constants.showCupertinoAlertDialog(
           child: Text(jsonData['message']), context: context);

@@ -1,15 +1,10 @@
-import 'dart:convert';
 import 'dart:io' show Platform;
-import 'package:emes/Themes/themes.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:emes/Routes/routes.dart';
-import 'package:emes/Utils/get_logged_in_information.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:emes/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 

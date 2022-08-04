@@ -4,13 +4,11 @@ import 'package:emes/Utils/configure_platform.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:emes/Pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
-import 'package:geocoder2/geocoder2.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class CheckinCheckoutPage extends StatefulWidget {
@@ -52,7 +50,6 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
 
   Marker? _firstMarker;
   Marker? _justMarker;
-  
 
   //initializing initState method
   @override
@@ -86,7 +83,10 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    icon: const Icon(CupertinoIcons.back,color: CupertinoColors.activeBlue,),
+                    icon: const Icon(
+                      CupertinoIcons.back,
+                      color: CupertinoColors.activeBlue,
+                    ),
                   ),
                 ),
                 middle: const Text(
@@ -131,7 +131,9 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
           //upper screen
           Expanded(
             child: SingleChildScrollView(
-              physics: (_isIos) ? const BouncingScrollPhysics() : const AlwaysScrollableScrollPhysics(),
+              physics: (_isIos)
+                  ? const BouncingScrollPhysics()
+                  : const AlwaysScrollableScrollPhysics(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -204,7 +206,7 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.grey.shade200,
-                                          offset: Offset(5.0, 5.0),
+                                          offset: const Offset(5.0, 5.0),
                                           blurRadius: 5.0,
                                         ),
                                       ],
@@ -293,13 +295,6 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
                     decoration: BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(10.0),
-                      // boxShadow: [
-                      //   BoxShadow(
-                      //     color: Colors.grey.shade200,
-                      //     offset: Offset(5.0, 5.0),
-                      //     blurRadius: 5.0,
-                      //   ),
-                      // ],
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
@@ -388,9 +383,12 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
                           .showCircularProgressIndicator.value = true;
                       //getting latlong of the venueplace or clientid
                       List<String> venueLatLong =
-                          // ["30.7123652","76.707227"];
+                          //mohali lat longs
+                          // ["30.7123652", "76.707227"];
                           await checkinCheckoutController
                               .getLatLong(widget.clientId!);
+                      print("this is the venue latlong $venueLatLong");
+
                       //to get the current time when user click on check in
                       var date = DateTime.now();
                       //to check if user try to check in only 15 minutes before the
@@ -414,135 +412,136 @@ class _CheckinCheckoutPageState extends State<CheckinCheckoutPage> {
                           //and its shift place
 
                           //if venueLatLong or venueLocation is not empty
-                          if (venueLatLong.isNotEmpty) {
-                            if (venueLatLong[0].isNotEmpty ||
-                                venueLatLong[1].isNotEmpty) {
-                              var userDistanceFromShiftPlace =
-                                  checkinCheckoutController.calculateDistane([
-                                //latlong of user position
-                                LatLng(
-                                  checkinCheckoutController
-                                      .locationData!.latitude!,
-                                  checkinCheckoutController
-                                      .locationData!.longitude!,
-                                ),
-                                // bathinda lat long
-                                //const LatLng( 30.210995, 74.945473)
-
-                                //latlong of the venueplace or clientid
-                                LatLng(double.parse(venueLatLong[0]),
-                                    double.parse(venueLatLong[1]))
-                              ]);
-                              if (userDistanceFromShiftPlace > 150) {
-                                // if (false) {
+                          if (venueLatLong[0].isNotEmpty &&
+                              venueLatLong[1].isNotEmpty) {
+                            var userDistanceFromShiftPlace =
+                                checkinCheckoutController.calculateDistane([
+                              //latlong of user position
+                              LatLng(
                                 checkinCheckoutController
-                                    .showCircularProgressIndicator
-                                    .value = false;
+                                    .locationData!.latitude!,
+                                checkinCheckoutController
+                                    .locationData!.longitude!,
+                              ),
+                              // bathinda lat long
+                              //const LatLng( 30.210995, 74.945473)
 
-                                //if user is too away from shift
-                                (_isIos)
-                                    ? Constants.showCupertinoAlertDialog(
-                                        child: const Text(
-                                            "You must be within the range of 150 Meters, You are too away from the shift place."),
-                                        context: context)
-                                    : Get.snackbar(
-                                        'Message',
-                                        'You must be within the range of 150 Meters, You are too away from the shift place.',
-                                      );
-                                Future.delayed(const Duration(milliseconds: 30),
-                                    () {
-                                  (_isIos)
-                                      ? Constants.showCupertinoAlertDialog(
-                                          child: Text(
-                                              "You are ${userDistanceFromShiftPlace.round()} meters away from the shift place."),
-                                          context: context)
-                                      : Get.snackbar('Message',
-                                          "You are ${userDistanceFromShiftPlace.round()} meters away from the shift place.");
-                                });
-                              } else {
-                                //if user is in the right place and right time
-                                //from geocoding package
-                                List<geocoding.Placemark> placemarks =
-                                    await geocoding.placemarkFromCoordinates(
+                              //latlong of the venueplace or clientid
+                              LatLng(double.parse(venueLatLong[0]),
+                                  double.parse(venueLatLong[1]))
+                            ]);
+                            if (userDistanceFromShiftPlace > 150) {
+                              // if (false) {
+                              checkinCheckoutController
+                                  .showCircularProgressIndicator.value = false;
+
+                              //if user is too away from shift
+                              (_isIos)
+                                  ? Constants.showCupertinoAlertDialog(
+                                      child: Text(
+                                          "You must be within the range of 150 Meters, You are ${userDistanceFromShiftPlace.round()} meters away from the shift place."),
+                                      context: context)
+                                  : Get.snackbar(
+                                      'Message',
+                                      'You must be within the range of 150 Meters, You are ${userDistanceFromShiftPlace.round()} meters away from the shift place.',
+                                      duration: const Duration(seconds: 5),
+                                    );
+                              //to add marker
+                              _firstMarker = Marker(
+                                markerId: const MarkerId('Your Position'),
+                                infoWindow:
+                                    const InfoWindow(title: 'Your Position'),
+                                icon: BitmapDescriptor.defaultMarkerWithHue(
+                                    BitmapDescriptor.hueOrange),
+                                position: LatLng(
+                                    checkinCheckoutController
+                                        .locationData!.latitude!,
+                                    checkinCheckoutController
+                                        .locationData!.longitude!),
+                              );
+                              //updating cameraPosition
+                              _googleMapController!.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                    target: LatLng(
                                         checkinCheckoutController
                                             .locationData!.latitude!,
                                         checkinCheckoutController
-                                            .locationData!.longitude!);
-                                geocoding.Placemark place = placemarks[0];
-                                checkinCheckoutController
-                                        .addressLocation.value =
-                                    '${place.street} ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.administrativeArea}, ${place.country}';
-                                print(
-                                    "this is the geocoding address ${checkinCheckoutController.addressLocation.value}");
-                                checkinCheckoutController
-                                    .showAddressLocation.value = true;
-                                checkinCheckoutController
-                                    .showCircularProgressIndicator
-                                    .value = false;
-                                //to add marker
-                                _firstMarker = Marker(
-                                  markerId: const MarkerId('Your Position'),
-                                  infoWindow:
-                                      const InfoWindow(title: 'Your Position'),
-                                  icon: BitmapDescriptor.defaultMarkerWithHue(
-                                      BitmapDescriptor.hueOrange),
-                                  position: LatLng(
+                                            .locationData!.longitude!),
+                                    zoom: 15,
+                                    tilt: 40,
+                                  ),
+                                ),
+                              );
+                              setState(() {});
+                            } else {
+                              //if user is in the right place and right time
+                              //from geocoding package
+                              List<geocoding.Placemark> placemarks =
+                                  await geocoding.placemarkFromCoordinates(
                                       checkinCheckoutController
                                           .locationData!.latitude!,
                                       checkinCheckoutController
-                                          .locationData!.longitude!),
-                                );
-                                //function to checked the user in database
-                                checkinCheckoutController.checkinUser(
-                                    widget.shiftId!,
-                                    (checkinCheckoutController
-                                            .locationData!.latitude!)
-                                        .toString(),
-                                    (checkinCheckoutController
-                                            .locationData!.longitude!)
-                                        .toString());
-                                //updating cameraPosition
-                                _googleMapController!.animateCamera(
-                                  CameraUpdate.newCameraPosition(
-                                    CameraPosition(
-                                      target: LatLng(
-                                          checkinCheckoutController
-                                              .locationData!.latitude!,
-                                          checkinCheckoutController
-                                              .locationData!.longitude!),
-                                      zoom: 15,
-                                      tilt: 40,
-                                    ),
-                                  ),
-                                );
-                                setState(() {});
-                              }
-                            } else {
-                              // venueLatLng is not empty
-                              //but it holds empty string
+                                          .locationData!.longitude!);
+                              geocoding.Placemark place = placemarks[0];
+                              checkinCheckoutController.addressLocation.value =
+                                  '${place.street} ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.administrativeArea}, ${place.country}';
+                              print(
+                                  "this is the geocoding address ${checkinCheckoutController.addressLocation.value}");
+                              checkinCheckoutController
+                                  .showAddressLocation.value = true;
                               checkinCheckoutController
                                   .showCircularProgressIndicator.value = false;
-                              (_isIos)
-                                  ? Constants.showCupertinoAlertDialog(
-                                      child: const Text(
-                                          "Place does not exist in the backend."),
-                                      context: context)
-                                  : Get.snackbar('Message',
-                                      'Place does not exist in the backend.');
+                              //to add marker
+                              _firstMarker = Marker(
+                                markerId: const MarkerId('Your Position'),
+                                infoWindow:
+                                    const InfoWindow(title: 'Your Position'),
+                                icon: BitmapDescriptor.defaultMarkerWithHue(
+                                    BitmapDescriptor.hueOrange),
+                                position: LatLng(
+                                    checkinCheckoutController
+                                        .locationData!.latitude!,
+                                    checkinCheckoutController
+                                        .locationData!.longitude!),
+                              );
+                              //function to checked the user in database
+                              checkinCheckoutController.checkinUser(
+                                  widget.shiftId!,
+                                  (checkinCheckoutController
+                                          .locationData!.latitude!)
+                                      .toString(),
+                                  (checkinCheckoutController
+                                          .locationData!.longitude!)
+                                      .toString());
+                              //updating cameraPosition
+                              _googleMapController!.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                    target: LatLng(
+                                        checkinCheckoutController
+                                            .locationData!.latitude!,
+                                        checkinCheckoutController
+                                            .locationData!.longitude!),
+                                    zoom: 15,
+                                    tilt: 40,
+                                  ),
+                                ),
+                              );
+                              setState(() {});
                             }
                           } else {
-                            // if venue location is empty
+                            // venueLatLng is not empty
+                            //but it holds empty string
                             checkinCheckoutController
                                 .showCircularProgressIndicator.value = false;
                             (_isIos)
                                 ? Constants.showCupertinoAlertDialog(
                                     child: const Text(
-                                        "Shift Place does not exist."),
+                                        "Place does not exist in the backend."),
                                     context: context)
-                                : Get.snackbar(
-                                    'Message', 'Shift Place does not exist.',
-                                    duration:
-                                        const Duration(milliseconds: 1700));
+                                : Get.snackbar('Message',
+                                    'Place does not exist in the backend.');
                           }
                         });
                       } else {

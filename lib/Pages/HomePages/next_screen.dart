@@ -1,5 +1,4 @@
 import 'package:emes/Pages/checkin_checkout_page.dart';
-import 'package:emes/Pages/details_page_from_next_screen.dart';
 import 'package:emes/Providers/accept_decline_provider.dart';
 import 'package:emes/Utils/configure_platform.dart';
 import 'package:emes/Utils/constants.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class ThirdScreen extends StatefulWidget {
   const ThirdScreen({Key? key}) : super(key: key);
@@ -79,17 +77,24 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                   FaIcon(
                                     FontAwesomeIcons.calendarDays,
                                     size: 70,
-                                    color: Colors.blue,
+                                    color: CupertinoColors.activeGreen,
                                   ),
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  Text("No Shifts Found"),
+                                  Text(
+                                    "No Connection Found",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ],
                               );
+                            }
 
-                              // if we get our data
-                            } else if (snapshot.hasData) {
+                            // if we get our data
+                            else if (snapshot.hasData) {
+                              // Extracting data from snapshot object
                               final shiftData =
                                   snapshot.data['allShifts'] as Map;
                               final keyList = shiftData.keys.toList();
@@ -97,21 +102,32 @@ class _ThirdScreenState extends State<ThirdScreen> {
                               endDate = snapshot.data['end_date'];
 
                               return shiftData.isEmpty
-                                  ? Column(
-                                      //if data is empty
+                                  ?
+                                  //if data is empty
+                                  Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
                                         const FaIcon(
                                           FontAwesomeIcons.calendarDays,
                                           size: 70,
-                                          color: Colors.blue,
+                                          color: CupertinoColors.activeGreen,
                                         ),
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        const Text("No Shifts Found"),
-                                        Text(snapshot.data['shift_title']),
+                                        const Text(
+                                          "No Shifts Found",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          snapshot.data['shift_title'],
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ],
                                     )
                                   : NotificationListener<
@@ -151,6 +167,10 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                 return const SizedBox.shrink();
                                               },
                                               itemBuilder: (context, index2) {
+                                                var tempVar =
+                                                    shiftData[keyList[index]][
+                                                        insideKeyList
+                                                            .toList()[index2]];
                                                 nextScreenCurrentDate =
                                                     shiftData[keyList[index]][
                                                             insideKeyList
@@ -196,20 +216,16 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                         "$index$index2");
                                                                 controller
                                                                     .addIdOfSelectedItemsList(
-                                                                        "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
-                                                                if (shiftData[keyList[
-                                                                        index]][insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['confirmed_by_staff'] ==
+                                                                        "${tempVar['shift_id']}:${tempVar['work_date']}:${tempVar['user_id']}");
+                                                                if (tempVar[
+                                                                        'confirmed_by_staff'] ==
                                                                     "1") {
                                                                   controller
                                                                       .ifAcceptedShiftIsSelected
                                                                       .add(
                                                                           true);
-                                                                } else if (shiftData[
-                                                                        keyList[index]][insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['confirmed_by_staff'] ==
+                                                                } else if (tempVar[
+                                                                        'confirmed_by_staff'] ==
                                                                     "2") {
                                                                   controller
                                                                       .ifDeclinedShiftIsSelected
@@ -225,20 +241,16 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                         "$index$index2");
                                                                 controller
                                                                     .deleteIdOfSelectedItemsList(
-                                                                        "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
-                                                                if (shiftData[keyList[
-                                                                        index]][insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['confirmed_by_staff'] ==
+                                                                        "${tempVar['shift_id']}:${tempVar['work_date']}:${tempVar['user_id']}");
+                                                                if (tempVar[
+                                                                        'confirmed_by_staff'] ==
                                                                     "1") {
                                                                   controller
                                                                       .ifAcceptedShiftIsSelected
                                                                       .remove(
                                                                           true);
-                                                                } else if (shiftData[
-                                                                        keyList[index]][insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['confirmed_by_staff'] ==
+                                                                } else if (tempVar[
+                                                                        'confirmed_by_staff'] ==
                                                                     "2") {
                                                                   controller
                                                                       .ifDeclinedShiftIsSelected
@@ -270,22 +282,15 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                       "$index$index2");
                                                               controller
                                                                   .addIdOfSelectedItemsList(
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
-                                                              if (shiftData[keyList[
-                                                                      index]][insideKeyList
-                                                                          .toList()[
-                                                                      index2]]['confirmed_by_staff'] ==
+                                                                      "${tempVar['shift_id']}:${tempVar['work_date']}:${tempVar['user_id']}");
+                                                              if (tempVar[
+                                                                      'confirmed_by_staff'] ==
                                                                   "1") {
                                                                 controller
                                                                     .ifAcceptedShiftIsSelected
                                                                     .add(true);
-                                                              } else if (shiftData[
-                                                                          keyList[
-                                                                              index]]
-                                                                      [
-                                                                      insideKeyList
-                                                                              .toList()[
-                                                                          index2]]['confirmed_by_staff'] ==
+                                                              } else if (tempVar[
+                                                                      'confirmed_by_staff'] ==
                                                                   "2") {
                                                                 controller
                                                                     .ifDeclinedShiftIsSelected
@@ -300,23 +305,16 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                       "$index$index2");
                                                               controller
                                                                   .deleteIdOfSelectedItemsList(
-                                                                      "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date']}:${shiftData[keyList[index]][insideKeyList.toList()[index2]]['user_id']}");
-                                                              if (shiftData[keyList[
-                                                                      index]][insideKeyList
-                                                                          .toList()[
-                                                                      index2]]['confirmed_by_staff'] ==
+                                                                      "${tempVar['shift_id']}:${tempVar['work_date']}:${tempVar['user_id']}");
+                                                              if (tempVar[
+                                                                      'confirmed_by_staff'] ==
                                                                   "1") {
                                                                 controller
                                                                     .ifAcceptedShiftIsSelected
                                                                     .remove(
                                                                         true);
-                                                              } else if (shiftData[
-                                                                          keyList[
-                                                                              index]]
-                                                                      [
-                                                                      insideKeyList
-                                                                              .toList()[
-                                                                          index2]]['confirmed_by_staff'] ==
+                                                              } else if (tempVar[
+                                                                      'confirmed_by_staff'] ==
                                                                   "2") {
                                                                 controller
                                                                     .ifDeclinedShiftIsSelected
@@ -342,18 +340,18 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                       .start,
                                                               children: [
                                                                 Text(
-                                                                  "${Constants.nameOfDayOfShift(shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift'])} ${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(8, 10)}/${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(5, 7)}/${shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'].substring(0, 4)}",
+                                                                  "${Constants.nameOfDayOfShift(tempVar['day_of_shift'])} ${tempVar['work_date'].substring(8, 10)}/${tempVar['work_date'].substring(5, 7)}/${tempVar['work_date'].substring(0, 4)}",
                                                                   style: _textTheme
                                                                       .headline3!
                                                                       .copyWith(
-                                                                    color: shiftData[keyList[index]][insideKeyList.toList()[index2]]['confirmed_by_staff'] ==
+                                                                    color: tempVar['confirmed_by_staff'] ==
                                                                             "1"
                                                                         ? const Color.fromARGB(
                                                                             255,
                                                                             54,
                                                                             192,
                                                                             59)
-                                                                        : shiftData[keyList[index]][insideKeyList.toList()[index2]]['confirmed_by_staff'] ==
+                                                                        : tempVar['confirmed_by_staff'] ==
                                                                                 "2"
                                                                             ? const Color.fromARGB(
                                                                                 255,
@@ -369,7 +367,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                 ),
                                                                 //shift's client name
                                                                 Text(
-                                                                  "${shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name']}",
+                                                                  "${tempVar['client_name']}",
                                                                   style: _textTheme
                                                                       .headline4,
                                                                 ),
@@ -377,7 +375,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                 Text.rich(
                                                                   TextSpan(
                                                                     text:
-                                                                        '${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on']}',
+                                                                        '${tempVar['time_on']}',
                                                                     style: _textTheme
                                                                         .headline4,
                                                                     children: <
@@ -387,7 +385,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                               " TO "),
                                                                       TextSpan(
                                                                         text:
-                                                                            '${shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off']}',
+                                                                            '${tempVar['time_off']}',
                                                                         style: _textTheme
                                                                             .headline4,
                                                                       )
@@ -424,10 +422,8 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                 //             'is_confirm'] ==
                                                                 //         "1" &&
 
-                                                                if (shiftData[keyList[
-                                                                        index]][insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['confirmed_by_staff'] ==
+                                                                if (tempVar[
+                                                                        'confirmed_by_staff'] ==
                                                                     "1") {
                                                                   Navigator
                                                                       .push(
@@ -436,58 +432,62 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                                         ? CupertinoPageRoute(
                                                                             builder: (context) =>
                                                                                 CheckinCheckoutPage(
-                                                                              shiftId: shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id'],
-                                                                              clientId: shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_id'],
-                                                                              workDate: shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'],
-                                                                              timeOn: shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on'],
-                                                                              timeOff: shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off'],
-                                                                              taskId: shiftData[keyList[index]][insideKeyList.toList()[index2]]['task_id'],
-                                                                              clientName: shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name'],
-                                                                              activityName: shiftData[keyList[index]][insideKeyList.toList()[index2]]['activity_name'],
-                                                                              dayOfShift: shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift'],
+                                                                              shiftId: tempVar['shift_id'],
+                                                                              clientId: tempVar['client_id'],
+                                                                              workDate: tempVar['work_date'],
+                                                                              timeOn: tempVar['time_on'],
+                                                                              timeOff: tempVar['time_off'],
+                                                                              taskId: tempVar['task_id'],
+                                                                              clientName: tempVar['client_name'],
+                                                                              activityName: tempVar['activity_name'],
+                                                                              dayOfShift: tempVar['day_of_shift'],
                                                                             ),
                                                                           )
                                                                         : MaterialPageRoute(
                                                                             builder: (context) =>
                                                                                 CheckinCheckoutPage(
-                                                                              shiftId: shiftData[keyList[index]][insideKeyList.toList()[index2]]['shift_id'],
-                                                                              clientId: shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_id'],
-                                                                              workDate: shiftData[keyList[index]][insideKeyList.toList()[index2]]['work_date'],
-                                                                              timeOn: shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_on'],
-                                                                              timeOff: shiftData[keyList[index]][insideKeyList.toList()[index2]]['time_off'],
-                                                                              taskId: shiftData[keyList[index]][insideKeyList.toList()[index2]]['task_id'],
-                                                                              clientName: shiftData[keyList[index]][insideKeyList.toList()[index2]]['client_name'],
-                                                                              activityName: shiftData[keyList[index]][insideKeyList.toList()[index2]]['activity_name'],
-                                                                              dayOfShift: shiftData[keyList[index]][insideKeyList.toList()[index2]]['day_of_shift'],
+                                                                              shiftId: tempVar['shift_id'],
+                                                                              clientId: tempVar['client_id'],
+                                                                              workDate: tempVar['work_date'],
+                                                                              timeOn: tempVar['time_on'],
+                                                                              timeOff: tempVar['time_off'],
+                                                                              taskId: tempVar['task_id'],
+                                                                              clientName: tempVar['client_name'],
+                                                                              activityName: tempVar['activity_name'],
+                                                                              dayOfShift: tempVar['day_of_shift'],
                                                                             ),
                                                                           ),
                                                                   );
-                                                                } else if (shiftData[keyList[index]][insideKeyList.toList()[index2]]
-                                                                            [
+                                                                } else if (tempVar[
                                                                             'is_confirm'] !=
                                                                         "1" &&
-                                                                    shiftData[keyList[
-                                                                            index]][insideKeyList
-                                                                                .toList()[
-                                                                            index2]]['confirmed_by_staff'] ==
+                                                                    tempVar['confirmed_by_staff'] ==
                                                                         "1") {
-                                                                  Get.snackbar(
-                                                                      'Message',
-                                                                      'Shift is not confirmed from the backend.',
-                                                                      duration: const Duration(
-                                                                          milliseconds:
-                                                                              1200));
-                                                                } else if (shiftData[
-                                                                        keyList[index]][insideKeyList
-                                                                            .toList()[
-                                                                        index2]]['confirmed_by_staff'] !=
+                                                                  (_isIos)
+                                                                      ? Constants.showCupertinoAlertDialog(
+                                                                          child: const Text(
+                                                                              "Shift is not confirmed from the backend."),
+                                                                          context:
+                                                                              context)
+                                                                      : Get.snackbar(
+                                                                          'Message',
+                                                                          'Shift is not confirmed from the backend.',
+                                                                          duration:
+                                                                              const Duration(milliseconds: 1200));
+                                                                } else if (tempVar[
+                                                                        'confirmed_by_staff'] !=
                                                                     "1") {
-                                                                  Get.snackbar(
-                                                                      'Message',
-                                                                      'You need to confirm the shift first.',
-                                                                      duration: const Duration(
-                                                                          milliseconds:
-                                                                              1200));
+                                                                  (_isIos)
+                                                                      ? Constants.showCupertinoAlertDialog(
+                                                                          child: const Text(
+                                                                              "You need to confirm the shift first."),
+                                                                          context:
+                                                                              context)
+                                                                      : Get.snackbar(
+                                                                          'Message',
+                                                                          'You need to confirm the shift first.',
+                                                                          duration:
+                                                                              const Duration(milliseconds: 1200));
                                                                 }
                                                               },
                                                             );
@@ -538,15 +538,15 @@ class _ThirdScreenState extends State<ThirdScreen> {
                   Container(
                     margin: const EdgeInsets.symmetric(
                       horizontal: 15.0,
+                    ).copyWith(
+                      bottom: (_isIos) ? 5.0 : 10.0,
                     ),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
+                        SizedBox(
                           height: 50,
-                          width: (MediaQuery.of(context).size.width - 50.0) / 2,
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 5.0,
-                          ),
+                          width: (MediaQuery.of(context).size.width - 40.0) / 2,
                           child: CupertinoButton(
                             padding: EdgeInsets.zero,
                             color: CupertinoColors.destructiveRed,
@@ -615,46 +615,32 @@ class _ThirdScreenState extends State<ThirdScreen> {
                               } else if (!controller.ifDeclinedShiftIsSelected
                                       .contains(true) &&
                                   controller.idOfSelectedItemsList.isNotEmpty) {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    TextEditingController giveReasonController =
-                                        TextEditingController();
-                                    return Dialog(
-                                      backgroundColor: Colors.transparent,
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                            ),
-                                            padding: const EdgeInsets.symmetric(
-                                                    horizontal: 15)
-                                                .copyWith(
-                                              top: 20.0,
-                                            ),
-                                            child: Column(
+                                TextEditingController giveReasonController =
+                                    TextEditingController();
+                                int maxlines = 3;
+                                (_isIos)
+                                    ? showCupertinoDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return CupertinoAlertDialog(
+                                            title: const Text("Decline Shift"),
+                                            content: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Constants
-                                                    .declineShiftPopupTopRow(
-                                                        context,
-                                                        "Decline Shift"),
-                                                //Some Space
-                                                const SizedBox(
-                                                  height: 10,
+                                                SizedBox(
+                                                  height:
+                                                      maxlines * 24.0 + 10.0,
+                                                  child: Constants
+                                                      .setReasonCupertinoTextField(
+                                                    context: context,
+                                                    controller:
+                                                        giveReasonController,
+                                                    maxlines: maxlines,
+                                                    onChanged: controller
+                                                        .setReasonErrorText,
+                                                  ),
                                                 ),
-                                                Constants
-                                                    .textfieldWithCancelSuffixButton(
-                                                        controller
-                                                            .setReasonErrorText,
-                                                        giveReasonController),
                                                 //
                                                 Obx(
                                                   () => Text(
@@ -664,18 +650,19 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                     style: _textTheme.headline6,
                                                   ),
                                                 ),
-                                                //
-                                                //Decline Shift Button
-                                                Constants.materialRoundedButton(
-                                                    baseColor:
-                                                        const Color.fromARGB(
-                                                            255, 252, 39, 24),
-                                                    highlightColor:
-                                                        Colors.amber,
-                                                    splashColor:
-                                                        const Color.fromARGB(
-                                                            255, 126, 19, 19),
-                                                    onTapFunction: () {
+                                                const SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                SizedBox(
+                                                  height: 40,
+                                                  width: double.infinity,
+                                                  child: CupertinoButton(
+                                                    padding: EdgeInsets.zero,
+                                                    color: CupertinoColors
+                                                        .destructiveRed,
+                                                    child: const Text(
+                                                        "Decline Shift"),
+                                                    onPressed: () {
                                                       if (giveReasonController
                                                           .text.isEmpty) {
                                                         controller
@@ -696,20 +683,127 @@ class _ThirdScreenState extends State<ThirdScreen> {
                                                             context);
                                                       }
                                                     },
-                                                    buttonText:
-                                                        "Decline Shift"),
-                                                //Some Space
-                                                const SizedBox(
-                                                  height: 20,
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
+                                            actions: [
+                                              CupertinoDialogAction(
+                                                child: const Text("Cancel"),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        })
+                                    : showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Dialog(
+                                            backgroundColor: Colors.transparent,
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
+                                                  ),
+                                                  padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 15)
+                                                      .copyWith(
+                                                    top: 20.0,
+                                                  ),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Constants
+                                                          .declineShiftPopupTopRow(
+                                                              context,
+                                                              "Decline Shift"),
+                                                      //Some Space
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Constants.textfieldWithCancelSuffixButton(
+                                                          controller
+                                                              .setReasonErrorText,
+                                                          giveReasonController),
+                                                      //
+                                                      Obx(
+                                                        () => Text(
+                                                          controller
+                                                              .getReasonErrorText
+                                                              .value,
+                                                          style: _textTheme
+                                                              .headline6,
+                                                        ),
+                                                      ),
+                                                      //
+                                                      //Decline Shift Button
+                                                      Constants
+                                                          .materialRoundedButton(
+                                                              baseColor: const Color
+                                                                      .fromARGB(
+                                                                  255,
+                                                                  252,
+                                                                  39,
+                                                                  24),
+                                                              highlightColor:
+                                                                  Colors.amber,
+                                                              splashColor:
+                                                                  const Color
+                                                                          .fromARGB(
+                                                                      255,
+                                                                      126,
+                                                                      19,
+                                                                      19),
+                                                              onTapFunction:
+                                                                  () {
+                                                                if (giveReasonController
+                                                                    .text
+                                                                    .isEmpty) {
+                                                                  controller.setReasonErrorText(
+                                                                      giveReasonController
+                                                                          .text);
+                                                                } else {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                  acceptOrDeclineStatusController.declineShift(
+                                                                      controller
+                                                                          .idOfSelectedItemsList,
+                                                                      startDate,
+                                                                      endDate,
+                                                                      giveReasonController
+                                                                          .text,
+                                                                      callback,
+                                                                      context);
+                                                                }
+                                                              },
+                                                              buttonText:
+                                                                  "Decline Shift"),
+                                                      //Some Space
+                                                      const SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
                               } else if (controller
                                   .idOfSelectedItemsList.isEmpty) {
                                 (_isIos)
@@ -735,12 +829,9 @@ class _ThirdScreenState extends State<ThirdScreen> {
                             },
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           height: 50,
-                          width: (MediaQuery.of(context).size.width - 50.0) / 2,
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 5.0,
-                          ),
+                          width: (MediaQuery.of(context).size.width - 40.0) / 2,
                           child: CupertinoButton(
                             padding: EdgeInsets.zero,
                             color: const Color.fromARGB(255, 31, 224, 37),

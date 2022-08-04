@@ -5,12 +5,12 @@ import 'package:emes/Utils/constants.dart';
 import 'package:emes/Widgets/drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class ApplyLeavePage extends StatefulWidget {
-  ApplyLeavePage({Key? key}) : super(key: key);
+  const ApplyLeavePage({Key? key}) : super(key: key);
 
   @override
   State<ApplyLeavePage> createState() => _ApplyLeavePageState();
@@ -21,7 +21,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
   TextEditingController fromDateController = TextEditingController();
   TextEditingController toDateController = TextEditingController();
   TextEditingController reasonController = TextEditingController();
-  ConfigurePlatform _configurePlatform = ConfigurePlatform();
+  final ConfigurePlatform _configurePlatform = ConfigurePlatform();
 
   //intializing openleavebar getx controller
   final openLeaveBarController = Get.put(OpenLeaveBarController());
@@ -69,7 +69,6 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
           )
         : Scaffold(
             appBar: AppBar(
-              // elevation: 0,
               title: const Text("My Leave"),
               actions: [
                 InkWell(
@@ -95,8 +94,6 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                   },
                                   child: SingleChildScrollView(
                                     child: Container(
-                                      // width: MediaQuery.of(context).size.width,
-                                      // height: 410,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
                                         color: Theme.of(context)
@@ -311,7 +308,6 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                             borderRadius:
                                                 BorderRadius.circular(50),
                                             child: InkWell(
-                                              // splashColor: Colors.white,
                                               onTap: () {
                                                 applyLeavePageController
                                                     .validateApplyLeaveFormData(
@@ -323,7 +319,6 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                       .replaceAll('  ', ' '),
                                                   context,
                                                 );
-                                                // setState(() {});
                                               },
                                               child: Container(
                                                 width: double.infinity,
@@ -352,7 +347,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                           );
                         });
                   },
-                  child: Container(
+                  child: const SizedBox(
                     width: 60,
                     child:
                         Center(child: Icon(Icons.add_circle_outline_outlined)),
@@ -360,7 +355,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                 ),
               ],
             ),
-            drawer: MyDrawer(),
+            drawer: const MyDrawer(),
             body: _CommonSafeAreaWidget(context: context),
           );
   }
@@ -436,17 +431,31 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
     bool _isIos = _configurePlatform.getConfigurePlatformBool;
     return SafeArea(
       child: Container(
+        width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 5),
         child: FutureBuilder(
             future: AppliedLeavesProvider.getAppliedLeaves(),
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasError) {
-                  return Center(
-                    child: Text(
-                      '${snapshot.error} occured',
-                      style: TextStyle(fontSize: 18),
-                    ),
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      FaIcon(
+                        FontAwesomeIcons.rectangleList,
+                        size: 70,
+                        color: CupertinoColors.activeGreen,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "No Connection Found",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   );
                 } else if (snapshot.hasData) {
                   final appliedLeavesData = snapshot.data as Map;
@@ -456,14 +465,21 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                   return appliedLeavesData.isEmpty
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.calendar_month_outlined,
-                              size: 90,
-                              color: Colors.blue,
+                          children: const [
+                            FaIcon(
+                              FontAwesomeIcons.rectangleList,
+                              size: 70,
+                              color: CupertinoColors.activeGreen,
                             ),
-                            const Text("No Leaves Found"),
-                            Text(snapshot.data['message']),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "No Leaves Available",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         )
                       : NotificationListener<OverscrollIndicatorNotification>(
@@ -478,6 +494,9 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                 : const AlwaysScrollableScrollPhysics(),
                             itemCount: appliedLeavesDataKeysList.length,
                             itemBuilder: (context, index) {
+                              var tempVar = appliedLeavesData[
+                                      appliedLeavesDataKeysList[index]]
+                                  ['ApplyForHoliday'];
                               return InkWell(
                                 onTap: () {
                                   openLeaveBarController
@@ -518,16 +537,11 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                 ),
                                                 //this indicator with two dots on its top and bottom
                                                 Constants.indicatorTracker(
-                                                    appliedLeavesData[appliedLeavesDataKeysList[
-                                                                        index]][
-                                                                    'ApplyForHoliday']
+                                                    tempVar
                                                                 ['status'] ==
                                                             "0"
                                                         ? Colors.amber
-                                                        : appliedLeavesData[appliedLeavesDataKeysList[
-                                                                            index]]
-                                                                        [
-                                                                        'ApplyForHoliday']
+                                                        : tempVar
                                                                     [
                                                                     'status'] ==
                                                                 "1"
@@ -542,15 +556,9 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    Text(appliedLeavesData[
-                                                                appliedLeavesDataKeysList[
-                                                                    index]]
-                                                            ['ApplyForHoliday']
+                                                    Text(tempVar
                                                         ['on_date']),
-                                                    Text(appliedLeavesData[
-                                                                appliedLeavesDataKeysList[
-                                                                    index]]
-                                                            ['ApplyForHoliday']
+                                                    Text(tempVar
                                                         ['to_date'])
                                                   ],
                                                 ),
@@ -570,38 +578,26 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                   width: 90,
                                                   child: Center(
                                                     child: Text(
-                                                      appliedLeavesData[appliedLeavesDataKeysList[
-                                                                          index]]
-                                                                      [
-                                                                      'ApplyForHoliday']
+                                                      tempVar
                                                                   ['status'] ==
                                                               "0"
                                                           ? "Pending"
-                                                          : appliedLeavesData[appliedLeavesDataKeysList[
-                                                                              index]]
-                                                                          [
-                                                                          'ApplyForHoliday']
+                                                          : tempVar
                                                                       [
                                                                       'status'] ==
                                                                   "1"
                                                               ? "Accepted"
                                                               : "Decline",
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: Colors.white),
                                                     ),
                                                   ),
                                                   decoration: BoxDecoration(
-                                                    color: appliedLeavesData[
-                                                                        appliedLeavesDataKeysList[
-                                                                            index]]
-                                                                    [
-                                                                    'ApplyForHoliday']
+                                                    color: tempVar
                                                                 ['status'] ==
                                                             "0"
                                                         ? Colors.amber
-                                                        : appliedLeavesData[appliedLeavesDataKeysList[
-                                                                            index]][
-                                                                        'ApplyForHoliday']
+                                                        : tempVar
                                                                     [
                                                                     'status'] ==
                                                                 "1"
@@ -620,11 +616,6 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                       BorderRadius.circular(50),
                                                   splashColor: Colors.blue,
                                                   onTap: () {
-                                                    print(appliedLeavesData[
-                                                                appliedLeavesDataKeysList[
-                                                                    index]]
-                                                            ['ApplyForHoliday']
-                                                        ['reason']);
                                                     openLeaveBarController
                                                         .setBoolValueToggle(
                                                             index);
@@ -678,17 +669,11 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                         BorderRadius.circular(
                                                       3,
                                                     ),
-                                                    color: appliedLeavesData[
-                                                                        appliedLeavesDataKeysList[
-                                                                            index]]
-                                                                    [
-                                                                    'ApplyForHoliday']
+                                                    color: tempVar
                                                                 ['status'] ==
                                                             "0"
                                                         ? Colors.amber
-                                                        : appliedLeavesData[appliedLeavesDataKeysList[
-                                                                            index]][
-                                                                        'ApplyForHoliday']
+                                                        : tempVar
                                                                     [
                                                                     'status'] ==
                                                                 "1"
@@ -721,11 +706,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                               const TextSpan(
                                                                   text: "   "),
                                                               TextSpan(
-                                                                text: appliedLeavesData[
-                                                                        appliedLeavesDataKeysList[
-                                                                            index]]
-                                                                    [
-                                                                    'ApplyForHoliday']['reason'],
+                                                                text: tempVar['reason'],
                                                                 style: const TextStyle(
                                                                     fontSize:
                                                                         16,
@@ -735,14 +716,12 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                               )
                                                             ]),
                                                       ),
-                                                      (appliedLeavesData[appliedLeavesDataKeysList[
-                                                                          index]]
-                                                                      [
-                                                                      'ApplyForHoliday']
+                                                      (tempVar
                                                                   [
                                                                   'admin_msg'] ==
                                                               "")
-                                                          ? SizedBox.shrink()
+                                                          ? const SizedBox
+                                                              .shrink()
                                                           : Text.rich(
                                                               TextSpan(
                                                                 text:
@@ -758,9 +737,7 @@ class _ApplyLeavePageState extends State<ApplyLeavePage> {
                                                                       text:
                                                                           "   "),
                                                                   TextSpan(
-                                                                    text: appliedLeavesData[appliedLeavesDataKeysList[index]]
-                                                                            [
-                                                                            'ApplyForHoliday']
+                                                                    text: tempVar
                                                                         [
                                                                         'admin_msg'],
                                                                     style: const TextStyle(
@@ -824,15 +801,11 @@ class OpenLeaveBarController extends GetxController {
   setBoolValueToggle(int value) {
     if (_testingIndex.value == value && _value.value == true) {
       _value.value = false;
-      // print("does i work or not");
     } else if (_testingIndex.value == value && _value.value == false) {
       _value.value = true;
     }
-    // _value = true;
-
     if (_testingIndex.value != value && _value.value == false) {
       _value.value = true;
-      // print("does i work or not second second second");
     }
   }
 
@@ -843,21 +816,18 @@ class OpenLeaveBarController extends GetxController {
 
 class AppliedLeavesProvider {
   static Future<Map> getAppliedLeaves() async {
-    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // String decodeData = sharedPreferences.getString("data") ?? "";
-    // var data = jsonDecode(decodeData);
     var response = await http.get(
       Uri.parse(Constants.getCompanyURL +
           "/api/get_applied_leave/" +
           Constants.getStaffID),
     );
     var jsonData = jsonDecode(response.body);
-    Map data2 = jsonData['data'];
-    // if(jsonData['status' == 200]){
-    //    data2 = jsonData['data'];
-    // }
+    if (jsonData["status"] == 200) {
+      Map data2 = jsonData['data'];
 
-    return data2;
+      return data2;
+    }
+    return {};
   }
 }
 
@@ -925,9 +895,6 @@ class ApplyLeavePageController extends GetxController {
     if (value.isEmpty) {
       _reasonErrorText.value = "*You must select a value.";
     }
-    // else if(value.length > 30){
-    //   _reasonErrorText = "*Reason is too long.";
-    // }
     else {
       _reasonErrorText.value = "";
     }

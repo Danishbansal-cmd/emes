@@ -1,12 +1,7 @@
-import 'package:emes/Providers/accept_decline_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class Constants {
-  // static final Constants _constants = Constants._internal();
-  // Constants._internal();
-
   static late String _firstName;
   static late String _lastName;
   static late String _email;
@@ -74,10 +69,6 @@ class Constants {
   static get getCompanyURL {
     return _companyURL;
   }
-
-  // factory Constants() {
-  //   return _constants;
-  // }
 
   //
   //Day of Shifts
@@ -289,7 +280,8 @@ class Constants {
     );
   }
 
-  static Future  showCupertinoAlertDialog({required Widget child, required BuildContext context}) {
+  static Future showCupertinoAlertDialog(
+      {required Widget child, required BuildContext context}) {
     return showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -306,6 +298,37 @@ class Constants {
           ],
         );
       },
+    );
+  }
+
+  static Widget setReasonCupertinoTextField({required BuildContext context, required int maxlines, required TextEditingController controller, required Function onChanged}) {
+    return CupertinoTextField(
+      textInputAction: TextInputAction.done,
+      maxLines: maxlines,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20.0,
+      ),
+      enableInteractiveSelection: false,
+      controller: controller,
+      cursorColor: CupertinoColors.activeOrange,
+      onChanged: (value) {
+        onChanged(value);
+      },
+      placeholder: "Enter your Reason",
+      suffix: CupertinoButton(
+        padding: EdgeInsets.zero,
+        onPressed: () {
+          controller.clear();
+        },
+        child: const Icon(
+          CupertinoIcons.clear_circled_solid,
+          color: CupertinoColors.activeBlue,
+        ),
+      ),
+      decoration: BoxDecoration(
+        color: CupertinoColors.white,
+        borderRadius: BorderRadius.circular(10.0),
+      ),
     );
   }
 }

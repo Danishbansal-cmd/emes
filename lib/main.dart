@@ -3,13 +3,11 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:emes/Pages/HomePages/previous_screen.dart';
 import 'package:emes/Pages/apply_leave_page.dart';
-import 'package:emes/Pages/form_testing_page.dart';
 import 'package:emes/Pages/home_page.dart';
 import 'package:emes/Pages/inbox_page.dart';
 import 'package:emes/Pages/login_page.dart';
 import 'package:emes/Pages/profile_page.dart';
 import 'package:emes/Pages/signup_page.dart';
-import 'package:emes/Providers/accept_decline_provider.dart';
 import 'package:emes/Routes/routes.dart';
 import 'package:emes/Themes/themes.dart';
 import 'package:emes/Utils/configure_platform.dart';
@@ -124,7 +122,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     //to set globally the value of variable
-    _configurePlatform.setConfigurePlatformBool(true);
+    _configurePlatform.setConfigurePlatformBool(Platform.isIOS);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -172,7 +170,6 @@ class _MyAppState extends State<MyApp> {
               MyRoutes.inboxPageRoute: (context) => InboxPage(),
               MyRoutes.loginPageRoute: (context) => LoginPage(),
               MyRoutes.signupPageRoute: (context) => SignupPage(),
-              MyRoutes.formTestingPageRoute: (context) => FormTestingPage(),
               MyRoutes.previousScreenRoute: (context) => FirstScreen(),
             },
           );
