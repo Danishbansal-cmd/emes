@@ -1,6 +1,5 @@
 import 'dart:io' show Platform;
 import 'package:emes/Utils/constants.dart';
-import 'package:emes/Routes/routes.dart';
 import 'package:emes/Utils/shift_data.dart';
 import 'package:emes/main.dart';
 import 'package:flutter/material.dart';
@@ -73,11 +72,9 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             InkWell(
               onTap: () {
-                Navigator.pushReplacementNamed(context, MyRoutes.homePageRoute);
-                // Navigator.pushNamed(context, MyRoutes.homePageRoute);
+                Get.toNamed('/homePage');
               },
               child: ListTile(
-                // leading: Icon(Icons.calendar_month_outlined,color: _colorScheme.secondaryVariant,),
                 leading: FaIcon(
                   FontAwesomeIcons.calendarDays,
                   size: 18,
@@ -87,20 +84,13 @@ class _MyDrawerState extends State<MyDrawer> {
                   "Roster",
                   style: _textTheme.headline2,
                 ),
-                // subtitle: Text("Subtitle Please"),
               ),
             ),
             InkWell(
               onTap: () {
-                // Navigator.pushNamed(context, MyRoutes.profilePageRoute);
-                Navigator.pushReplacementNamed(
-                    context, MyRoutes.profilePageRoute);
+                Get.toNamed('/profilePage');
               },
               child: ListTile(
-                // leading: Icon(
-                //   Icons.threed_rotation,
-                //   color: _colorScheme.secondaryVariant,
-                // ),
                 leading: FaIcon(
                   FontAwesomeIcons.addressCard,
                   size: 18,
@@ -110,20 +100,13 @@ class _MyDrawerState extends State<MyDrawer> {
                   "Profile",
                   style: _textTheme.headline2,
                 ),
-                // subtitle: const Text("Subtitle Please"),
               ),
             ),
             InkWell(
               onTap: () {
-                // Navigator.pushNamed(context, MyRoutes.applyLeavePageRoute);
-                Navigator.pushReplacementNamed(
-                    context, MyRoutes.applyLeavePageRoute);
+                Get.toNamed('/applyLeavePage');
               },
               child: ListTile(
-                // leading: Icon(
-                //   Icons.add_circle,
-                //   color: _colorScheme.secondaryVariant,
-                // ),
                 leading: FaIcon(
                   FontAwesomeIcons.circlePlus,
                   size: 18,
@@ -133,21 +116,14 @@ class _MyDrawerState extends State<MyDrawer> {
                   "Apply Leave",
                   style: _textTheme.headline2,
                 ),
-                // subtitle:const Text("Subtitle Please"),
               ),
             ),
             Obx(
               () => InkWell(
                 onTap: () {
-                  // Navigator.pushNamed(context, MyRoutes.inboxPageRoute);
-                  Navigator.pushReplacementNamed(
-                      context, MyRoutes.inboxPageRoute);
+                  Get.toNamed('/inboxPage');
                 },
                 child: ListTile(
-                  // leading: Icon(
-                  //   Icons.forum,
-                  //   color: _colorScheme.secondaryVariant,
-                  // ),
                   leading: FaIcon(
                     FontAwesomeIcons.solidMessage,
                     size: 18,
@@ -175,34 +151,9 @@ class _MyDrawerState extends State<MyDrawer> {
                           ),
                         )
                       : null,
-                  // subtitle:const  Text("Subtitle Please"),
                 ),
               ),
             ),
-            // ListTile(
-            //   // leading: Icon(
-            //   //   Icons.abc,
-            //   //   color: _colorScheme.secondaryVariant,
-            //   // ),
-            //   leading: FaIcon(
-            //       FontAwesomeIcons.arrowRightFromBracket,
-            //       size: 18,
-            //       color: _colorScheme.secondary,
-            //     ),
-            //   title: Consumer<ThemeProvider>(
-            //     builder: (context, appLevelThemeProvider, _) {
-            //       return Switch.adaptive(
-            //         value: appLevelThemeProvider.themeMode == ThemeMode.dark,
-            //         onChanged: (value) {
-            //           final provider =
-            //               Provider.of<ThemeProvider>(context, listen: false);
-            //           provider.toggleTheme(value);
-            //         },
-            //       );
-            //     },
-            //   ),
-            // ),
-
             InkWell(
               onTap: () {
                 Navigator.of(context).pop();
@@ -286,8 +237,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                                   .getInstance();
                                           sharedPreferences.clear();
                                           sharedPreferences.commit();
-                                          Navigator.pushReplacementNamed(
-                                              context, MyRoutes.loginPageRoute);
+                                          Get.toNamed('/loginPage');
                                         },
                                         borderRadius: BorderRadius.circular(5),
                                         splashColor: Colors.red,

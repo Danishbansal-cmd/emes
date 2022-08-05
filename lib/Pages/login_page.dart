@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:emes/Pages/home_page.dart';
+import 'package:emes/Utils/configure_platform.dart';
 import 'package:http/http.dart' as http;
-import 'package:emes/Routes/routes.dart';
 import 'package:emes/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,9 +18,6 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //initializing loginform getx controller
     final loginFormController = Get.put(LoginFormController());
-    print(
-        "to check how many times does it run\nto check how many times does it run\nto check how many times does it run\nto check how many times does it run\nto check how many times does it run\n");
-
     final _textTheme = Theme.of(context).textTheme;
     return DefaultTabController(
       length: 2,
@@ -108,7 +105,6 @@ class LoginPage extends StatelessWidget {
                                   horizontal: 20,
                                   vertical: 20,
                                 ),
-                                // height: 350,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -174,20 +170,17 @@ class LoginPage extends StatelessWidget {
                                       color: Colors.blue,
                                       borderRadius: BorderRadius.circular(50),
                                       child: InkWell(
-                                        // splashColor: Colors.white,
                                         onTap: () {
-                                          var a = loginFormController
-                                              .validateApplyLeave(
-                                                  usernameController.text,
-                                                  passwordController.text,
-                                                  companyIDController.text,
-                                                  context);
-                                          // validateApplyLeave(context);
+                                          loginFormController.validateSignIn(
+                                              usernameController.text,
+                                              passwordController.text,
+                                              companyIDController.text,
+                                              context);
                                         },
-                                        child: Container(
+                                        child: const SizedBox(
                                           width: double.infinity,
                                           height: 30,
-                                          child: const Center(
+                                          child: Center(
                                             child: Text(
                                               "Sign In",
                                               style: TextStyle(
@@ -209,50 +202,44 @@ class LoginPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 30),
-                      child: Column(
-                        children: [
-                          const Text(
-                            "Don't have an account?",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w500,
-                            ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Don't have an account?",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
                           ),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              // focusColor: Colors.yellow,
-                              // highlightColor: Colors.transparent,
-                              // overlayColor: Colors.blue,
-                              splashColor: Colors.blue[300],
-                              borderRadius: BorderRadius.circular(3),
-                              onTap: () {
-                                Navigator.pushReplacementNamed(
-                                    context, MyRoutes.signupPageRoute);
-                              },
-                              child: Container(
-                                height: 20,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                ),
-                                child: const Text(
-                                  "Sign Up",
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            splashColor: Colors.blue[300],
+                            borderRadius: BorderRadius.circular(3),
+                            onTap: () {
+                              Get.toNamed('/signUpPage');
+                            },
+                            child: Container(
+                              height: 20,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                              ),
+                              child: const Text(
+                                "Sign Up",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ],
@@ -326,6 +313,7 @@ class LoginFormController extends GetxController {
   RxString _usernameError = "".obs;
   RxString _passwordError = "".obs;
   RxString _companyIDError = "".obs;
+  final ConfigurePlatform _configurePlatform = ConfigurePlatform();
 
   //getters and setters
   get getUsernameError {
@@ -377,6 +365,7 @@ class LoginFormController extends GetxController {
     if (companyURL != false) {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
+      //set the companyUrl in the sharedPreferences or Cookies
       sharedPreferences.setString('sharedDataCompanyURL', companyURL);
       Constants.setCompanyURL(companyURL);
       return companyURL;
@@ -386,6 +375,7 @@ class LoginFormController extends GetxController {
 
   getData(
       String value1, String value2, String value3, BuildContext context) async {
+    bool _isIos = _configurePlatform.getConfigurePlatformBool;
     var companyURL = await getDataAboutCompanyURL(value3, context);
     if (companyURL == "false") {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -407,14 +397,15 @@ class LoginFormController extends GetxController {
           await SharedPreferences.getInstance();
       var jsonData = jsonDecode(response.body);
       String sharedData = jsonEncode(jsonData['data']);
-      print("jsonData $jsonData");
       if (jsonData['status'] == 200) {
-        print("Signed In Successfully.");
-        Constants.setFirstName(jsonData['data']['first_name']);
-        Constants.setLastName(jsonData['data']['last_name']);
-        Constants.setEmail(jsonData['data']['email']);
-        Constants.setStaffID(jsonData['data']['id']);
-        Constants.setData(jsonData['data']);
+        var data = jsonData['data'];
+        //setting constants value throughout the app
+        Constants.setFirstName(data['first_name']);
+        Constants.setLastName(data['last_name']);
+        Constants.setEmail(data['email']);
+        Constants.setStaffID(data['id']);
+        Constants.setData(data);
+        //setting cookies or sharedPreferences
         sharedPreferences.setString("token", jsonData['data']['token']);
         sharedPreferences.setString("staffID", jsonData['data']['id']);
         sharedPreferences.setString("sharedDataCompanyID", value3);
@@ -427,33 +418,24 @@ class LoginFormController extends GetxController {
         );
       }
       if (jsonData['status'] == 401) {
-        print("Wrong Username or Password You entered.");
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Wrong Username or Password You entered."),
-          ),
-        );
+        (_isIos)
+            ? Constants.showCupertinoAlertDialog(
+                child: const Text("Wrong Username or Password You entered."),
+                context: context)
+            : ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Wrong Username or Password You entered."),
+                ),
+              );
       }
-      // else{
-      //   print("Something Went Wrong.");
-      // }
     }
   }
 
-  validateApplyLeave(
+  validateSignIn(
       String value1, String value2, String value3, BuildContext context) async {
     setUsernameError(value1);
     setPasswordError(value2);
     setCompanyIDError(value3);
-    // if(value1.isEmpty){
-    //   setUsernameError("*You must enter a value.");
-    // }
-    // if(value2.isEmpty){
-    //   setPasswordError("*You must enter a value.");
-    // }
-    // if(value3.isEmpty){
-    //   setCompanyIDError("*You must enter a value.");
-    // }
     if (value1.isNotEmpty && value2.isNotEmpty && value3.isNotEmpty) {
       getData(value1, value2, value3, context);
     }

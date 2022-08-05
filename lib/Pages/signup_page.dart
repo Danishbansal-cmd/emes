@@ -1,6 +1,6 @@
 import 'package:emes/Providers/sign_up_form_provider.dart';
-import 'package:emes/Routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class SignupPage extends StatelessWidget {
@@ -268,8 +268,7 @@ class SignupPage extends StatelessWidget {
                             splashColor: Colors.blue[300],
                             borderRadius: BorderRadius.circular(3),
                             onTap: () {
-                              Navigator.pushReplacementNamed(
-                                  context, MyRoutes.loginPageRoute);
+                              Get.toNamed('/loginPage');
                             },
                             child: Container(
                               height: 20,
@@ -320,7 +319,7 @@ class SignupPage extends StatelessWidget {
             ),
           ),
           child: TextField(
-            cursorColor:Colors.grey,
+            cursorColor: Colors.grey,
             controller: controller,
             keyboardType: text == "Mobile"
                 ? TextInputType.number

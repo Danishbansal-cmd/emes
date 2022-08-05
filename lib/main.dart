@@ -8,7 +8,6 @@ import 'package:emes/Pages/inbox_page.dart';
 import 'package:emes/Pages/login_page.dart';
 import 'package:emes/Pages/profile_page.dart';
 import 'package:emes/Pages/signup_page.dart';
-import 'package:emes/Routes/routes.dart';
 import 'package:emes/Themes/themes.dart';
 import 'package:emes/Utils/configure_platform.dart';
 import 'package:emes/Utils/constants.dart';
@@ -37,7 +36,6 @@ void backgroundFetchHeadlessTask(HeadlessTask task) async {
   if (isTimeout) {
     // This task has exceeded its allowed running-time.
     // You must stop what you're doing and immediately .finish(taskId)
-    print("[BackgroundFetch] Headless task timed-out: $taskId");
     BackgroundFetch.finish(taskId);
     return;
   }
@@ -45,7 +43,6 @@ void backgroundFetchHeadlessTask(HeadlessTask task) async {
   String decodeData = sharedPreferences.getString("data") ?? "";
   String companyURL = sharedPreferences.getString("sharedDataCompanyURL") ?? "";
   var data = jsonDecode(decodeData);
-  print('[BackgroundFetch] Headless event received.');
   var response = await http
       .get(Uri.parse(companyURL + "/api/get_new_message_noti/" + data['id']));
   var jsonResponse = jsonDecode(response.body);
@@ -96,12 +93,11 @@ class _MyAppState extends State<MyApp> {
     // initPlatformState();
     String companyURL =
         sharedPreferences.getString("sharedDataCompanyURL") ?? "";
+    String decodeData = sharedPreferences.getString("data") ?? "";
+    var data = jsonDecode(decodeData);
     mytimer = Timer.periodic(Duration(minutes: 1), (timer) async {
-      var response =
-          await http.get(Uri.parse(companyURL + "/api/get_new_message_noti/8"
-              // +
-              //     Constants.getStaffID
-              ));
+      var response = await http.get(
+          Uri.parse(companyURL + "/api/get_new_message_noti/" + data['id']));
       var jsonResponse = jsonDecode(response.body);
       if (jsonResponse['data'] > 0) {
         NotificationApi.showNotification(
@@ -141,17 +137,20 @@ class _MyAppState extends State<MyApp> {
 
               return MediaQuery(
                 data: MediaQuery.of(context).copyWith(
-                  textScaleFactor: constrainedTextScaleFactor as double?,
+                  textScaleFactor: constrainedTextScaleFactor,
                 ),
                 child: child!,
               );
             },
-            // navigatorObservers: [NavigationHistoryObserver()],
             title: 'EMES',
             theme: MyTheme.lightTheme(context),
             darkTheme: MyTheme.darkTheme(context),
             themeMode: appLevelThemeProvider.themeMode,
             debugShowCheckedModeBanner: false,
+            //if user is not signed in then got to /loginPage
+            //otherwise run homePageFunction
+            //to set constants and sharedPreferences or cookies
+            //for the app
             initialRoute: user == null ? '/loginPage' : homePageFunction(),
             getPages: [
               GetPage(
@@ -162,16 +161,27 @@ class _MyAppState extends State<MyApp> {
                 name: '/loginPage',
                 page: () => LoginPage(),
               ),
+              GetPage(
+                name: '/signUpPage',
+                page: () => SignupPage(),
+              ),
+              GetPage(
+                name: '/applyLeavePage',
+                page: () => ApplyLeavePage(),
+              ),
+              GetPage(
+                name: '/inboxPage',
+                page: () => InboxPage(),
+              ),
+              GetPage(
+                name: '/profilePage',
+                page: () => ProfilePage(),
+              ),
+              GetPage(
+                name: '/firstScreen',
+                page: () => FirstScreen(),
+              ),
             ],
-            routes: {
-              MyRoutes.homePageRoute: (context) => HomePage(),
-              MyRoutes.profilePageRoute: (context) => ProfilePage(),
-              MyRoutes.applyLeavePageRoute: (context) => ApplyLeavePage(),
-              MyRoutes.inboxPageRoute: (context) => InboxPage(),
-              MyRoutes.loginPageRoute: (context) => LoginPage(),
-              MyRoutes.signupPageRoute: (context) => SignupPage(),
-              MyRoutes.previousScreenRoute: (context) => FirstScreen(),
-            },
           );
         },
       ),
@@ -183,9 +193,6 @@ class _MyAppState extends State<MyApp> {
     String companyURL =
         sharedPreferences.getString("sharedDataCompanyURL") ?? "";
     var data = jsonDecode(decodeData);
-    // Constants.setFirstName(data['first_name']);
-    // Constants.setLastName(data['last_name']);
-    // Constants.setEmail(data['email']);
     Constants.setCompanyURL(companyURL);
     Constants.setStaffID(data['id']);
     GetLoggedInUserInformation.getData();
@@ -203,7 +210,7 @@ class NotificationApi {
           payload: payload);
 
   static Future _notificationDetails() async {
-    return NotificationDetails(
+    return const NotificationDetails(
       android: AndroidNotificationDetails('channel id', 'channel name',
           channelDescription: 'channel description',
           importance: Importance.max),
@@ -230,9 +237,6 @@ class MainPageController extends GetxController {
   }
 
   get getNumberOfNotification {
-    // if(_numberOfNotification.value == '' || _numberOfNotification.value == 0){
-
-    // }
     return _numberOfNotification.value;
   }
 }
