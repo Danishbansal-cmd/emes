@@ -6,6 +6,7 @@ import 'package:emes/Widgets/drawer.dart';
 import 'package:emes/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -61,13 +62,18 @@ class _InboxPageState extends State<InboxPage> {
               if (snapshot.hasError) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.calendar_month_outlined,
+                  children: const [
+                    FaIcon(
+                      FontAwesomeIcons.message,
                       size: 90,
-                      color: Colors.blue,
+                      color: CupertinoColors.activeGreen,
                     ),
-                    Text("${snapshot.error} occured"),
+                    Text(
+                      "No Connection Found",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 );
               } else if (snapshot.hasData) {
