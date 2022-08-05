@@ -94,21 +94,23 @@ class _MyAppState extends State<MyApp> {
     String companyURL =
         sharedPreferences.getString("sharedDataCompanyURL") ?? "";
     String decodeData = sharedPreferences.getString("data") ?? "";
-    var data = jsonDecode(decodeData);
     mytimer = Timer.periodic(Duration(minutes: 1), (timer) async {
-      var response = await http.get(
-          Uri.parse(companyURL + "/api/get_new_message_noti/" + data['id']));
-      var jsonResponse = jsonDecode(response.body);
-      if (jsonResponse['data'] > 0) {
-        NotificationApi.showNotification(
-            title: 'Inbox',
-            body: 'New messages: ${jsonResponse["data"]}',
-            payload: 'EMES');
-        controller.setNumberOfNotification(jsonResponse['data']);
-        FlutterAppBadger.updateBadgeCount(jsonResponse['data']);
-      } else {
-        controller.setNumberOfNotification(jsonResponse['data']);
-        FlutterAppBadger.removeBadge();
+      if (decodeData != "") {
+        var data = jsonDecode(decodeData);
+        var response = await http.get(
+            Uri.parse(companyURL + "/api/get_new_message_noti/" + data['id']));
+        var jsonResponse = jsonDecode(response.body);
+        if (jsonResponse['data'] > 0) {
+          NotificationApi.showNotification(
+              title: 'Inbox',
+              body: 'New messages: ${jsonResponse["data"]}',
+              payload: 'EMES');
+          controller.setNumberOfNotification(jsonResponse['data']);
+          FlutterAppBadger.updateBadgeCount(jsonResponse['data']);
+        } else {
+          controller.setNumberOfNotification(jsonResponse['data']);
+          FlutterAppBadger.removeBadge();
+        }
       }
     });
   }
